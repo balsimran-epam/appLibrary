@@ -17,7 +17,7 @@ import com.epam.library.domain.User;
 
 public class LoginDaoImpl implements UserDAO {
 	private static Logger logger = Logger.getLogger(LoginDaoImpl.class);
-	private static final String SELECT_USER_SQL = "select * from user INNER join user_role ON u_r_id=u_id INNER JOIN user_translator on u_t_user=u_id where u_t_app_language=? and u_user_name=? and u_password=?";
+	private static final String SELECT_USER_SQL = "select * from user INNER join user_role ON u_r_id=u_user_role INNER JOIN user_translator on u_t_user=u_id where u_t_app_language=? and u_user_name=? and u_password=?";
 	private static final String USER_ID = "u_id";
 	private static final String USER_NAME = "u_user_name";
 	private static final String USER_PASSWORD = "u_password";

@@ -78,6 +78,7 @@ public class HomeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
+		System.out.println("in get");
 		HttpSession session = request.getSession();
 		String actionPage = null;
 		if (request.getParameter("typeOfBook") != null) {
@@ -91,6 +92,7 @@ public class HomeServlet extends HttpServlet {
 			request.setAttribute("language", request.getParameter("language"));
 		} else
 			session.setAttribute(TYPE_OF_BOOK, session.getAttribute(TYPE_OF_BOOK));
+		System.out.println("lll"+session.getAttribute("language"));
 		String actionKey = request.getParameter("getSelectedBook");
 		actionKey = checkForNullId(actionKey, request);
 		session.setAttribute("action",actionKey);

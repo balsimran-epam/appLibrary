@@ -29,25 +29,25 @@ public class DBManager {
 			throw new RuntimeException(e);
 		}
 
-		initializeConnectionPool();
-	}
+/*		initializeConnectionPool();
+*/	}
 
-	private void initializeConnectionPool() throws DBManagerException {
+	/*private void initializeConnectionPool() throws DBManagerException {
 		while (!checkIfConnectionPoolIsFull()) {
 
 			availableConnections.add(createNewConnectionForPool());
 
 		}
-	}
+	}*/
 
-	private synchronized boolean checkIfConnectionPoolIsFull() {
+	/*private synchronized boolean checkIfConnectionPoolIsFull() {
 
 		if (availableConnections.size() < DB_MAX_CONNECTIONS) {
 			return false;
 		}
 
 		return true;
-	}
+	}*/
 
 	public static Connection createNewConnectionForPool() throws DBManagerException {
 

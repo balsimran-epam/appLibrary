@@ -21,7 +21,7 @@ public class UserBookByCategoryCommandImpl implements Command {
 	private static Logger logger = Logger.getLogger(UserBookByCategoryCommandImpl.class);
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		
+	
 		HttpSession session = request.getSession();
 		List<Book> electronicBookList=new ArrayList<>();
 		Request userRequested = new Request();
@@ -36,7 +36,7 @@ String view=null;
 		} catch (ServiceException e) {
 			logger.log(Level.ERROR, "Exception occured", e);
 		}
-		
+		System.out.println(electronicBookList);
 			request.setAttribute(LoginParamEnum.BOOK_INFO.getParam(), electronicBookList);
 	
 		request.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(),

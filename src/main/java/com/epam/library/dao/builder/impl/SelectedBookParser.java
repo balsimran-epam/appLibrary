@@ -18,7 +18,7 @@ import com.epam.library.domain.Request;
 
 public class SelectedBookParser implements Parser{
 	private static Logger logger = Logger.getLogger(ElectronicBookParser.class);
-	private static final String FIND_ELECTRONIC_BOOK = "SELECT  * from book b LEFT join e_book_translator eb  ON b.b_e_book=eb.e_b_book  LEFT join p_book_translator pb  ON b.b_p_book=pb.p_b_book LEFT join book_translator bt on bt.b_t_b_book=b.b_id  LEFT join app_language al  ON eb.e_b_app_language=al.a_l_code  where  (e_b_app_language=? or p_b_app_language=?) and (bt.b_t_app_language=? or p_b_app_language=?) and b_id=?";
+	private static final String FIND_ELECTRONIC_BOOK = "SELECT  * from book b LEFT join e_book_translator eb  ON b.b_e_book=eb.e_b_book  LEFT join p_book_translator pb  ON b.b_p_book=pb.p_b_book LEFT join book_translator bt on bt.b_t_b_book=b.b_id  LEFT join app_language al  ON eb.e_b_app_language=al.a_l_code  where  (e_b_app_language=? or p_b_app_language=?) and (bt.b_t_app_language=?) and b_id=?";
 	@Override
 	public List<?> findBookByCategory(Request request) throws BuilderException {
 	
@@ -37,8 +37,7 @@ public class SelectedBookParser implements Parser{
 			preparedStatement.setString(1, request.getLanguage());
 			preparedStatement.setString(2, request.getLanguage());
 			preparedStatement.setString(3, request.getLanguage());
-			preparedStatement.setString(4, request.getLanguage());
-			preparedStatement.setString(5, request.getBookId());
+			preparedStatement.setString(4, request.getBookId());
 			
 			ResultSet rs = preparedStatement.executeQuery();
 		
