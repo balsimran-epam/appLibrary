@@ -37,7 +37,6 @@ public class ElectronicBookParser implements Parser{
 
 				preparedStatement.setString(1, request.getLanguage());
 				preparedStatement.setString(2, request.getLanguage());
-				System.out.println("in dao impl"+request.getLanguage());
 				ResultSet rs = preparedStatement.executeQuery();
 				electronicBookList=dataSet(rs);
 			
@@ -66,7 +65,6 @@ public class ElectronicBookParser implements Parser{
 			}
 
 			
-			System.out.println("in inmp"+electronicBookList);
 			return electronicBookList;
 
 		}

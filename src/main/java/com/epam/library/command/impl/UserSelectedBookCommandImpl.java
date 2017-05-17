@@ -40,7 +40,6 @@ String view=null;
 		} catch (ServiceException e) {
 			logger.log(Level.ERROR, "Exception occured", e);
 		}
-		System.out.println(electronicBookList);
 		request.setAttribute("selectedBookInfo", electronicBookList);
 		
 		request.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(),

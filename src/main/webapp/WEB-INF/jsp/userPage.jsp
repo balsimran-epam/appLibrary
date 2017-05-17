@@ -15,7 +15,6 @@
 </head>
 <body>
 	
-	"${sessionScope.action}
 	<form action="HomeServlet" method="get">
 	
   <input type="hidden" name="getBook" value="${sessionScope.action }" />
