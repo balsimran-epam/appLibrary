@@ -8,6 +8,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
+import com.epam.library.command.requestMapping.LoginRequestMapping;
 import com.epam.library.domain.Request;
 import com.epam.library.domain.User;
 import com.epam.library.service.UserService;
@@ -22,23 +23,35 @@ public class UserLoginCommandImpl implements Command {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
+	
 		HttpSession session = request.getSession();
 		String view = null;
 		Request userRequest = new Request();
 		User retrievedUserInfo = new User();
+		LoginRequestMapping.loginMappingRequest(request,session);
+		LoginRequestMapping.setLanguage(request, session);
+	
+		LoginRequestMapping.setAction(request, session);
 		String actionName = request.getParameter(LoginParamEnum.ACTION.getParam());
-		userRequest.setUserName((String) request.getAttribute(LoginParamEnum.USER_NAME.getParam()));
-		userRequest.setPassword((String) request.getAttribute(LoginParamEnum.PASSWORD.getParam()));
+		userRequest.setUserName((String) session.getAttribute(LoginParamEnum.USER_NAME.getParam()));
+		userRequest.setPassword((String) session.getAttribute(LoginParamEnum.PASSWORD.getParam()));
 		userRequest.setLanguage((String) session.getAttribute(LoginParamEnum.LANGUAGE.getParam()));
+
+	String toPassUserName=userRequest.getUserName();
+	
+	String toWelcome="Welcome";
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		UserService service = serviceFactory.getUserService();
 		try {
 			retrievedUserInfo = service.authenticateUser(userRequest, actionName);
 		} catch (ServiceException e) {
+			request.setAttribute("exceptionOccured", e.toString());
+			
 			logger.log(Level.ERROR, "Exception occured", e);
+		
 
 		}
-
+System.out.println(retrievedUserInfo.getName());
 		if (retrievedUserInfo.getUserRole() != null) {
 			session.setAttribute(LoginParamEnum.USER_INFO.getParam(), retrievedUserInfo);
 
@@ -51,7 +64,7 @@ public class UserLoginCommandImpl implements Command {
 						ParamEnum.SEND_REDIRECT_REQUEST.getParam());
 				session.setAttribute("toForwarded", LoginParamEnum.REDIRECT.getParam());
 
-				view = LoginParamEnum.WELCOME_PAGE.getParam();
+				view = "HomeServlet?action="+toWelcome+"&userName="+toPassUserName ;
 
 			} else if (retrievedUserInfo.getUserRole().equals(LoginParamEnum.USER.getParam())) {
 
@@ -61,7 +74,8 @@ public class UserLoginCommandImpl implements Command {
 				request.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(),
 						ParamEnum.SEND_REDIRECT_REQUEST.getParam());
 				session.setAttribute("toForwarded", LoginParamEnum.REDIRECT.getParam());
-				view = LoginParamEnum.WELCOME_PAGE.getParam();
+				
+				view = "HomeServlet?action="+toWelcome+"&userName="+toPassUserName ;
 			}
 		} else {
 

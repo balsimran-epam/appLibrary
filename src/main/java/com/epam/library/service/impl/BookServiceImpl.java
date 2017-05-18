@@ -22,7 +22,7 @@ public class BookServiceImpl implements BookService {
 		} catch (ValidatorException ve) {
 			throw new ServiceException(ve);
 		}
-		List<Book> electronicBookList=new ArrayList<>();
+		List<Book> electronicBookList=null;
 		
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		BookDAO bookDao = daoFactory.getBookDao();

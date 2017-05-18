@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.epam.library.dao.BookDAO;
-import com.epam.library.dao.build.Parser;
+import com.epam.library.dao.builder.Parser;
 import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.builder.factory.ParserBuilder;
 import com.epam.library.dao.exception.DAOException;
@@ -17,7 +17,7 @@ public class BookDaoImpl implements BookDAO{
 	public List<Book> findBookByCategory(Request request) throws DAOException {
 		List<Book> allProduct = new ArrayList<>();
 		ParserBuilder bookFactory = ParserBuilder.getInstance();
-		
+		System.out.println();
 		Parser parser = bookFactory.getBook(request.getTypeOfBook());
 		
 		try {

@@ -12,13 +12,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; UTF-8">
 <title>Insert title here</title>
+<style>
+
+</style>
 </head>
 <body>
+
 	
 	<form action="HomeServlet" method="get">
-	
-  <input type="hidden" name="getBook" value="${sessionScope.action }" />
-   <input type="hidden" name="typeOfBook" value="${sessionScope.bookSelectedType }" />
+	<input type="hidden" name="userName" value="${sessionScope.userName }" />
+   <input type="hidden" name="password" value="${sessionScope.password }" />
+    <input type="hidden" name="action" value="${sessionScope.action}" />
+   <input type="hidden" name="typeOfBook" value="${sessionScope.typeOfBook }" />
 
 	
 		<select id="language" name="language" onchange="submit()">
@@ -30,11 +35,11 @@
 	<c:choose>
 		<c:when
 			test="${sessionScope.userInfo != null && sessionScope.userRole!=null}">
-			<div align="right">
+			
 				<form name="logout" action="HomeServlet" method="post">
 
 
-
+<div align="right">
 
 
 
@@ -50,22 +55,19 @@
 			<c:out value="${userInfo.name}"></c:out>
 			<br>
 
-			<input type="hidden" name="action" value="Logout">
+			<input type="hidden" name="action" value="Logout"/>
 
 
 			</form>
 			<form name="getBook" action="HomeServlet" method="get">
-				<input type="hidden" name="getBook" value="gettingBook">
+				<input type="hidden" name="action" value="gettingBook"> 
 				<TABLE style="background-color: #ECE5B6;" WIDTH="50%">
-					<tr width="100%">
 					
-					</tr>
 					<tr>
-						<td><fmt:message key="user.book.select" var="selectOneType" /><input
-							type="submit" value="${selectOneType}"></td>
+						<td><fmt:message key="user.book.select" var="selectOneType" /><div style="font-size: 150%">${selectOneType}</div>
 
 						<td><fmt:message key="user.radio.eb" var="electronicBook" /><input
-							type="radio" name="typeOfBook" value="EB" >
+							type="radio" name="typeOfBook" value="EB" checked>
 							${electronicBook}</td>
 						<td><fmt:message key="user.radio.pb" var="paperBook" /><input
 							type="radio" name="typeOfBook" value="PB">${paperBook}</td>
@@ -79,7 +81,9 @@
 							type="submit" value="${radioValue}"></td>
 					</tr>
 				</TABLE>
-
+<c:if test="${ exceptionOccured !=null}">
+		Exception Occured: ${exceptionOccured}</c:if>
+	<tr>
 				<c:if test="${ requestScope.bookInfo!= null}">
 
 
@@ -87,14 +91,27 @@
 
 
 					<div align="center">
-						<table border="1" cellpadding="5">
+						<table border="1" cellpadding="5" align="center" WIDTH="50%">
 							<caption>
 								<h2>
 									<fmt:message key="user.header.msg" var="msg" />
 									${msg}
 								</h2>
 							</caption>
-							
+							<tr>
+								<fmt:message key="user.table.id" var="idBook" />
+								<th>${idBook}</th>
+								<fmt:message key="user.table.title" var="titleBook" />
+								<th>${titleBook}</th>
+								<fmt:message key="user.table.desc" var="desc" />
+								<th>${desc}</th>
+								<fmt:message key="user.table.author" var="author" />
+								<th>${author}</th>
+								<fmt:message key="user.table.price" var="price" />
+								<th>${price}</th>
+								<fmt:message key="user.table.quantity" var="quantity" />
+								<th>${quantity}</th>
+								</tr>
 
 							<c:forEach var="bookInfo" items="${bookInfo}">
 							
@@ -104,15 +121,17 @@
 										<tr>
 
 
-											<td><h1><a
-												href="HomeServlet?bookId=${ bookInfo.bookId}&getSelectedBook=gettingSelectedBook"><c:out
-														value="${ bookInfo.bookId}" /></a></h1></td>
+											<td><a
+												href="HomeServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook" class="ClickCell"><c:out
+														value="${ bookInfo.bookId}" /></a></td>
 											<td><c:out value="${ bookInfo.title}" /></td>
 											<td><c:out value="${bookInfo.description}" /></td>
 											<td><c:out value="${bookInfo.author}" /></td>
 											<td><c:out value="${bookInfo.price}" /></td>
 											<td><c:out value="${bookInfo.quantity}" /></td>
+										
 										</tr>
+										
 									</c:when>
 
 									<c:otherwise>

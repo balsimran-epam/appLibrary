@@ -52,7 +52,7 @@ public class LoginDaoImpl implements UserDAO {
 				retrievedUser.setName(rs.getString(NAME));
 
 			}
-			
+		
 
 		} catch (SQLException ex) {
 

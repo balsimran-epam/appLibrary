@@ -13,7 +13,11 @@
 </head>
 <body>
 
-<form>
+<form action="HomeServlet" method="get">
+	<input type="hidden" name="userName" value="${sessionScope.userName }" />
+   <input type="hidden" name="password" value="${sessionScope.password }" />
+    <input type="hidden" name="action" value="${sessionScope.action}" />
+ 
 				<select id="language" name="language" onchange="submit()">
 					<option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
 					<option value="hi" ${language == 'hi' ? 'selected' : ''}>Hindi</option>
@@ -30,7 +34,7 @@
 <fmt:message key="admin.label.adminMessage" var="adminMessage" />
 				<div style="font-size:150%">${adminMessage}</div><br>
 
-					<c:out value="${userInfo.userName}"></c:out>
+					<c:out value="${userInfo.name}"></c:out>
 
 <input type="hidden" name="action" value="Logout">
 

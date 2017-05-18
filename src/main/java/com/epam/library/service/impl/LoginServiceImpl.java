@@ -20,7 +20,7 @@ public class LoginServiceImpl implements UserService {
 		} catch (ValidatorException ve) {
 			throw new ServiceException(ve);
 		}
-		User userDetails = new User();
+		User userDetails = null;
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		UserDAO dao = daoFactory.getUserDao();
 		byte[] plainText = ((String) user.getPassword()).getBytes();

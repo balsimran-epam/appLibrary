@@ -3,7 +3,7 @@ package com.epam.library.dao.builder.factory;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.epam.library.dao.build.Parser;
+import com.epam.library.dao.builder.Parser;
 import com.epam.library.dao.builder.impl.ElectronicBookParser;
 import com.epam.library.dao.builder.impl.PaperBookParser;
 import com.epam.library.dao.builder.impl.SelectedBookParser;

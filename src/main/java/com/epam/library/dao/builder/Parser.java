@@ -1,4 +1,4 @@
-package com.epam.library.dao.build;
+package com.epam.library.dao.builder;
 
 import java.util.List;
 

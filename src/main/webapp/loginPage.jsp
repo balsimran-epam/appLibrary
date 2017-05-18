@@ -53,8 +53,11 @@
 			</tr>
 
 	</form>
+
 		</table>
-	
+		
+		<c:if test="${ exceptionOccured !=null}">
+		Exception Occured: ${exceptionOccured}</c:if>
 	<tr>
 		<td><c:if test="${ requestScope.errorMessage!=null}">
 <fmt:message key="login.error.message" var="errorMessage" />

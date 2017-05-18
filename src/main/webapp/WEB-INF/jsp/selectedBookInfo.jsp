@@ -12,11 +12,31 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; UTF-8">
 <title>Insert title here</title>
+<style>
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 6px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
+
+.button1 {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+</style>
 </head>
 <body>
 	<form name="HomeServlet" method="get">
 	
-   <input type="hidden" name="getSelectedBook" value="${sessionScope.action }" />
+   <input type="hidden" name="action" value="${action }" />
   <input type="hidden" name="bookId" value="${bookId }" />
 		<select id="language" name="language" onchange="submit()">
 			<option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
@@ -122,9 +142,12 @@
 					</div>
 	</c:forEach>
 				</c:if>
-
+<c:if test="${ exceptionOccured !=null}">
+		Exception Occured: ${exceptionOccured}</c:if>
+	<tr>
 			</form>
-
+<a href="HomeServlet?action=gettingBook">
+<button class="button button1" align="center">Go Back</button></a>
 		</c:when>
 		<c:otherwise>
 			<c:redirect url="/loginPage.jsp" />

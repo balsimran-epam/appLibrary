@@ -11,7 +11,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.dao.DBManager;
-import com.epam.library.dao.build.Parser;
+import com.epam.library.dao.builder.Parser;
 import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.domain.Request;
