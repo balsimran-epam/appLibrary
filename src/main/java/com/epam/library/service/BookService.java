@@ -8,6 +8,6 @@ import com.epam.library.service.exception.ServiceException;
 
 public interface BookService {
 
-	List<Book> getBookList(Request userRequested) throws ServiceException;
+	List<Book> getBookList(Request userRequested) throws ServiceException ;
 
 }

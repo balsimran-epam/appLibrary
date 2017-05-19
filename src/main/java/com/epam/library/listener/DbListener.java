@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.library.dao.DBManager;
+import com.epam.library.dao.exception.DBManagerException;
 
 /**
  * Application Lifecycle Listener implementation class DbListener
@@ -19,16 +20,17 @@ import com.epam.library.dao.DBManager;
 public class DbListener implements ServletContextListener {
 	private static Logger logger = Logger.getLogger(DbListener.class);
 	private static final String LOG_4J_PATH="log4j-config";
-	private static final String URL="url";
-	private static final String USER_NAME="user_name";
-	private static final String PASSWORD="password";
-	private static final String DRIVER="driver";
+	
 
 	/**
 	 * Default constructor.
 	 */
 	public DbListener() {
-		// TODO Auto-generated constructor stub
+		try {
+			DBManager.closeConnections();
+		} catch (DBManagerException e) {
+			logger.log(Level.ERROR, "Exception occured",e);
+		}
 	}
 
 	/**
@@ -46,18 +48,8 @@ public class DbListener implements ServletContextListener {
 		String log4jConfigFile = context.getInitParameter(LOG_4J_PATH);
 		String fullPath = context.getRealPath("") + File.separator + log4jConfigFile;
 		PropertyConfigurator.configure(fullPath);
-		ServletContext sc = event.getServletContext();
-		String url = sc.getInitParameter(URL);
-		String user_name = sc.getInitParameter(USER_NAME);
-		String password = sc.getInitParameter(PASSWORD);
-		String driver = sc.getInitParameter(DRIVER);
-		DBManager db = null;
-
-		try {
-			db = new DBManager(url, user_name, password, driver);
-		} catch (Exception e) {
-			logger.log(Level.ERROR, "Exception was thrown", e);
-		}
+		
+		DBManager.getInstance();
 		
 	}
 

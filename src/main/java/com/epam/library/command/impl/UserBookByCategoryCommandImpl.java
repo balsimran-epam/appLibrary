@@ -11,7 +11,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.LoginRequestMapping;
+import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.Book;
 import com.epam.library.domain.Request;
 import com.epam.library.service.BookService;
@@ -21,32 +21,30 @@ import com.epam.library.service.factory.ServiceFactory;
 public class UserBookByCategoryCommandImpl implements Command {
 	private static Logger logger = Logger.getLogger(UserBookByCategoryCommandImpl.class);
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response) {
+	public String execute(HttpServletRequest request, HttpServletResponse response)  {
 		HttpSession session = request.getSession();	
-		LoginRequestMapping.setAction(request, session);
-		LoginRequestMapping.setLanguage(request, session);
-		LoginRequestMapping.setTypeOfBook(request, session);
+		ParameterSetter.setAction(request, session);
+		ParameterSetter.setLanguage(request, session);
+		ParameterSetter.setTypeOfBook(request, session);
 
 		List<Book> electronicBookList=new ArrayList<>();
 		Request userRequested = new Request();
-	
-String view=null;
-		userRequested.setLanguage((String) session.getAttribute(LoginParamEnum.LANGUAGE.getParam()));
-		userRequested.setTypeOfBook((String) session.getAttribute(LoginParamEnum.TYPE_OF_BOOK.getParam()));
+
+		userRequested.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
+		userRequested.setTypeOfBook((String) session.getAttribute(FormParamEnum.TYPE_OF_BOOK.getParam()));
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		BookService service = serviceFactory.getBookService();
 		try {
-			electronicBookList=service.getBookList(userRequested);
+			electronicBookList = service.getBookList(userRequested);
 		} catch (ServiceException e) {
-			request.setAttribute("exceptionOccured", e.toString());
+			request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.toString());
 			logger.log(Level.ERROR, "Exception occured", e);
 		}
-			request.setAttribute(LoginParamEnum.BOOK_INFO.getParam(), electronicBookList);
+			request.setAttribute(FormParamEnum.BOOK_INFO.getParam(), electronicBookList);
 	
-		request.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(),
-				LoginParamEnum.FORWARD_REQUEST.getParam());
-		view = LoginParamEnum.USER_PAGE.getParam();
-		return view;
+		
+		return  TargetPage.USER_PAGE.getParam();
+		
 
 	}
 }

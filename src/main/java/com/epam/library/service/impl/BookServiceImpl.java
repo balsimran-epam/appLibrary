@@ -1,6 +1,5 @@
 package com.epam.library.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.epam.library.dao.BookDAO;
@@ -16,7 +15,7 @@ import com.epam.library.service.util.Validator;
 public class BookServiceImpl implements BookService {
 
 	@Override
-	public List<Book> getBookList(Request request) throws ServiceException  {
+	public List<Book> getBookList(Request request) throws ServiceException   {
 		try {
 			Validator.validatingSelectedBookType(request);
 		} catch (ValidatorException ve) {

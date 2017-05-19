@@ -9,7 +9,7 @@ import com.epam.library.domain.Request;
 public interface BookDAO {
 	
 
-	List<Book> findBookByCategory(Request request) throws DAOException;
+	List<Book> findBookByCategory(Request request) throws DAOException ;
 
 
 	

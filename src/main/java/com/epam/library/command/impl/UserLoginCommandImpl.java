@@ -8,82 +8,67 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.LoginRequestMapping;
+import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.Request;
 import com.epam.library.domain.User;
 import com.epam.library.service.UserService;
 import com.epam.library.service.exception.ServiceException;
 import com.epam.library.service.factory.ServiceFactory;
 
-
-
 public class UserLoginCommandImpl implements Command {
 
 	private static Logger logger = Logger.getLogger(UserLoginCommandImpl.class);
+	private static final String USER_NAME = "userName";
+	private static final String PASSWORD = "password";
+	private static final String FLAG = "flag";
+	private static final String USER_WELCOME_REQUEST = "ControllerServlet?action=Welcome&userName=";
 
 	@Override
+
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-	
+
 		HttpSession session = request.getSession();
 		String view = null;
 		Request userRequest = new Request();
 		User retrievedUserInfo = new User();
-		LoginRequestMapping.loginMappingRequest(request,session);
-		LoginRequestMapping.setLanguage(request, session);
-	
-		LoginRequestMapping.setAction(request, session);
-		String actionName = request.getParameter(LoginParamEnum.ACTION.getParam());
-		userRequest.setUserName((String) session.getAttribute(LoginParamEnum.USER_NAME.getParam()));
-		userRequest.setPassword((String) session.getAttribute(LoginParamEnum.PASSWORD.getParam()));
-		userRequest.setLanguage((String) session.getAttribute(LoginParamEnum.LANGUAGE.getParam()));
+		ParameterSetter.loginMappingRequest(request, session);
+		ParameterSetter.setLanguage(request, session);
 
-	String toPassUserName=userRequest.getUserName();
-	
-	String toWelcome="Welcome";
+		ParameterSetter.setAction(request, session);
+		String actionName = request.getParameter(FormParamEnum.ACTION.getParam());
+		userRequest.setUserName((String) session.getAttribute(USER_NAME));
+		userRequest.setPassword((String) session.getAttribute(PASSWORD));
+		userRequest.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
+		String toPassUserName = userRequest.getUserName();
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		UserService service = serviceFactory.getUserService();
 		try {
 			retrievedUserInfo = service.authenticateUser(userRequest, actionName);
 		} catch (ServiceException e) {
-			request.setAttribute("exceptionOccured", e.toString());
-			
+			request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.toString());
 			logger.log(Level.ERROR, "Exception occured", e);
-		
 
 		}
-System.out.println(retrievedUserInfo.getName());
+
 		if (retrievedUserInfo.getUserRole() != null) {
-			session.setAttribute(LoginParamEnum.USER_INFO.getParam(), retrievedUserInfo);
+			session.setAttribute(FormParamEnum.USER_INFO.getParam(), retrievedUserInfo);
 
-			if (retrievedUserInfo.getUserRole().equals(LoginParamEnum.ADMIN.getParam())) {
-				session.setAttribute(LoginParamEnum.ADMIN_ROLE.getParam(), "true");
+			if (retrievedUserInfo.getUserRole().equals(FormParamEnum.ADMIN.getParam())) {
+				System.out.println("user");
+				session.setAttribute(FormParamEnum.ADMIN_ROLE.getParam(), "true");
 
-				session.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(),
-						ParamEnum.SEND_REDIRECT_REQUEST.getParam());
-				request.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(),
-						ParamEnum.SEND_REDIRECT_REQUEST.getParam());
-				session.setAttribute("toForwarded", LoginParamEnum.REDIRECT.getParam());
+				return USER_WELCOME_REQUEST + toPassUserName;
 
-				view = "HomeServlet?action="+toWelcome+"&userName="+toPassUserName ;
+			} else if (retrievedUserInfo.getUserRole().equals(FormParamEnum.USER.getParam())) {
 
-			} else if (retrievedUserInfo.getUserRole().equals(LoginParamEnum.USER.getParam())) {
-
-				session.setAttribute(LoginParamEnum.USER_ROLE.getParam(), "true");
-				session.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(),
-						ParamEnum.SEND_REDIRECT_REQUEST.getParam());
-				request.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(),
-						ParamEnum.SEND_REDIRECT_REQUEST.getParam());
-				session.setAttribute("toForwarded", LoginParamEnum.REDIRECT.getParam());
-				
-				view = "HomeServlet?action="+toWelcome+"&userName="+toPassUserName ;
+				session.setAttribute(FormParamEnum.USER_ROLE.getParam(), "true");
+				return USER_WELCOME_REQUEST + toPassUserName;
 			}
 		} else {
 
-			request.setAttribute(LoginParamEnum.ERROR_MESSAGE.getParam(), LoginParamEnum.DATA_NOT_FOUND.getParam());
-			request.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(),
-					LoginParamEnum.FORWARD_REQUEST.getParam());
-
-			view = ParamEnum.LOGIN_PAGE.getParam();
+			request.setAttribute(FormParamEnum.ERROR_MESSAGE.getParam(), FormParamEnum.DATA_NOT_FOUND.getParam());
+			request.setAttribute(FLAG, "true");
+			view = TargetPage.LOGIN_PAGE.getParam();
 
 		}
 

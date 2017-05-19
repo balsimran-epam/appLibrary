@@ -3,35 +3,37 @@ package com.epam.library.dao.builder.factory;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.epam.library.dao.builder.Parser;
+import com.epam.library.dao.builder.BookParser;
+import com.epam.library.dao.builder.impl.AllBookParser;
 import com.epam.library.dao.builder.impl.ElectronicBookParser;
 import com.epam.library.dao.builder.impl.PaperBookParser;
 import com.epam.library.dao.builder.impl.SelectedBookParser;
 
-
-public class ParserBuilder {
-	private final static ParserBuilder objectFactory = new ParserBuilder();
+public class BookParserBuilder {
+private final static BookParserBuilder objectFactory = new BookParserBuilder();
 	
 	
 	private static final String PAPER_BOOK = "PB";
 	private static final String ELECTRONIC_BOOK = "EB";
 	private static final String SELECTED_BOOK = "selected";
-	Map<String, Parser> parser = new HashMap<>();
+	private static final String ALL_BOOKS = "ALL";
+	Map<String, BookParser> parser = new HashMap<>();
 
-	private ParserBuilder() {
+	private BookParserBuilder() {
 		parser.put(PAPER_BOOK, new PaperBookParser());
 		parser.put(ELECTRONIC_BOOK, new ElectronicBookParser());
 		parser.put(SELECTED_BOOK, new SelectedBookParser());
+		parser.put(ALL_BOOKS, new AllBookParser());
 		
 	}
 
-	public static ParserBuilder getInstance() {
+	public static BookParserBuilder getInstance() {
 		return objectFactory;
 	}
 
-	public Parser getBook(String objectType) {
+	public BookParser getQuery(String objectType) {
 		for (String key : parser.keySet()) {
-			Parser parserObject = (Parser) parser.get(objectType);
+			BookParser parserObject = (BookParser) parser.get(objectType);
 			return parserObject;
 
 		}
@@ -39,6 +41,4 @@ public class ParserBuilder {
 
 	}
 	
-
 }
-

@@ -16,10 +16,8 @@ public class UserLogoutCommandImpl implements Command {
 		if (sess != null) {
 			sess.invalidate();
 		}
+		return TargetPage.LOGIN_PAGE.getParam();
 
-		request.setAttribute(ParamEnum.REQUESTED_METHOD_TO_CALL.getParam(), ParamEnum.SEND_REDIRECT_REQUEST.getParam());
-		String view = ParamEnum.LOGIN_PAGE.getParam();
-		return view;
 
 	}
 

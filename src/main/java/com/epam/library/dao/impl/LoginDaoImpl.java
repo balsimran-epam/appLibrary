@@ -31,7 +31,7 @@ public class LoginDaoImpl implements UserDAO {
 
 		try {
 
-			connection = DBManager.createNewConnectionForPool();
+			connection = DBManager.getConnectionFromPool();
 
 			preparedStatement = connection.prepareStatement(SELECT_USER_SQL);
 			preparedStatement.setString(1, user.getLanguage());
@@ -71,7 +71,7 @@ public class LoginDaoImpl implements UserDAO {
 			}
 			try {
 				DBManager.returnConnectionToPool(connection);
-				DBManager.closeConnection(connection);
+			
 			} catch (DBManagerException e) {
 				logger.log(Level.ERROR, "Closing Connection Exception", e);
 			}

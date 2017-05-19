@@ -3,7 +3,7 @@ package com.epam.library.command.requestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class LoginRequestMapping {
+public class ParameterSetter {
 	private static final String USER_NAME = "userName";
 	private static final String PASSWORD = "password";
 	private static final String LANGUAGE = "language";

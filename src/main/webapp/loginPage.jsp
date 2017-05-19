@@ -31,7 +31,7 @@
 			</form>
 			<table width="440px" align="center"
 		style="border: 1px solid #000000; background-color: #efefef;">
-<form name="login" action="HomeServlet" method="post">
+<form name="login" action="ControllerServlet" method="post">
 		
 			<tr>
 				<td><b><label for="username"><fmt:message key="login.label.username" /> : </label></b></td>
@@ -55,11 +55,9 @@
 	</form>
 
 		</table>
-		
-		<c:if test="${ exceptionOccured !=null}">
-		Exception Occured: ${exceptionOccured}</c:if>
+	
 	<tr>
-		<td><c:if test="${ requestScope.errorMessage!=null}">
+		<td><c:if test="${ errorMessage!=null}">
 <fmt:message key="login.error.message" var="errorMessage" />
 				<div style="color: #FF0000;">${errorMessage}</div>
 			</c:if></td>

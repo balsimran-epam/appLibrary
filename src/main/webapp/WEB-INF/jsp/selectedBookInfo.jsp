@@ -11,6 +11,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; UTF-8">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 <style>
 .button {
@@ -31,10 +34,27 @@
 .button1 {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
 </style>
 </head>
 <body>
-	<form name="HomeServlet" method="get">
+	<form name="ControllerServlet" method="get">
 	
    <input type="hidden" name="action" value="${action }" />
   <input type="hidden" name="bookId" value="${bookId }" />
@@ -48,7 +68,7 @@
 		<c:when
 			test="${requestScope.selectedBookInfo != null && sessionScope.userRole!=null}">
 			<div align="right">
-				<form name="logout" action="HomeServlet" method="post">
+				<form name="logout" action="ControllerServlet" method="get">
 
 
 
@@ -69,85 +89,65 @@
 
 				<c:if test="${ requestScope.selectedBookInfo!= null}">
 
-
+<div align="center">
+						<table border="1" cellpadding="5">
 
 	<c:forEach var="bookInfo" items="${selectedBookInfo}">
 
-					<div align="center">
-						<table border="1" cellpadding="5">
+
+
+
+					
 							<caption>
-								<h2><fmt:message key="user.header.msg" var="msg" />
-								${msg}</h2>
+							<c:if
+        test="${(bookInfo['class'] == 'class com.epam.library.domain.ElectronicBook') }">
+								<h2><fmt:message key="user.header.Emsg" var="Emsg" />
+								${Emsg}</h2></c:if>				
+								<c:if
+         test="${(bookInfo['class'] == 'class com.epam.library.domain.PaperBook')  }"><h2><fmt:message key="user.header.Pmsg" var="Pmsg" />
+								${Pmsg}</h2></c:if>
+									<c:if
+         test="${(bookInfo['class'] == 'class com.epam.library.domain.Book')  }"><h2><fmt:message key="user.header.Amsg" var="Amsg" />
+								${Amsg}</h2></c:if>
 							</caption>
 							<tr>
 								<fmt:message key="user.table.id" var="idBook" />
-								<th>${idBook}</th>
-								<fmt:message key="user.table.title" var="titleBook" />
-								<th>${titleBook}</th>
-								<fmt:message key="user.table.desc" var="desc" />
-								<th>${desc}</th>
-								<fmt:message key="user.table.author" var="author" />
-								<th>${author}</th>
-								<fmt:message key="user.table.price" var="price" />
-								<th>${price}</th>
+								<td>${idBook}</td>		<td><c:out value="${ bookInfo.bookId}" /></td></tr>
+								<tr><fmt:message key="user.table.title" var="titleBook" />
+								<td>${titleBook}</td><td><c:out value="${ bookInfo.title}" /></td></tr>
+								<tr><fmt:message key="user.table.desc" var="desc" />
+								<td>${desc}</td>	<td><c:out value="${bookInfo.description}" /></td>
+								<fmt:message key="user.table.author" var="author" /></tr>
+								<tr><td>${author}</td><td><c:out value="${bookInfo.author}" /></td>
+								<fmt:message key="user.table.price" var="price" /></tr>
+								<tr><td>${price}</td><td><c:out value="${bookInfo.price}" /></td>
 								<fmt:message key="user.table.quantity" var="quantity" />
-								<th>${quantity}</th>
-						<c:if
-         test="${bookInfo['class'] == 'class com.epam.library.domain.ElectronicBook' }">
+								<tr><td>${quantity}</td><td><c:out value="${bookInfo.quantity}" /></td></tr>
+						<tr>				<c:if
+        test="${(bookInfo['class'] == 'class com.epam.library.domain.ElectronicBook')  }">
 								<fmt:message key="user.table.version" var="version" />
-								<th>${version}</th></c:if>
+								<td>${version}</td>  <td><c:out value="${bookInfo.version}" /></td></c:if></tr>
 								
-        	<c:if
-         test="${bookInfo['class'] == 'class com.epam.library.domain.PaperBook' }">
+        	<tr>	<c:if
+         test="${(bookInfo['class'] == 'class com.epam.library.domain.Paper')  }">
 									<fmt:message key="user.table.cover" var="cover" />
-								<th>${cover}</th></c:if>
+								<td>${cover}</td> <td>	<c:out value="${bookInfo.typeOfCover}" /></td></c:if>
 							</tr>
 							
-						
-						<c:choose>
-						<c:when test="${ not empty bookInfo.title}">
-
-								<tr>
-								
-								
-							<td><c:out value="${ bookInfo.bookId}" /></td>
-									
-							<td><c:out value="${ bookInfo.title}" /></td>
-							
-									<td><c:out value="${bookInfo.description}" /></td>
-									<td><c:out value="${bookInfo.author}" /></td>
-									<td><c:out value="${bookInfo.price}" /></td>
-									<td><c:out value="${bookInfo.quantity}" /></td>
-								
-									<c:if
-         test="${bookInfo['class'] == 'class com.epam.library.domain.ElectronicBook' }">
-        <td><c:out value="${bookInfo.version}" /></td>
-        </c:if>
-        
-        				<c:if
-         test="${bookInfo['class'] == 'class com.epam.library.domain.PaperBook' }">
-        <td>	<c:out value="${bookInfo.typeOfCover}" /></td></c:if>
-        
-								</tr>
-								</c:when>
-									
-								<c:otherwise>
-								sorry
-								</c:otherwise>
-								</c:choose>
-							
+					
+							</c:forEach>
 						
 						</table>
 
 					</div>
-	</c:forEach>
+	
 				</c:if>
-<c:if test="${ exceptionOccured !=null}">
-		Exception Occured: ${exceptionOccured}</c:if>
+
 	<tr>
 			</form>
-<a href="HomeServlet?action=gettingBook">
-<button class="button button1" align="center">Go Back</button></a>
+<a href="ControllerServlet?action=gettingBook">
+<button class="button button1" align="center"><fmt:message key="user.table.goBack" var="goBack" />
+								${goBack}</button></a>
 		</c:when>
 		<c:otherwise>
 			<c:redirect url="/loginPage.jsp" />

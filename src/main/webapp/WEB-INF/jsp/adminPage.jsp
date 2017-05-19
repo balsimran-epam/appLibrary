@@ -9,11 +9,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; UTF-8">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
 
-<form action="HomeServlet" method="get">
+<form action="ControllerServlet" method="get">
 	<input type="hidden" name="userName" value="${sessionScope.userName }" />
    <input type="hidden" name="password" value="${sessionScope.password }" />
     <input type="hidden" name="action" value="${sessionScope.action}" />
@@ -26,13 +29,14 @@
 			</form>
 
 	<c:choose>
+	<fmt:message key="user.label.message" var="message" />
+			<div style="font-size: 150%">${message}</div>
 		<c:when test="${sessionScope.userInfo != null && sessionScope.adminRole!=null}">
 			<div align="center">
-				<form name="logout" action="HomeServlet" method="post">
+				<form name="logout" action="ControllerServlet" method="post">
 				
 					
-<fmt:message key="admin.label.adminMessage" var="adminMessage" />
-				<div style="font-size:150%">${adminMessage}</div><br>
+
 
 					<c:out value="${userInfo.name}"></c:out>
 
