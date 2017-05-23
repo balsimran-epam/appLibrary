@@ -57,8 +57,7 @@ tr:nth-child(even) {
 }
 </style>
 </head>
-<body>
-
+<body onkeydown="return (event.keyCode != 116)">
 
 	<form action="ControllerServlet" method="get">
 		<input type="hidden" name="userName" value="${sessionScope.userName }" />
@@ -82,7 +81,7 @@ tr:nth-child(even) {
 				<div align="right">
 					<fmt:message key="user.label.message" var="message" />
 					<div style="font-size: 100%">${message}<c:out
-							value="${userInfo.name}"></c:out>
+							value="${userInfo.firstName}"></c:out>
 
 
 						<fmt:message key="user.button.submit" var="buttonValue" />
@@ -122,8 +121,61 @@ tr:nth-child(even) {
 					<input type="submit" value="${radioValue}">
 
 				</div>
+				
+				
+					<c:if test="${ requestScope.bookInfo!= null && isAll!=null}">
+				
+					<div align="center">
+						<TABLE>
 
-				<c:if test="${ requestScope.bookInfo!= null}">
+							<caption>
+								<h2>
+									<fmt:message key="user.header.msg" var="msg" />
+									${msg}
+								</h2>
+							</caption>
+							<tr>
+								<fmt:message key="user.table.id" var="idBook" />
+								<th>${idBook}</th>
+								<fmt:message key="user.table.title" var="titleBook" />
+								<th>${titleBook}</th>
+								<fmt:message key="user.table.desc" var="desc" />
+								<th>${desc}</th>
+								<fmt:message key="user.table.author" var="author" />
+								<th>${author}</th>
+
+							</tr>
+
+							
+<c:forEach var="bookInfo" items="${bookInfo}">
+<c:forEach var="bookInfo" items="${bookInfo}">
+
+		<c:choose>
+									<c:when test="${ not empty bookInfo.title}">
+
+										<tr>
+
+
+											<td><a
+												href="ControllerServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook"
+												class="ClickCell"><c:out value="${ bookInfo.bookId}" /></a></td>
+											<td><c:out value="${ bookInfo.title}" /></td>
+											<td><c:out value="${bookInfo.description}" /></td>
+											<td><c:out value="${bookInfo.author}" /></td>
+									</c:when>
+
+									<c:otherwise>
+
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+	</c:forEach>
+						</TABLE>
+
+					</div>
+					</c:if>
+					
+					<c:if test="${ requestScope.bookInfo!= null && isAll==null}">
 
 
 
@@ -147,12 +199,13 @@ tr:nth-child(even) {
 								<th>${desc}</th>
 								<fmt:message key="user.table.author" var="author" />
 								<th>${author}</th>
-							
+
 							</tr>
 
-							<c:forEach var="bookInfo" items="${bookInfo}">
+							
+<c:forEach var="bookInfo" items="${bookInfo}">
 
-								<c:choose>
+		<c:choose>
 									<c:when test="${ not empty bookInfo.title}">
 
 										<tr>
@@ -164,9 +217,6 @@ tr:nth-child(even) {
 											<td><c:out value="${ bookInfo.title}" /></td>
 											<td><c:out value="${bookInfo.description}" /></td>
 											<td><c:out value="${bookInfo.author}" /></td>
-											
-											
-
 									</c:when>
 
 									<c:otherwise>
@@ -180,6 +230,7 @@ tr:nth-child(even) {
 					</div>
 
 				</c:if>
+					 
 			</form>
 
 		</c:when>

@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="2.5">
 	<display-name>loginForm</display-name>
 	<welcome-file-list>
-		<welcome-file>loginPage.jsp</welcome-file>
+		<welcome-file>home.jsp</welcome-file>
 	</welcome-file-list>
 	<context-param>
 		<param-name>log4j-config</param-name>

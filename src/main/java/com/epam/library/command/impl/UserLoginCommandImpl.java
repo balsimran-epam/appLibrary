@@ -11,7 +11,7 @@ import com.epam.library.command.Command;
 import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.Request;
 import com.epam.library.domain.User;
-import com.epam.library.service.UserService;
+import com.epam.library.service.LoginService;
 import com.epam.library.service.exception.ServiceException;
 import com.epam.library.service.factory.ServiceFactory;
 
@@ -41,7 +41,7 @@ public class UserLoginCommandImpl implements Command {
 		userRequest.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
 		String toPassUserName = userRequest.getUserName();
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
-		UserService service = serviceFactory.getUserService();
+		LoginService service = serviceFactory.getLoginService();
 		try {
 			retrievedUserInfo = service.authenticateUser(userRequest, actionName);
 		} catch (ServiceException e) {

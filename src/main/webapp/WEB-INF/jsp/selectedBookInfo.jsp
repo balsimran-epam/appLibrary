@@ -51,9 +51,9 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 </style>
-</style>
+
 </head>
-<body>
+<body onkeydown="return (event.keyCode != 116)">
 	<form name="ControllerServlet" method="get">
 	
    <input type="hidden" name="action" value="${action }" />
@@ -85,35 +85,28 @@ tr:nth-child(even) {
 
 
 			</form>
-			
+					
 
-				<c:if test="${ requestScope.selectedBookInfo!= null}">
-
+			<%-- 
+				<c:if test="${ requestScope.selectedBookInfo!= null  && isAll!=null}">
+not null
 <div align="center">
 						<table border="1" cellpadding="5">
 
 	<c:forEach var="bookInfo" items="${selectedBookInfo}">
-
+<c:forEach var="bookInfo" items="${selectedBookInfo}">
 
 
 
 					
 							<caption>
-							<c:if
-        test="${(bookInfo['class'] == 'class com.epam.library.domain.ElectronicBook') }">
-								<h2><fmt:message key="user.header.Emsg" var="Emsg" />
-								${Emsg}</h2></c:if>				
-								<c:if
-         test="${(bookInfo['class'] == 'class com.epam.library.domain.PaperBook')  }"><h2><fmt:message key="user.header.Pmsg" var="Pmsg" />
-								${Pmsg}</h2></c:if>
-									<c:if
-         test="${(bookInfo['class'] == 'class com.epam.library.domain.Book')  }"><h2><fmt:message key="user.header.Amsg" var="Amsg" />
-								${Amsg}</h2></c:if>
+							
+      All Book
 							</caption>
 							<tr>
 								<fmt:message key="user.table.id" var="idBook" />
 								<td>${idBook}</td>		<td><c:out value="${ bookInfo.bookId}" /></td></tr>
-								<tr><fmt:message key="user.table.title" var="titleBook" />
+								<tr><fmt:message key="user.table.title" var="titleBook" /> 
 								<td>${titleBook}</td><td><c:out value="${ bookInfo.title}" /></td></tr>
 								<tr><fmt:message key="user.table.desc" var="desc" />
 								<td>${desc}</td>	<td><c:out value="${bookInfo.description}" /></td>
@@ -129,18 +122,75 @@ tr:nth-child(even) {
 								<td>${version}</td>  <td><c:out value="${bookInfo.version}" /></td></c:if></tr>
 								
         	<tr>	<c:if
-         test="${(bookInfo['class'] == 'class com.epam.library.domain.Paper')  }">
+         test="${(bookInfo['class'] == 'class com.epam.library.domain.PaperBook')  }">
 									<fmt:message key="user.table.cover" var="cover" />
 								<td>${cover}</td> <td>	<c:out value="${bookInfo.typeOfCover}" /></td></c:if>
 							</tr>
 							
 					
 							</c:forEach>
-						
+						</c:forEach>
 						</table>
 
 					</div>
 	
+				</c:if>
+				 --%>
+			
+
+				<c:if test="${ requestScope.selectedBookInfo!= null }">
+
+
+						<table border="1" cellpadding="5">
+
+	
+
+
+
+
+					
+							<caption>
+							<c:if
+        test="${(selectedBookInfo['class'] == 'class com.epam.library.domain.ElectronicBook') }">
+								<h2><fmt:message key="user.header.Emsg" var="Emsg" />
+								${Emsg}</h2></c:if>				
+								<c:if
+         test="${(selectedBookInfo['class'] == 'class com.epam.library.domain.PaperBook')  }"><h2><fmt:message key="user.header.Pmsg" var="Pmsg" />
+								${Pmsg}</h2></c:if>
+									<c:if
+         test="${(selectedBookInfo['class'] == 'class com.epam.library.domain.Book')  }"><h2><fmt:message key="user.header.Amsg" var="Amsg" />
+								${Amsg}</h2></c:if>
+							</caption>
+							<tr>
+								<fmt:message key="user.table.id" var="idBook" />
+								<td>${idBook}</td>		<td><c:out value="${ selectedBookInfo.bookId}" /></td></tr>
+								<tr><fmt:message key="user.table.title" var="titleBook" />
+								<td>${titleBook}</td><td><c:out value="${ selectedBookInfo.title}" /></td></tr>
+								<tr><fmt:message key="user.table.desc" var="desc" />
+								<td>${desc}</td>	<td><c:out value="${selectedBookInfo.description}" /></td>
+								<fmt:message key="user.table.author" var="author" /></tr>
+								<tr><td>${author}</td><td><c:out value="${selectedBookInfo.author}" /></td>
+								<fmt:message key="user.table.price" var="price" /></tr>
+								<tr><td>${price}</td><td><c:out value="${selectedBookInfo.price}" /></td>
+								<fmt:message key="user.table.quantity" var="quantity" />
+								<tr><td>${quantity}</td><td><c:out value="${selectedBookInfo.quantity}" /></td></tr>
+						<tr>				<c:if
+        test="${(selectedBookInfo['class'] == 'class com.epam.library.domain.ElectronicBook')  }">
+								<fmt:message key="user.table.version" var="version" />
+								<td>${version}</td>  <td><c:out value="${selectedBookInfo.version}" /></td></c:if></tr>
+								
+        	<tr>	<c:if
+         test="${(selectedBookInfo['class'] == 'class com.epam.library.domain.PaperBook')  }">
+									<fmt:message key="user.table.cover" var="cover" />
+								<td>${cover}</td> <td>	<c:out value="${selectedBookInfo.typeOfCover}" /></td></c:if>
+							</tr>
+							
+					
+						
+						
+						</table>
+
+				
 				</c:if>
 
 	<tr>

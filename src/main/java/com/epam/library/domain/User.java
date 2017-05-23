@@ -11,6 +11,8 @@ public class User {
 	private int userRoleId;
 	private String name;
 	private String userRole;
+	private String firstName;
+	private String lastName;
 
 	public int getUserId() {
 		return userId;
@@ -75,6 +77,22 @@ public class User {
 		result = prime * result + ((userRole == null) ? 0 : userRole.hashCode());
 		result = prime * result + userRoleId;
 		return result;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	@Override

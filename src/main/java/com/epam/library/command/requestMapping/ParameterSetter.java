@@ -41,6 +41,7 @@ public class ParameterSetter {
 		String bookId = (String) request.getParameter("bookId");
 		if (bookId != null && !bookId.isEmpty()) {
 			
+			session.setAttribute("bookId", request.getParameter("bookId"));
 			request.setAttribute("bookId", request.getParameter("bookId"));
 		}
 	}
@@ -54,5 +55,37 @@ public static void setAction(HttpServletRequest request, HttpSession session) {
 			session.setAttribute("action", request.getParameter("action"));
 		}
 	}
+public static void setIRole(HttpServletRequest request, HttpSession session) {
+	
+System.out.println("in set");
+	String role = (String) request.getParameter("user");
+	System.out.println(request.getParameter("user"));
+	if (role != null && !role.isEmpty()) {
+		
+		session.setAttribute("user", request.getParameter("user"));
+	}
+}
 
+
+public static void storingTypeOFBookToBeAddes(HttpServletRequest request, HttpSession session) {
+	
+System.out.println("in set");
+	String role = (String) request.getParameter("bookTypeToBeAdded");
+	System.out.println(request.getParameter("bookTypeToBeAdded"));
+	if (role != null && !role.isEmpty()) {
+		
+		session.setAttribute("bookTypeToBeAdded", request.getParameter("bookTypeToBeAdded"));
+	}
+}
+
+public static void storingTypeOFBookToBeEdited(HttpServletRequest request, HttpSession session) {
+	
+System.out.println("in set now");
+	String role = (String) request.getParameter("bookTypeToBeEdited");
+	System.out.println(request.getParameter("bookTypeToBeEdited"));
+	if (role != null && !role.isEmpty()) {
+		System.out.println("in if");
+		session.setAttribute("bookTypeToBeEdited", request.getParameter("bookTypeToBeEdited"));
+	}
+}
 }

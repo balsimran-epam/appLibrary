@@ -1,18 +1,22 @@
 package com.epam.library.dao.builder.impl;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.epam.library.dao.DBManager;
 import com.epam.library.dao.builder.BookParser;
 import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.builder.factory.BookParserBuilder;
+import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.domain.Book;
 import com.epam.library.domain.Request;
+import com.epam.library.domain.User;
 
 public class SelectedBookParser implements BookParser {
-
+	private final static String COUNT = "  SELECT  * from book b left join book_type on b_t_id=b_book_type  where b_id=?";
 	@Override
 	public String returningQuery() {
 		
@@ -33,7 +37,9 @@ public class SelectedBookParser implements BookParser {
 			preparedStatement.setString(4, bookId);
 
 			rs = preparedStatement.executeQuery();
-
+			if (rs == null) {
+				rs = returningResultStatement("en", preparedStatement, bookId);
+			}
 		} catch (SQLException ex) {
 
 			throw new BuilderException("Database Connectivity Exception ", ex);
@@ -50,10 +56,89 @@ public class SelectedBookParser implements BookParser {
 		List<Book> listOfBooks = null;
 		try {
 			listOfBooks = (List<Book>) query.findBookByCategory(request, rs);
-		} catch (BuilderException e) {
+		} catch (BuilderException | DBManagerException e) {
 			throw new BuilderException("Database Connectivity Exception ", e);
 		}
 
 		return listOfBooks;
 	}
-}
+
+	@Override
+	public Book findBook(Request request, ResultSet rs,String bookId) throws BuilderException {
+		BookParserBuilder queryObject = BookParserBuilder.getInstance();
+System.out.println("in fb");
+
+		BookParser query = null;
+	Book listOfBooks = null;
+	
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		User retrievedUser = new User();
+		int count = 0;
+		try {
+			try {
+				connection = DBManager.getConnectionFromPool();
+			} catch (DBManagerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+	
+			preparedStatement = connection.prepareStatement(COUNT);
+			System.out.println("id"+bookId);
+			preparedStatement.setString(1, bookId);
+			ResultSet rsCount = preparedStatement.executeQuery();
+			while (rsCount.next()) {
+
+				if (rsCount.getString("b_t_name").equals("EB")) {
+					System.out.println("in eb");
+					query = queryObject.getQuery("EB");
+
+				} else
+				{
+					System.out.println("in pb");
+					query = queryObject.getQuery("PB");
+				}
+
+				listOfBooks = query.findBook(request, rs,bookId);
+				
+			
+
+		}} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		catch (BuilderException e) {
+			throw new BuilderException("Database Connectivity Exception ", e);
+		}finally {
+			try {
+
+				DBManager.closeStatement(preparedStatement);
+			} catch (DBManagerException e) {
+
+			}
+			try {
+				DBManager.returnConnectionToPool(connection);
+
+			} catch (DBManagerException e) {
+
+			}
+		}
+
+		return listOfBooks;
+	}
+
+	@Override
+	public String returningPaperQuery() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResultSet returningRs(PreparedStatement preparedStatement) throws BuilderException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	}
+

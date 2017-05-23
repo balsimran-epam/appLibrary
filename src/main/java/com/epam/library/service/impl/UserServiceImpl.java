@@ -1,39 +1,38 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.LoginDAO;
+import com.epam.library.dao.UserDAO;
 import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.factory.DAOFactory;
-import com.epam.library.domain.Request;
+import com.epam.library.domain.RegisteredUser;
 import com.epam.library.domain.User;
-import com.epam.library.service.LoginService;
+import com.epam.library.service.UserService;
 import com.epam.library.service.encryption.PasswordEncryptionAlgo;
 import com.epam.library.service.exception.ServiceException;
-import com.epam.library.service.exception.ValidatorException;
-import com.epam.library.service.util.Validator;
 
-public class LoginServiceImpl implements LoginService {
+public class UserServiceImpl implements UserService{
 
+	
 	@Override
-	public User authenticateUser(Request user, String actionName) throws ServiceException {
-		
+	public boolean saveUser(RegisteredUser registeredUser) throws ServiceException {
+	boolean flagInserted=false;
 		User userDetails = null;
 		DAOFactory daoFactory = DAOFactory.getInstance();
-		LoginDAO dao = daoFactory.getLoginDao();
-		byte[] plainText = ((String) user.getPassword()).getBytes();
+		UserDAO dao = daoFactory.getUserDao();
+		byte[] plainText = ((String) registeredUser.getPassword()).getBytes();
 		byte[] encryptedPassword = null;
 
 		encryptedPassword = PasswordEncryptionAlgo.encryptedPassword(plainText);
 
 		StringBuilder sb = PasswordEncryptionAlgo.createSb(encryptedPassword);
-		user.setPassword(sb.toString());
+		registeredUser.setPassword(sb.toString());
 
 		try {
-			userDetails = dao.getUserData(user);
+			flagInserted=dao.saveUserData(registeredUser);
 		} catch (DAOException se) {
 			throw new ServiceException(se);
 		}
 
-		return userDetails;
+		return (flagInserted) ? true : false;
 	}
 
 }

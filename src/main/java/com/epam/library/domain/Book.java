@@ -15,6 +15,20 @@ public class Book implements Serializable {
 	private String description;
 	private String author;
 
+	private String holdType;
+
+	public String getHoldType() {
+		return holdType;
+	}
+
+	public void setHoldType(String holdType) {
+		this.holdType = holdType;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -46,6 +60,7 @@ public class Book implements Serializable {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+
 	public int getBookId() {
 		return bookId;
 	}

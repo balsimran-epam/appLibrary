@@ -7,6 +7,7 @@ public class Request {
 	private String typeOfBook;
 	private String bookId;
 	private String type;
+	
 
 	public String getUserName() {
 		return userName;
@@ -55,5 +56,7 @@ public class Request {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	
 
 }

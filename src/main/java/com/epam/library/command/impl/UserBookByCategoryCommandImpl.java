@@ -20,18 +20,26 @@ import com.epam.library.service.factory.ServiceFactory;
 
 public class UserBookByCategoryCommandImpl implements Command {
 	private static Logger logger = Logger.getLogger(UserBookByCategoryCommandImpl.class);
+
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response)  {
-		HttpSession session = request.getSession();	
+	public String execute(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("ge    hhh  ttt");
+		HttpSession session = request.getSession();
 		ParameterSetter.setAction(request, session);
 		ParameterSetter.setLanguage(request, session);
 		ParameterSetter.setTypeOfBook(request, session);
+		ParameterSetter.setIRole(request, session);
 
-		List<Book> electronicBookList=new ArrayList<>();
+		List<List<Book>> electronicBookList = new ArrayList<>();
 		Request userRequested = new Request();
 
 		userRequested.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
 		userRequested.setTypeOfBook((String) session.getAttribute(FormParamEnum.TYPE_OF_BOOK.getParam()));
+		if (userRequested.getTypeOfBook().equals("ALL")) {
+			System.out.println("yes set");
+			request.setAttribute("isAll", "true");
+			session.getAttribute("isAll");
+		}
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		BookService service = serviceFactory.getBookService();
 		try {
@@ -40,11 +48,14 @@ public class UserBookByCategoryCommandImpl implements Command {
 			request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.toString());
 			logger.log(Level.ERROR, "Exception occured", e);
 		}
-			request.setAttribute(FormParamEnum.BOOK_INFO.getParam(), electronicBookList);
-	
-		
-		return  TargetPage.USER_PAGE.getParam();
-		
+
+		request.setAttribute(FormParamEnum.BOOK_INFO.getParam(), electronicBookList);
+
+		if (session.getAttribute("user") != null) {
+			System.out.println("ADMIN");
+			return TargetPage.ADMIN_PAGE.getParam();
+		} else
+			return TargetPage.USER_PAGE.getParam();
 
 	}
 }
