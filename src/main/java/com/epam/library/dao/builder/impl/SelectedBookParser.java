@@ -37,9 +37,7 @@ public class SelectedBookParser implements BookParser {
 			preparedStatement.setString(4, bookId);
 
 			rs = preparedStatement.executeQuery();
-			if (rs == null) {
-				rs = returningResultStatement("en", preparedStatement, bookId);
-			}
+			
 		} catch (SQLException ex) {
 
 			throw new BuilderException("Database Connectivity Exception ", ex);
@@ -91,16 +89,17 @@ System.out.println("in fb");
 			while (rsCount.next()) {
 
 				if (rsCount.getString("b_t_name").equals("EB")) {
-					System.out.println("in eb");
+				
 					query = queryObject.getQuery("EB");
 
 				} else
 				{
-					System.out.println("in pb");
+				
 					query = queryObject.getQuery("PB");
 				}
 
 				listOfBooks = query.findBook(request, rs,bookId);
+				
 				
 			
 
@@ -129,16 +128,6 @@ System.out.println("in fb");
 		return listOfBooks;
 	}
 
-	@Override
-	public String returningPaperQuery() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ResultSet returningRs(PreparedStatement preparedStatement) throws BuilderException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	}
 

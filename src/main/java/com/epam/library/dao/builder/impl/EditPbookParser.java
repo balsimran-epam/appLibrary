@@ -7,10 +7,12 @@ import com.epam.library.dao.builder.EditBookParser;
 import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.domain.AddBookDTO;
 
-public class EditPbookParser implements EditBookParser{
+public class EditPbookParser implements EditBookParser {
+	private static final String EDIT_PAPER_QUERY = "{call editPbook(?,?,?,?,?,?,?,?,?)}";
+
 	@Override
 	public String returningBookQuery() {
-		return "{call editPbook(?,?,?,?,?,?,?,?,?)}";
+		return EDIT_PAPER_QUERY;
 	}
 
 	@Override

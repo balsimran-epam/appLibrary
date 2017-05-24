@@ -92,6 +92,7 @@ public class Book implements Serializable {
 		result = prime * result + ((author == null) ? 0 : author.hashCode());
 		result = prime * result + bookId;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((holdType == null) ? 0 : holdType.hashCode());
 		result = prime * result + id;
 		result = prime * result + Float.floatToIntBits(price);
 		result = prime * result + quantity;
@@ -120,6 +121,11 @@ public class Book implements Serializable {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
+		if (holdType == null) {
+			if (other.holdType != null)
+				return false;
+		} else if (!holdType.equals(other.holdType))
+			return false;
 		if (id != other.id)
 			return false;
 		if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
@@ -137,7 +143,7 @@ public class Book implements Serializable {
 	@Override
 	public String toString() {
 		return "Book [bookId=" + bookId + ", price=" + price + ", quantity=" + quantity + ", id=" + id + ", title="
-				+ title + ", description=" + description + ", author=" + author + "]";
+				+ title + ", description=" + description + ", author=" + author + ", holdType=" + holdType + "]";
 	}
 
 }

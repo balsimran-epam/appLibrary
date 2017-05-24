@@ -1,18 +1,14 @@
 package com.epam.library.dao.builder.impl;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import com.epam.library.dao.builder.AddBookParser;
 import com.epam.library.dao.builder.exception.BuilderException;
-import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.domain.AddBookDTO;
-import com.epam.library.domain.Book;
-import com.epam.library.domain.Request;
 
-public class AddPBookParser implements AddBookParser{
+public class AddPBookParser implements AddBookParser {
+	private static final String EDIT_PAPER_BOOK = "{call inserPBook(?,?,?,?,?,?,?)}";
 
 	@Override
 	public int returningResultStatement(AddBookDTO addBookDTO, PreparedStatement preparedStatement)
@@ -35,12 +31,10 @@ public class AddPBookParser implements AddBookParser{
 		}
 		return i;
 	}
-	
 
 	@Override
 	public String returningBookQuery() {
-		return "{call inserPBook(?,?,?,?,?,?,?)}";
+		return EDIT_PAPER_BOOK;
 	}
-
 
 }

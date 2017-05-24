@@ -598,7 +598,7 @@
 			</div>
 		</div>
 
-		<c:if test="${ sessionScope.inserted=='true'}">
+		<c:if test="${ inserted=='true'}">
 <center><h3>registered</h3></center>
 			</c:if>
 
@@ -607,6 +607,22 @@
 										key="register.user.msg" var="msg" />
 									<center><h3>${msg}</h3></center>
 			</c:if>
+			
+			<c:if test="${not empty humanityCheck}">
+			
+<fmt:message
+										key="register.user.humanMsg" var="humanMsg" />
+									<center><h3>${humanMsg}</h3></center>
+			</c:if>
+			
+			
+			<c:if test="${not empty passwordMatch}">
+			
+<fmt:message
+										key="register.user.passMsg" var="passMsg" />
+									<center><h3>${passMsg}</h3></center>
+			</c:if>
+			
 			
 		
 		<br>

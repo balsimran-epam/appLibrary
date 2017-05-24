@@ -7,7 +7,8 @@ import javax.servlet.http.HttpSession;
 import com.epam.library.command.Command;
 import com.epam.library.service.exception.ServiceException;
 
-public class WelcomeToEditCommad implements Command{
+public class WelcomeToEditCommad implements Command {
+	private static final String TYPE_TO_BE_EDITED = "bookTypeToBeEdited";
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -17,10 +18,10 @@ public class WelcomeToEditCommad implements Command{
 
 		String viewToForward = null;
 
-		if (session.getAttribute("bookTypeToBeEdited") != null) {
-			System.out.println("not null");
-			typeOfBook = (String) session.getAttribute("bookTypeToBeEdited");
-			viewToForward = "WEB-INF/jsp/editBook.jsp";
+		if (session.getAttribute(TYPE_TO_BE_EDITED) != null) {
+
+			typeOfBook = (String) session.getAttribute(TYPE_TO_BE_EDITED);
+			viewToForward = TargetPage.EDIT_BOOK_PAGE.getParam();
 
 		}
 		return viewToForward;

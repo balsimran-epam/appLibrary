@@ -8,9 +8,10 @@ import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.domain.AddBookDTO;
 
 public class EditEbookParser implements EditBookParser{
+	private static final String EDIT_E_BOOK="{call editEbook(?,?,?,?,?,?,?,?,?)}";
 	@Override
 	public String returningBookQuery() {
-		return "{call editEbook(?,?,?,?,?,?,?,?,?)}";
+		return EDIT_E_BOOK;
 	}
 
 	@Override

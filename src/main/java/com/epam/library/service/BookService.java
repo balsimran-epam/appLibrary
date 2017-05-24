@@ -12,6 +12,6 @@ public interface BookService {
 	List<List<Book>> getBookList(Request userRequested) throws ServiceException ;
 	Book getBook(Request userRequested) throws ServiceException;
 	boolean addBook(AddBookDTO addBookDTO) throws ServiceException;
-	boolean editBook(AddBookDTO addBookDTO);
+	boolean editBook(AddBookDTO addBookDTO) throws ServiceException;
 
 }

@@ -25,7 +25,7 @@ public class PaperBookParser implements BookParser{
 		ResultSet rs=null;
 		try {
 
-	
+	System.out.println("ppp rs"+language);
 
 			preparedStatement.setString(1, language);
 			preparedStatement.setString(2, language);
@@ -46,7 +46,7 @@ public class PaperBookParser implements BookParser{
 	@Override
 	public List<?> findBookByCategory(Request request, ResultSet rs) throws BuilderException {
 		List<PaperBook> electronicBookList=new ArrayList<>();
-		System.out.println("in pb");
+	
 		try
 		{
 		if (rs == null) {
@@ -82,6 +82,7 @@ public class PaperBookParser implements BookParser{
 		try
 		{
 		if (rs == null) {
+			
 			throw new BuilderException("Book  not found");
 
 		}
@@ -105,26 +106,6 @@ public class PaperBookParser implements BookParser{
 		return retrievedBook;
 	}
 
-	@Override
-	public String returningPaperQuery() {
-		return "select b_id from book where b_book_type=?";
-	}
-
-	@Override
-	public ResultSet returningRs(PreparedStatement preparedStatement) throws BuilderException {
-		ResultSet rs = null;
-		try
-		{
-			preparedStatement.setInt(1, 2);
-			rs = preparedStatement.executeQuery();
-		} 
-		
-		catch (SQLException ex) {
-
-			throw new BuilderException("Database Connectivity Exception ", ex);
-		}
-		return rs;
-	}
 
 
 	

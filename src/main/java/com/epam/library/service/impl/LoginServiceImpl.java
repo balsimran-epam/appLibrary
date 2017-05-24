@@ -8,14 +8,12 @@ import com.epam.library.domain.User;
 import com.epam.library.service.LoginService;
 import com.epam.library.service.encryption.PasswordEncryptionAlgo;
 import com.epam.library.service.exception.ServiceException;
-import com.epam.library.service.exception.ValidatorException;
-import com.epam.library.service.util.Validator;
 
 public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public User authenticateUser(Request user, String actionName) throws ServiceException {
-		
+
 		User userDetails = null;
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		LoginDAO dao = daoFactory.getLoginDao();

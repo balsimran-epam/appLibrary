@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.impl.WelcomeToAddFormcommand;
+import com.epam.library.command.impl.WelcomeToAddFormCommand;
+import com.epam.library.command.impl.WelcomeToAdminPageCommand;
 import com.epam.library.command.impl.WelcomeToEditCommad;
 import com.epam.library.command.impl.AddBookCommandImpl;
 import com.epam.library.command.impl.BookTypeCommand;
@@ -47,6 +48,8 @@ public class ControllerServlet extends HttpServlet {
 	private static final String SHOW_EDIT_FORM = "editType";
 	private static final String EDIT_BOOK = "editBook";
 	private static final String UPDATE_BOOK = "updateBook";
+	private static final String ADMIN_ADDED_BOOK = "WelcomeToAdd";
+	
 	/**
 	 * Default constructor.
 	 */
@@ -65,11 +68,12 @@ public class ControllerServlet extends HttpServlet {
 		actionMap.put(SELECTED_BOOK_TO_FIND, new UserSelectedBookCommandImpl());
 		actionMap.put(SIGN_UP, new UserSignUpCommandImpl());
 		actionMap.put(SHOW_ADD_FORM, new BookTypeCommand());
-		actionMap.put(ADD_BOOK_FORM, new WelcomeToAddFormcommand());
+		actionMap.put(ADD_BOOK_FORM, new WelcomeToAddFormCommand());
 		actionMap.put(ADD_BOOK, new AddBookCommandImpl());
 		actionMap.put(EDIT_BOOK, new EditBookCommandImpl());
 		actionMap.put(SHOW_EDIT_FORM, new WelcomeToEditCommad());
 		actionMap.put(UPDATE_BOOK, new UpdateBookCommandImpl());
+		actionMap.put(ADMIN_ADDED_BOOK, new WelcomeToAdminPageCommand());
 	}
 
 	/**

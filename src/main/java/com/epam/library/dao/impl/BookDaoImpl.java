@@ -29,8 +29,6 @@ import com.epam.library.domain.Request;
 public class BookDaoImpl implements BookDAO {
 	private static Logger logger = Logger.getLogger(BookDaoImpl.class);
 
-	private static final String findLatestBookId = "select B_id from book";
-
 	@Override
 	public List<List<Book>> findBookByCategory(Request request) throws DAOException {
 
@@ -85,6 +83,14 @@ public class BookDaoImpl implements BookDAO {
 			ResultSet rs = query.returningResultStatement(request.getLanguage(), preparedStatement,
 					request.getBookId());
 			allProduct = query.findBook(request, rs, request.getBookId());
+			System.out.println("now" + allProduct);
+			if (allProduct.getTitle()==null) {
+				System.out.println("yes");
+
+				rs = query.returningResultStatement("en", preparedStatement, request.getBookId());
+				allProduct = query.findBook(request, rs, request.getBookId());
+
+			}
 		} catch (BuilderException | DBManagerException | SQLException be) {
 			throw new DAOException(be);
 		}
@@ -112,19 +118,19 @@ public class BookDaoImpl implements BookDAO {
 		Connection connection = null;
 		boolean isDataSaved = false;
 		boolean isUserNameAvailable = false;
-		int isInserted=0;
+		int isInserted = 0;
 		try {
 			connection = DBManager.getConnectionFromPool();
 
 			connection.setAutoCommit(false);
-AddBookParserBuilder queryObject = AddBookParserBuilder.getInstance();
+			AddBookParserBuilder queryObject = AddBookParserBuilder.getInstance();
 			System.out.println("type" + addBookDTO.getTypeOfBook());
 			AddBookParser query = queryObject.getQuery(addBookDTO.getTypeOfBook());
-			String sqlQuery=query.returningBookQuery();
-			CallableStatement stmt=connection.prepareCall(sqlQuery);  
-			 isInserted = query.returningResultStatement(addBookDTO ,stmt);
+			String sqlQuery = query.returningBookQuery();
+			CallableStatement stmt = connection.prepareCall(sqlQuery);
+			isInserted = query.returningResultStatement(addBookDTO, stmt);
 			System.out.println(isInserted);
-			
+
 			connection.commit();
 		} catch (SQLException | DBManagerException | BuilderException se) {
 
@@ -152,27 +158,26 @@ AddBookParserBuilder queryObject = AddBookParserBuilder.getInstance();
 			}
 
 		}
-		 return (isInserted != 0);
+		return (isInserted != 0);
 	}
 
 	@Override
 	public boolean editBook(AddBookDTO addBookDTO) throws DAOException {
 		Connection connection = null;
-		boolean isDataSaved = false;
-		boolean isUserNameAvailable = false;
-		int isInserted=0;
-	try {
+
+		int isInserted = 0;
+		try {
 			connection = DBManager.getConnectionFromPool();
 
 			connection.setAutoCommit(false);
-EditBookParserBuilder queryObject = EditBookParserBuilder.getInstance();
+			EditBookParserBuilder queryObject = EditBookParserBuilder.getInstance();
 			System.out.println("type" + addBookDTO.getTypeOfBook());
 			EditBookParser query = queryObject.getQuery(addBookDTO.getTypeOfBook());
-			String sqlQuery=query.returningBookQuery();
-			CallableStatement stmt=connection.prepareCall(sqlQuery);  
-			 isInserted = query.returningResultStatement(addBookDTO ,stmt);
+			String sqlQuery = query.returningBookQuery();
+			CallableStatement stmt = connection.prepareCall(sqlQuery);
+			isInserted = query.returningResultStatement(addBookDTO, stmt);
 			System.out.println(isInserted);
-			
+
 			connection.commit();
 		} catch (SQLException | DBManagerException | BuilderException se) {
 
@@ -199,10 +204,7 @@ EditBookParserBuilder queryObject = EditBookParserBuilder.getInstance();
 				throw new DAOException("Issue with DB parameters while " + "setting auto commit.", e);
 			}
 
-	}
-	 return (isInserted != 0);
+		}
+		return (isInserted != 0);
 	}
 }
-
-
-

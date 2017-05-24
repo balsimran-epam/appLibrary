@@ -1,13 +1,9 @@
 package com.epam.library.command.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
@@ -27,7 +23,7 @@ public class UserSelectedBookCommandImpl implements Command {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-		System.out.println("yes");
+		
 		HttpSession session = request.getSession();
 
 		ParameterSetter.setLanguage(request, session);

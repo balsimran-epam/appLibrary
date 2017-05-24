@@ -23,7 +23,7 @@ public class UserBookByCategoryCommandImpl implements Command {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("ge    hhh  ttt");
+		
 		HttpSession session = request.getSession();
 		ParameterSetter.setAction(request, session);
 		ParameterSetter.setLanguage(request, session);
@@ -36,7 +36,6 @@ public class UserBookByCategoryCommandImpl implements Command {
 		userRequested.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
 		userRequested.setTypeOfBook((String) session.getAttribute(FormParamEnum.TYPE_OF_BOOK.getParam()));
 		if (userRequested.getTypeOfBook().equals("ALL")) {
-			System.out.println("yes set");
 			request.setAttribute("isAll", "true");
 			session.getAttribute("isAll");
 		}
@@ -52,7 +51,7 @@ public class UserBookByCategoryCommandImpl implements Command {
 		request.setAttribute(FormParamEnum.BOOK_INFO.getParam(), electronicBookList);
 
 		if (session.getAttribute("user") != null) {
-			System.out.println("ADMIN");
+
 			return TargetPage.ADMIN_PAGE.getParam();
 		} else
 			return TargetPage.USER_PAGE.getParam();

@@ -11,8 +11,7 @@ public class AddBookParserBuilder {
 	private final static AddBookParserBuilder objectFactory = new AddBookParserBuilder();
 	private static final String PAPER_BOOK = "PB";
 	private static final String ELECTRONIC_BOOK = "EB";
-	private static final String SELECTED_BOOK = "selected";
-	private static final String ALL_BOOKS = "ALL";
+	
 	Map<String, AddBookParser> parser = new HashMap<>();
 
 	private AddBookParserBuilder() {

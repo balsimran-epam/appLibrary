@@ -14,7 +14,7 @@ public interface BookParser {
 	ResultSet returningResultStatement(String language, PreparedStatement preparedStatement, String bookId) throws BuilderException;
 	List<?> findBookByCategory(Request request,ResultSet rs) throws BuilderException, DBManagerException;
 	Book findBook(Request request,ResultSet rs, String bookId) throws BuilderException;
-	String returningPaperQuery();
-	ResultSet returningRs(PreparedStatement preparedStatement) throws BuilderException;
+
+	
 	
 }

@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.ParameterSetter;
 
 public class WelcomeToUserCommand implements Command {
 

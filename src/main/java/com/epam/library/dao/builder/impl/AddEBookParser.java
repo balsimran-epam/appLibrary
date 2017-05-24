@@ -8,11 +8,11 @@ import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.domain.AddBookDTO;
 
 public class AddEBookParser implements AddBookParser {
+	private final static String INSERT_E_BOOK = "{call insertEbook(?,?,?,?,?,?,?)}";
 
-	
 	@Override
 	public String returningBookQuery() {
-		return "{call insertEbook(?,?,?,?,?,?,?)}";
+		return INSERT_E_BOOK;
 	}
 
 	@Override
@@ -36,6 +36,5 @@ public class AddEBookParser implements AddBookParser {
 		}
 		return i;
 	}
-
 
 }

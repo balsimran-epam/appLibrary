@@ -19,11 +19,7 @@ import com.epam.library.domain.RegisteredUser;
 public class UserDaoImpl implements UserDAO {
 	private static Logger logger = Logger.getLogger(UserDaoImpl.class);
 
-	private final static String insertTableSQL = " INSERT INTO user"
-			+ "( u_id, u_user_name, u_password,u_role,u_user_role) VALUES" + "(?,?,?,?,?)";
-	private final static String getLatestId = "select u_id from user";
 	private final static String IS_USERNAME_AVAILABLE = "select u_user_name from user where u_user_name=?";
-	private final static String inserDataSQL = "INSERT INTO user_translator(u_t_first_name,u_last_name,u_email,u_add1,u_add2,u_t_app_language,u_t_user)VALUES(?,?,?,?,?,?,?)";
 
 	@Override
 	public boolean saveUserData(RegisteredUser registeredUser) throws DAOException {

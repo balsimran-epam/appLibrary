@@ -408,7 +408,7 @@ a:hover {
 
 	<div class="container">
 		<section id="content">
-		<form action="ControllerServlet" method="get">
+		<form action="ControllerServlet" method="post">
 	<input type="hidden" name="action" value="updateBook" />
 	
 			<c:if

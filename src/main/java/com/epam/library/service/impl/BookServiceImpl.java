@@ -63,22 +63,20 @@ public class BookServiceImpl implements BookService {
 		try {
 			isBookAdded = bookDao.addBook(addBookDTO);
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 		return (isBookAdded) ? true : false;
 	}
 
 	@Override
-	public boolean editBook(AddBookDTO addBookDTO) {
+	public boolean editBook(AddBookDTO addBookDTO) throws ServiceException {
 		boolean isBookAdded=false;
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		BookDAO bookDao = daoFactory.getBookDao();
 		try {
 			isBookAdded = bookDao.editBook(addBookDTO);
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServiceException(e);
 		}
 		return (isBookAdded) ? true : false;
 	}

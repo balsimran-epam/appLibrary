@@ -17,10 +17,11 @@ public class EditBookCommandImpl implements Command {
 	private static final String ALL_BOOK = "selected";
 	private static final String SELECTED_BOOK_INFO = "selectedBookInfo";
 	private static final String ADMIN_FORM_COMMAND = "ControllerServlet?action=editType";
+	private static final String TYPE_TO_BE_EDITED= "bookTypeToBeEdited";
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-		System.out.println("in edit");
+		
 		String typeOfBook = null;
 		Book electronicBookList = new Book();
 		HttpSession session = request.getSession();
@@ -32,28 +33,23 @@ public class EditBookCommandImpl implements Command {
 		Request userRequested = new Request();
 		userRequested.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
 		userRequested.setTypeOfBook(ALL_BOOK);
-		userRequested.setType((String) session.getAttribute("bookTypeToBeEdited"));
+		userRequested.setType((String) session.getAttribute(TYPE_TO_BE_EDITED));
 		if (userRequested.getType().equals("ALL")) {
-			System.out.println("yes set");
+
 			request.setAttribute("isAll", "true");
 			session.getAttribute("isAll");
 		}
 	
-		userRequested.setBookId((String) session.getAttribute("bookId"));
-		System.out.println("id"+userRequested.getBookId());
+		userRequested.setBookId((String) session.getAttribute(BOOK_ID));
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		BookService service = serviceFactory.getBookService();
 		electronicBookList = service.getBook(userRequested);
-		
-		System.out.println(electronicBookList.getTitle());
-
 		request.setAttribute(SELECTED_BOOK_INFO, electronicBookList);
-		String viewToForward = null;
+	
+		if (session.getAttribute(TYPE_TO_BE_EDITED) != null) {
 
-		if (session.getAttribute("bookTypeToBeEdited") != null) {
-
-			typeOfBook = (String) session.getAttribute("bookTypeToBeAdded");
-			viewToForward = "WEB-INF/jsp/addPBook.jsp";
+			typeOfBook = (String) session.getAttribute(TYPE_TO_BE_EDITED);
+			
 
 		}
 		return ADMIN_FORM_COMMAND;

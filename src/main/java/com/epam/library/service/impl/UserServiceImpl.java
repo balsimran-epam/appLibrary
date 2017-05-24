@@ -4,7 +4,6 @@ import com.epam.library.dao.UserDAO;
 import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.factory.DAOFactory;
 import com.epam.library.domain.RegisteredUser;
-import com.epam.library.domain.User;
 import com.epam.library.service.UserService;
 import com.epam.library.service.encryption.PasswordEncryptionAlgo;
 import com.epam.library.service.exception.ServiceException;
@@ -15,7 +14,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public boolean saveUser(RegisteredUser registeredUser) throws ServiceException {
 	boolean flagInserted=false;
-		User userDetails = null;
+	
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		UserDAO dao = daoFactory.getUserDao();
 		byte[] plainText = ((String) registeredUser.getPassword()).getBytes();

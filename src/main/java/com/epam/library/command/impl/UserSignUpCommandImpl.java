@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
 import com.epam.library.command.requestMapping.ParameterSetter;
-import com.epam.library.dao.impl.BookDaoImpl;
 import com.epam.library.domain.RegisteredUser;
 import com.epam.library.service.UserService;
 import com.epam.library.service.exception.ServiceException;
@@ -17,44 +16,59 @@ import com.epam.library.service.factory.ServiceFactory;
 
 public class UserSignUpCommandImpl implements Command {
 	private static Logger logger = Logger.getLogger(UserSignUpCommandImpl.class);
-	private static final String INSERT_USER_SUCCESS_MESSAGE = "User has been registered";
-	private static final String INSERT_USER_FAIL_MESSAGE = "User has not been registered";
+	private static final String CHECK_HUMAN = "humanityCheck";
+	private static final String NOT_MATCHED = "fail";
+	private static final String HUMAN = "human";
+	private static final String FIRST_NAME = "fName";
+	private static final String LAST_NAME = "lName";
+	private static final String EMAIL = "email";
+	private static final String USER_NAME = "userName";
+	private static final String PASSWORD = "password";
+	private static final String RE_ENTERED_PASSWORD = "reenterpassword";
+	private static final String STREET_ADDRESS = "streetAddress";
+	private static final String LOCALITY_ADDRESS = "localityAddress";
+	private static final String PASSWORD_MATCHED_MESSAGE = "passwordMatch";
+	private static final String DEFAULT_LANGUAGE = "en";
+	private static final String INSERTED_RECORD_MESSAGE = "inserted";
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("kk");
 		RegisteredUser registeredUser = new RegisteredUser();
 		HttpSession session = request.getSession();
 		ParameterSetter.setLanguage(request, session);
 		ParameterSetter.setTypeOfBook(request, session);
 		ParameterSetter.setIdOfSelectedBook(request, session);
 		ParameterSetter.setAction(request, session);
-		String message = null;
 		ParameterSetter.setAction(request, session);
 		boolean isUserInserted = false;
-		registeredUser.setFirstName(request.getParameter("fName"));
-		registeredUser.setLastName(request.getParameter("lName"));
-		registeredUser.setEmail(request.getParameter("email"));
-		registeredUser.setUserName(request.getParameter("userName"));
-		registeredUser.setPassword(request.getParameter("password"));
-		registeredUser.setStreetAddress(request.getParameter("streetAddress"));
-		registeredUser.setLocalityAddress(request.getParameter("localityAddress"));
+		if (!(request.getParameter(PASSWORD)).equals(request.getParameter(RE_ENTERED_PASSWORD))) {
+			request.setAttribute(PASSWORD_MATCHED_MESSAGE, NOT_MATCHED);
+		} else {
+			if ((request.getParameter(CHECK_HUMAN)).equals(HUMAN)) {
+				registeredUser.setFirstName(request.getParameter(FIRST_NAME));
+				registeredUser.setLastName(request.getParameter(LAST_NAME));
+				registeredUser.setEmail(request.getParameter(EMAIL));
+				registeredUser.setUserName(request.getParameter(USER_NAME));
+				registeredUser.setPassword(request.getParameter(PASSWORD));
+				registeredUser.setStreetAddress(request.getParameter(STREET_ADDRESS));
+				registeredUser.setLocalityAddress(request.getParameter(LOCALITY_ADDRESS));
+				registeredUser.setLanguage(DEFAULT_LANGUAGE);
+				ServiceFactory serviceFactory = ServiceFactory.getInstance();
+				UserService service = serviceFactory.getUserService();
+				try {
+					isUserInserted = service.saveUser(registeredUser);
+				} catch (ServiceException e) {
+					request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.getMessage());
+					logger.log(Level.ERROR, "Exception", e);
 
-		registeredUser.setLanguage("en");
-		ServiceFactory serviceFactory = ServiceFactory.getInstance();
-		UserService service = serviceFactory.getUserService();
-		try {
-			isUserInserted = service.saveUser(registeredUser);
-		} catch (ServiceException e) {
-			request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.getMessage());
-			logger.log(Level.ERROR, "Exception", e);
-		
-		
+				}
+			} else {
 
+				request.setAttribute(CHECK_HUMAN, NOT_MATCHED);
+			}
 		}
-		message = (isUserInserted) ? INSERT_USER_SUCCESS_MESSAGE : INSERT_USER_FAIL_MESSAGE;
-		session.setAttribute("inserted", isUserInserted);
-		System.out.println("oo"+isUserInserted);
+		request.setAttribute(INSERTED_RECORD_MESSAGE, isUserInserted);
+
 		return "home.jsp";
 
 	}

@@ -1,6 +1,8 @@
 package com.epam.library.domain;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 	/**
 	 * 
 	 */
@@ -13,6 +15,10 @@ public class User {
 	private String userRole;
 	private String firstName;
 	private String lastName;
+
+	public User() {
+
+	}
 
 	public int getUserId() {
 		return userId;
@@ -62,23 +68,6 @@ public class User {
 		this.userRole = userRole;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + userId;
-		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
-		result = prime * result + ((userRole == null) ? 0 : userRole.hashCode());
-		result = prime * result + userRoleId;
-		return result;
-	}
-
 	public String getFirstName() {
 		return firstName;
 	}
@@ -95,6 +84,25 @@ public class User {
 		this.lastName = lastName;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + userId;
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		result = prime * result + ((userRole == null) ? 0 : userRole.hashCode());
+		result = prime * result + userRoleId;
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -104,6 +112,16 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -134,7 +152,8 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", userRoleId="
-				+ userRoleId + ", name=" + name + ", userRole=" + userRole + "]";
+				+ userRoleId + ", name=" + name + ", userRole=" + userRole + ", firstName=" + firstName + ", lastName="
+				+ lastName + "]";
 	}
 
 }
