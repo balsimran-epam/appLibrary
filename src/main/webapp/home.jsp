@@ -608,7 +608,7 @@
 									<center><h3>${msg}</h3></center>
 			</c:if>
 			
-			<c:if test="${not empty humanityCheck}">
+			<c:if test="${not empty humancheck}">
 			
 <fmt:message
 										key="register.user.humanMsg" var="humanMsg" />

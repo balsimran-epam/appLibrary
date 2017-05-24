@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 
 import com.epam.library.dao.DBManager;
 import com.epam.library.dao.UserDAO;
-import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.domain.RegisteredUser;
@@ -33,15 +32,16 @@ public class UserDaoImpl implements UserDAO {
 			connection.setAutoCommit(false);
 			alreadyTaken = isUserNameAlreadyExists(connection, registeredUser);
 			if (alreadyTaken == true) {
-				throw new BuilderException("UserName already Taken");
+				System.out.println("not available");
+				throw new DAOException("UserName already Taken");
 			}
 			if (alreadyTaken == false) {
 				isInserted = insertUser(connection, registeredUser);
-				System.out.println(isInserted);
+			
 			}
 
 			connection.commit();
-		} catch (DBManagerException | BuilderException | SQLException se) {
+		} catch (DBManagerException |SQLException se) {
 
 			try {
 				connection.rollback();

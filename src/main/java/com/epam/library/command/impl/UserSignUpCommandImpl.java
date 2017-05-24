@@ -16,7 +16,7 @@ import com.epam.library.service.factory.ServiceFactory;
 
 public class UserSignUpCommandImpl implements Command {
 	private static Logger logger = Logger.getLogger(UserSignUpCommandImpl.class);
-	private static final String CHECK_HUMAN = "humanityCheck";
+	private static final String CHECK_HUMAN = "humancheck";
 	private static final String NOT_MATCHED = "fail";
 	private static final String HUMAN = "human";
 	private static final String FIRST_NAME = "fName";
@@ -40,27 +40,32 @@ public class UserSignUpCommandImpl implements Command {
 		ParameterSetter.setIdOfSelectedBook(request, session);
 		ParameterSetter.setAction(request, session);
 		ParameterSetter.setAction(request, session);
+		System.out.println(request.getParameter(CHECK_HUMAN));
 		boolean isUserInserted = false;
 		if (!(request.getParameter(PASSWORD)).equals(request.getParameter(RE_ENTERED_PASSWORD))) {
 			request.setAttribute(PASSWORD_MATCHED_MESSAGE, NOT_MATCHED);
 		} else {
-			if ((request.getParameter(CHECK_HUMAN)).equals(HUMAN)) {
-				registeredUser.setFirstName(request.getParameter(FIRST_NAME));
-				registeredUser.setLastName(request.getParameter(LAST_NAME));
-				registeredUser.setEmail(request.getParameter(EMAIL));
-				registeredUser.setUserName(request.getParameter(USER_NAME));
-				registeredUser.setPassword(request.getParameter(PASSWORD));
-				registeredUser.setStreetAddress(request.getParameter(STREET_ADDRESS));
-				registeredUser.setLocalityAddress(request.getParameter(LOCALITY_ADDRESS));
-				registeredUser.setLanguage(DEFAULT_LANGUAGE);
-				ServiceFactory serviceFactory = ServiceFactory.getInstance();
-				UserService service = serviceFactory.getUserService();
-				try {
-					isUserInserted = service.saveUser(registeredUser);
-				} catch (ServiceException e) {
-					request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.getMessage());
-					logger.log(Level.ERROR, "Exception", e);
+			if (request.getParameter(CHECK_HUMAN) != null) {
+				if ((request.getParameter(CHECK_HUMAN)).equals(HUMAN)) {
 
+					registeredUser.setFirstName(request.getParameter(FIRST_NAME));
+					registeredUser.setLastName(request.getParameter(LAST_NAME));
+					registeredUser.setEmail(request.getParameter(EMAIL));
+					registeredUser.setUserName(request.getParameter(USER_NAME));
+					registeredUser.setPassword(request.getParameter(PASSWORD));
+					registeredUser.setStreetAddress(request.getParameter(STREET_ADDRESS));
+					registeredUser.setLocalityAddress(request.getParameter(LOCALITY_ADDRESS));
+					registeredUser.setLanguage(DEFAULT_LANGUAGE);
+					ServiceFactory serviceFactory = ServiceFactory.getInstance();
+					UserService service = serviceFactory.getUserService();
+					try {
+						isUserInserted = service.saveUser(registeredUser);
+					} catch (ServiceException e) {
+						System.out.println("nooo");
+						request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.getMessage());
+						logger.log(Level.ERROR, "Exception", e);
+
+					}
 				}
 			} else {
 
