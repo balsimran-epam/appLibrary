@@ -59,6 +59,10 @@ public class LoginDaoImpl implements LoginDAO {
 	}
 
 	public User authenticateUser(Connection connection, Request user) throws DAOException {
+		System.out.println("in impl");
+		System.out.println(user.getUserName());
+		System.out.println(user.getPassword());
+		System.out.println(user.getLanguage());
 		PreparedStatement preparedStatement = null;
 		User retrievedUser = new User();
 		ResultSet rs = null;
@@ -72,6 +76,7 @@ public class LoginDaoImpl implements LoginDAO {
 			rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
+				System.out.println("in rs");
 
 				retrievedUser.setUserId(rs.getInt(USER_ID));
 				retrievedUser.setUserName(rs.getString(USER_NAME));
@@ -84,10 +89,10 @@ public class LoginDaoImpl implements LoginDAO {
 			throw new DAOException("Database Connectivity Exception ", ex);
 		}
 		
-		if (retrievedUser.getFirstName() == null) {
+		/*if (retrievedUser== null) {
 			user.setLanguage(DEFAULT_LANGUAGE);
 			retrievedUser=authenticateUser(connection, user);
-		}
+		}*/
 		return retrievedUser;
 	}
 }

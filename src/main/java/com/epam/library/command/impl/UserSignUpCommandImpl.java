@@ -5,17 +5,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
 import com.epam.library.command.requestMapping.ParameterSetter;
-import com.epam.library.domain.RegisteredDataTransfer;
+import com.epam.library.dao.impl.BookDaoImpl;
 import com.epam.library.domain.RegisteredUser;
-import com.epam.library.service.LoginService;
 import com.epam.library.service.UserService;
 import com.epam.library.service.exception.ServiceException;
 import com.epam.library.service.factory.ServiceFactory;
 
 public class UserSignUpCommandImpl implements Command {
+	private static Logger logger = Logger.getLogger(UserSignUpCommandImpl.class);
 	private static final String INSERT_USER_SUCCESS_MESSAGE = "User has been registered";
 	private static final String INSERT_USER_FAIL_MESSAGE = "User has not been registered";
 
@@ -45,13 +46,15 @@ public class UserSignUpCommandImpl implements Command {
 		try {
 			isUserInserted = service.saveUser(registeredUser);
 		} catch (ServiceException e) {
-			request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.getLocalizedMessage());
+			request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.getMessage());
+			logger.log(Level.ERROR, "Exception", e);
+		
 		
 
 		}
 		message = (isUserInserted) ? INSERT_USER_SUCCESS_MESSAGE : INSERT_USER_FAIL_MESSAGE;
-		request.setAttribute("message", isUserInserted);
-		System.out.println(isUserInserted);
+		session.setAttribute("inserted", isUserInserted);
+		System.out.println("oo"+isUserInserted);
 		return "home.jsp";
 
 	}

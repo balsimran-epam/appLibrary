@@ -32,6 +32,7 @@ public class PaperBookParser implements BookParser{
 			
 			rs = preparedStatement.executeQuery();
 			if (rs == null) {
+				System.out.println("null");
 				rs = returningResultStatement("en", preparedStatement, bookId);
 			}
 			

@@ -479,7 +479,7 @@
 
 							<div class="tab-pane fade active in" id="signup">
 								<form class="form-horizontal" action="ControllerServlet"
-									method="post">
+									method="get">
 									<fieldset>
 										<!-- Sign Up Form -->
 										<!-- Text input-->
@@ -598,14 +598,14 @@
 			</div>
 		</div>
 
-		<c:if test="${ sessionScope.inserted!=null}">
-${sessionScope.inserted }
+		<c:if test="${ sessionScope.inserted=='true'}">
+<center><h3>registered</h3></center>
 			</c:if>
 
-		<c:if test="${ exceptionOccured!=null}">
+		<c:if test="${not empty exceptionOccured}">
 <fmt:message
 										key="register.user.msg" var="msg" />
-									${msg}
+									<center><h3>${msg}</h3></center>
 			</c:if>
 			
 		
