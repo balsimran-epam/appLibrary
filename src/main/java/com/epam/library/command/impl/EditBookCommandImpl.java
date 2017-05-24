@@ -24,6 +24,7 @@ public class EditBookCommandImpl implements Command {
 		
 		String typeOfBook = null;
 		Book electronicBookList = new Book();
+		
 		HttpSession session = request.getSession();
 		ParameterSetter.storingTypeOFBookToBeEdited(request, session);
 		ParameterSetter.setIdOfSelectedBook(request, session);

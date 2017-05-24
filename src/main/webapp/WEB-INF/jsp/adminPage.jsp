@@ -23,6 +23,8 @@ table {
 	font-family: arial, sans-serif;
 	border-collapse: collapse;
 	width: 50%;
+	    width: 787px;
+    hei
 }
 
 td, th {
@@ -136,7 +138,7 @@ tr:nth-child(even) {
 			</form>
 
 			
-			${sessionScope.typeOfBook}
+			
 			<form name="getBook" action="ControllerServlet" method="get">
 			<input
 					type="hidden" name="user" value="admin">

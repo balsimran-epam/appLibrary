@@ -34,11 +34,12 @@
 .button1 {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
-<style>
+
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
-    width: 50%;
+        width: 787px;
+    height: 96px
 }
 
 td, th {
@@ -54,6 +55,7 @@ tr:nth-child(even) {
 
 </head>
 <body onkeydown="return (event.keyCode != 116)">
+
 	<form name="ControllerServlet" method="get">
 	
    <input type="hidden" name="action" value="${action }" />
@@ -64,9 +66,7 @@ tr:nth-child(even) {
 			<option value="be" ${language == 'be' ? 'selected' : ''}>Belarusian</option>
 		</select>
 	</form>
-	<c:choose>
-		<c:when
-			test="${requestScope.selectedBookInfo != null && sessionScope.userRole!=null}">
+	
 			<div align="right">
 				<form name="logout" action="ControllerServlet" method="get">
 
@@ -87,61 +87,12 @@ tr:nth-child(even) {
 			</form>
 					
 
-			<%-- 
-				<c:if test="${ requestScope.selectedBookInfo!= null  && isAll!=null}">
-not null
-<div align="center">
-						<table border="1" cellpadding="5">
-
-	<c:forEach var="bookInfo" items="${selectedBookInfo}">
-<c:forEach var="bookInfo" items="${selectedBookInfo}">
 
 
-
-					
-							<caption>
-							
-      All Book
-							</caption>
-							<tr>
-								<fmt:message key="user.table.id" var="idBook" />
-								<td>${idBook}</td>		<td><c:out value="${ bookInfo.bookId}" /></td></tr>
-								<tr><fmt:message key="user.table.title" var="titleBook" /> 
-								<td>${titleBook}</td><td><c:out value="${ bookInfo.title}" /></td></tr>
-								<tr><fmt:message key="user.table.desc" var="desc" />
-								<td>${desc}</td>	<td><c:out value="${bookInfo.description}" /></td>
-								<fmt:message key="user.table.author" var="author" /></tr>
-								<tr><td>${author}</td><td><c:out value="${bookInfo.author}" /></td>
-								<fmt:message key="user.table.price" var="price" /></tr>
-								<tr><td>${price}</td><td><c:out value="${bookInfo.price}" /></td>
-								<fmt:message key="user.table.quantity" var="quantity" />
-								<tr><td>${quantity}</td><td><c:out value="${bookInfo.quantity}" /></td></tr>
-						<tr>				<c:if
-        test="${(bookInfo['class'] == 'class com.epam.library.domain.ElectronicBook')  }">
-								<fmt:message key="user.table.version" var="version" />
-								<td>${version}</td>  <td><c:out value="${bookInfo.version}" /></td></c:if></tr>
-								
-        	<tr>	<c:if
-         test="${(bookInfo['class'] == 'class com.epam.library.domain.PaperBook')  }">
-									<fmt:message key="user.table.cover" var="cover" />
-								<td>${cover}</td> <td>	<c:out value="${bookInfo.typeOfCover}" /></td></c:if>
-							</tr>
-							
-					
-							</c:forEach>
-						</c:forEach>
-						</table>
-
-					</div>
-	
-				</c:if>
-				 --%>
-			
-
-				<c:if test="${ requestScope.selectedBookInfo!= null }">
+				<c:if test="${ selectedBookInfo!= null }">
 
 
-						<table border="1" cellpadding="5">
+						<table border="1" cellpadding="5" align="center">
 
 	
 
@@ -198,11 +149,11 @@ not null
 <a href="ControllerServlet?action=gettingBook">
 <button class="button button1" align="center"><fmt:message key="user.table.goBack" var="goBack" />
 								${goBack}</button></a>
-		</c:when>
-		<c:otherwise>
+		
+		<%-- <c:otherwise>
 			<c:redirect url="/loginPage.jsp" />
-		</c:otherwise>
-	</c:choose>
+		</c:otherwise> --%>
+	
 
 
 </body>

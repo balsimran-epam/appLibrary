@@ -8,6 +8,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
+import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.AddBookDTO;
 import com.epam.library.service.BookService;
 import com.epam.library.service.exception.ServiceException;
@@ -28,6 +29,7 @@ public class AddBookCommandImpl implements Command {
 		AddBookDTO addBookDTO = new AddBookDTO();
 		HttpSession session = request.getSession();
 		boolean isAdded = false;
+		ParameterSetter.setAction(request, session);
 		addBookDTO.setTitle(request.getParameter(TITLE));
 		addBookDTO.setDescription(request.getParameter(DESCRIPTION));
 		addBookDTO.setAuthor(request.getParameter(AUTHOR));

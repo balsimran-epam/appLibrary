@@ -35,6 +35,7 @@ public class UpdateBookCommandImpl implements Command {
 		ParameterSetter.setLanguage(request, session);
 		ParameterSetter.storingTypeOFBookToBeEdited(request, session);
 		ParameterSetter.setIdOfSelectedBook(request, session);
+		ParameterSetter.setAction(request, session);
 		boolean isUpdated = false;
 		addBookDTO.setTitle(request.getParameter(TITLE));
 		addBookDTO.setDescription(request.getParameter(DESCRIPTION));
