@@ -1,9 +1,12 @@
 package com.epam.library.service.impl;
 
+import com.epam.library.dao.BookDAO;
 import com.epam.library.dao.UserDAO;
 import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.factory.DAOFactory;
+import com.epam.library.domain.EditUserDTO;
 import com.epam.library.domain.RegisteredUser;
+import com.epam.library.domain.User;
 import com.epam.library.service.UserService;
 import com.epam.library.service.encryption.PasswordEncryptionAlgo;
 import com.epam.library.service.exception.ServiceException;
@@ -32,6 +35,32 @@ public class UserServiceImpl implements UserService{
 		}
 
 		return (flagInserted) ? true : false;
+	}
+
+	@Override
+	public User getUserData(int id, String language) throws ServiceException {
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		UserDAO dao = daoFactory.getUserDao();
+		User user=new User();
+		try {
+			user=dao.getUserInfo(id,language);
+		} catch (DAOException se) {
+			throw new ServiceException(se);
+		}
+		return user;
+	}
+
+	@Override
+	public boolean updateUser(EditUserDTO user, String language) throws ServiceException {
+		boolean isUserUpdated=false;
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		UserDAO bookDao = daoFactory.getUserDao();
+		try {
+			isUserUpdated = bookDao.editUser(user,language);
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+		return (isUserUpdated) ? true : false;
 	}
 
 }

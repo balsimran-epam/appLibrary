@@ -9,63 +9,28 @@
 <fmt:setBundle basename="com.epam.i18n.text" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; UTF-8">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<title>Insert title here</title>
-<style>
-table {
-	font-family: arial, sans-serif;
-	border-collapse: collapse;
-	width: 50%;
-}
+<head>
+<meta http-equiv="Content-Type" content="text/html; UTF-8">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="css/styles.css" rel="stylesheet" type="text/css" />
+<title>User</title>
 
-td, th {
-	border: 1px solid #dddddd;
-	text-align: left;
-	padding: 8px;
-}
-
-th {
-	background-color: #BDB76B;
-}
-
-tr:nth-child(even) {
-	background-color: #dddddd;
-}
-
-.radio-toolbar input[type="radio"] {
-	display: none;
-}
-
-.radio-toolbar label {
-	display: inline-block;
-	background-color: #ddd;
-	padding: 4px 11px;
-	font-family: Arial;
-	font-size: 16px;
-	cursor: pointer;
-}
-
-.radio-toolbar input[type="radio"]:checked+label {
-	background-color: #bbb;
-}
-</style>
 </head>
 <body onkeydown="return (event.keyCode != 116)">
 
 	<form action="ControllerServlet" method="get">
 		<input type="hidden" name="userName" value="${sessionScope.userName }" />
-		<input type="hidden" name="password" value="${sessionScope.password }" />
-		<input type="hidden" name="action" value="${sessionScope.action}" />
-		<input type="hidden" name="typeOfBook"
-			value="${sessionScope.typeOfBook }" /> <select id="language"
-			name="language" onchange="submit()">
+		<input type="hidden" name="previousCommand"
+			value="${sessionScope.action }" /> <input type="hidden"
+			name="action" value="languageChanged" /> <input type="hidden"
+			name="password" value="${sessionScope.password }" /> <input
+			type="hidden" name="typeOfBook" value="${sessionScope.typeOfBook }" />
+		<select id="language" name="language" onchange="submit()">
 			<option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
 			<option value="hi" ${language == 'hi' ? 'selected' : ''}>Hindi</option>
 			<option value="be" ${language == 'be' ? 'selected' : ''}>Belarusian</option>
@@ -78,24 +43,115 @@ tr:nth-child(even) {
 			<form name="logout" action="ControllerServlet" method="get">
 
 
-				<div align="right">
-					<fmt:message key="user.label.message" var="message" />
-					<div style="font-size: 100%">${message}<c:out
-							value="${userInfo.firstName}"></c:out>
 
+				<div align="right" style="margin-top: -10px;">
+					<fmt:message key="user.button.submit" var="buttonValue" />
+					<input type="submit" value="${buttonValue}">
 
-						<fmt:message key="user.button.submit" var="buttonValue" />
-						<input type="submit" value="${buttonValue}">
-
-
-
-
-
-					</div>
-					<br> <input type="hidden" name="action" value="Logout" />
 				</div>
+				<input type="hidden" name="action" value="Logout" />
+
 
 			</form>
+
+			<form name="logout" action="ControllerServlet" method="post">
+
+				<div align="center">
+					<fmt:message key="user.label.message" var="message" />
+					<h1 style="font-style: oblique;">${message}<c:out
+							value="${userInfo.firstName}"></c:out>
+						
+
+							<a
+								href="ControllerServlet?userId=${userInfo.userId}&action=editUserForm"
+								><fmt:message key="user.label.editMessage" var="editMessage" />
+					${editMessage}</a> 
+						
+					</h1>
+					
+				</div>
+			
+			</form>
+
+			<div class="input-group" id="boot-search-box">
+				<input type="text" class="form-control"
+					placeholder="Click on Arrow..." name="title" />
+				<div class="input-group-btn">
+					<div class="btn-group" role="group">
+						<div class="dropdown dropdown-lg">
+							<button type="button" class="btn btn-default dropdown-toggle"
+								data-toggle="dropdown" aria-expanded="false">
+								<span class="caret"></span>
+							</button>
+							<div class="dropdown-menu dropdown-menu-right" role="menu">
+								<form name="search" action="ControllerServlet" method="get"
+									class="form-horizontal" role="form">
+									<div class="form-group">
+										<label for="filter"><fmt:message
+												key="user.radio.narrowSearch" var="narrowSearch" />${narrowSearch}:</label>
+
+										<select name="item" class="form-control">
+											<option value="PB" selected><fmt:message
+													key="user.radio.pb" var="paperBook" /> ${paperBook}
+											</option>
+											<option value="EB"><fmt:message key="user.radio.eb"
+													var="electronicBook" />${electronicBook}</option>
+
+										</select>
+
+
+									</div>
+									<div class="form-group">
+										<label for="contain"><fmt:message
+												key="user.label.title" var="title" />${title}:</label> <input
+											class="form-control" type="text" name="title" />
+									</div>
+									<div class="form-group">
+										<label for="contain"><fmt:message
+												key="user.label.author" var="author" />${author}:</label> <input
+											class="form-control" type="text" name="author" />
+									</div>
+
+
+									<div class="form-group">
+										<label for="contain"><fmt:message
+												key="user.label.desc" var="desc" />${desc}:</label> <input
+											class="form-control" type="text" name="description" />
+									</div>
+
+
+
+
+
+									<div class="form-group">
+										<label for="password1" class="col-sm-3 control-label"><fmt:message
+												key="user.label.defaultPrice" var="defaultPrice" />${defaultPrice}:</label><br>
+										<br>
+										<div class="col-sm-3">
+											<input type="number" class="form-control" id="minPrice"
+												name="minPrice" placeholder="Min"> <br /> <br /> <input
+												type="number" class="form-control" id="maxPrice"
+												name="maxPrice" placeholder="Max">
+										</div>
+									</div>
+									<br>
+									<!-- <br /> <br /> <br /> <br /> -->
+									<button type="submit" class="btn btn-primary btn-block">
+										Search :: <span class="glyphicon glyphicon-search"
+											aria-hidden="true"></span>
+									</button>
+									<input type="hidden" name="action" value="search" /> <input
+										type="hidden" name="typeOfBook" value="SearchBook">
+								</form>
+							</div>
+						</div>
+						<button type="button" class="btn btn-success ">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+			</div>
 			<form name="getBook" action="ControllerServlet" method="get">
 				<input type="hidden" name="action" value="gettingBook">
 				<div style="background-color: #ECE5C6; text-align: center">
@@ -121,117 +177,120 @@ tr:nth-child(even) {
 					<input type="submit" value="${radioValue}">
 
 				</div>
-				
-				
+				<c:if test="${not empty bookInfo }">
+
 					<c:if test="${ requestScope.bookInfo!= null && isAll!=null}">
-				
-					<div align="center">
-						<TABLE>
 
-							<caption>
-								<h2>
-									<fmt:message key="user.header.msg" var="msg" />
-									${msg}
-								</h2>
-							</caption>
-							<tr>
-								<fmt:message key="user.table.id" var="idBook" />
-								<th>${idBook}</th>
-								<fmt:message key="user.table.title" var="titleBook" />
-								<th>${titleBook}</th>
-								<fmt:message key="user.table.desc" var="desc" />
-								<th>${desc}</th>
-								<fmt:message key="user.table.author" var="author" />
-								<th>${author}</th>
+						<div align="center">
+							<TABLE>
 
-							</tr>
+								<caption>
+									<h2>
+										<fmt:message key="user.header.msg" var="msg" />
+										${msg}
+									</h2>
+								</caption>
+								<tr>
+									<fmt:message key="user.table.id" var="idBook" />
+									<th>${idBook}</th>
+									<fmt:message key="user.table.title" var="titleBook" />
+									<th>${titleBook}</th>
+									<fmt:message key="user.table.desc" var="desc" />
+									<th>${desc}</th>
+									<fmt:message key="user.table.author" var="author" />
+									<th>${author}</th>
 
-							
-<c:forEach var="bookInfo" items="${bookInfo}">
-<c:forEach var="bookInfo" items="${bookInfo}">
-
-		<c:choose>
-									<c:when test="${ not empty bookInfo.title}">
-
-										<tr>
+								</tr>
 
 
-											<td><a
-												href="ControllerServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook"
-												class="ClickCell"><c:out value="${ bookInfo.bookId}" /></a></td>
-											<td><c:out value="${ bookInfo.title}" /></td>
-											<td><c:out value="${bookInfo.description}" /></td>
-											<td><c:out value="${bookInfo.author}" /></td>
-									</c:when>
+								<c:forEach var="bookInfo" items="${bookInfo}">
+									<c:forEach var="bookInfo" items="${bookInfo}">
 
-									<c:otherwise>
+										<c:choose>
+											<c:when test="${ not empty bookInfo.title}">
 
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-	</c:forEach>
-						</TABLE>
+												<tr>
 
-					</div>
+
+													<td><a
+														href="ControllerServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook"
+														class="ClickCell"><c:out value="${ bookInfo.bookId}" /></a></td>
+													<td><c:out value="${ bookInfo.title}" /></td>
+													<td><c:out value="${bookInfo.description}" /></td>
+													<td><c:out value="${bookInfo.author}" /></td>
+											</c:when>
+
+											<c:otherwise>
+
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</c:forEach>
+							</TABLE>
+
+						</div>
 					</c:if>
-					
+				</c:if>
+				<c:if test="${not empty bookInfo }">
 					<c:if test="${ requestScope.bookInfo!= null && isAll==null}">
 
 
 
 
 
-					<div align="center">
-						<TABLE>
+						<div align="center">
+							<TABLE>
 
-							<caption>
-								<h2>
-									<fmt:message key="user.header.msg" var="msg" />
-									${msg}
-								</h2>
-							</caption>
-							<tr>
-								<fmt:message key="user.table.id" var="idBook" />
-								<th>${idBook}</th>
-								<fmt:message key="user.table.title" var="titleBook" />
-								<th>${titleBook}</th>
-								<fmt:message key="user.table.desc" var="desc" />
-								<th>${desc}</th>
-								<fmt:message key="user.table.author" var="author" />
-								<th>${author}</th>
+								<caption>
+									<h2>
+										<fmt:message key="user.header.msg" var="msg" />
+										${msg}
+									</h2>
+								</caption>
+								<tr>
+									<fmt:message key="user.table.id" var="idBook" />
+									<th>${idBook}</th>
+									<fmt:message key="user.table.title" var="titleBook" />
+									<th>${titleBook}</th>
+									<fmt:message key="user.table.desc" var="desc" />
+									<th>${desc}</th>
+									<fmt:message key="user.table.author" var="author" />
+									<th>${author}</th>
 
-							</tr>
-
-							
-<c:forEach var="bookInfo" items="${bookInfo}">
-
-		<c:choose>
-									<c:when test="${ not empty bookInfo.title}">
-
-										<tr>
+								</tr>
 
 
-											<td><a
-												href="ControllerServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook"
-												class="ClickCell"><c:out value="${ bookInfo.bookId}" /></a></td>
-											<td><c:out value="${ bookInfo.title}" /></td>
-											<td><c:out value="${bookInfo.description}" /></td>
-											<td><c:out value="${bookInfo.author}" /></td>
-									</c:when>
+								<c:forEach var="bookInfo" items="${bookInfo}">
 
-									<c:otherwise>
+									<c:choose>
+										<c:when test="${ not empty bookInfo.title}">
 
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
+											<tr>
 
-						</TABLE>
 
-					</div>
+												<td><a
+													href="ControllerServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook"
+													class="ClickCell"><c:out value="${ bookInfo.bookId}" /></a></td>
+												<td><c:out value="${ bookInfo.title}" /></td>
+												<td><c:out value="${bookInfo.description}" /></td>
+												<td><c:out value="${bookInfo.author}" /></td>
+										</c:when>
 
+										<c:otherwise>
+
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+
+							</TABLE>
+
+						</div>
+
+					</c:if>
 				</c:if>
-					 
+
 			</form>
+			</div>
 
 		</c:when>
 		<c:otherwise>
@@ -240,5 +299,17 @@ tr:nth-child(even) {
 	</c:choose>
 
 
+	<c:if test="${ not empty  emptySearch}">
+		<div align="center">
+			<div class="alert alert-danger"
+				style="margin-top: 500px; width: 474px" align="center">
+				<strong> <fmt:message key="login.error.searchEmpty"
+						var="searchEmpty" /> ${searchEmpty}
+				</strong>
+			</div>
+
+		</div>
+
+	</c:if>
 </body>
 </html>

@@ -15,6 +15,9 @@ public class User implements Serializable {
 	private String userRole;
 	private String firstName;
 	private String lastName;
+	private String streetAddress;
+	private String localityAddress;
+	private String email;
 
 	public User() {
 
@@ -86,6 +89,30 @@ public class User implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getStreetAddress() {
+		return streetAddress;
+	}
+
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
+	}
+
+	public String getLocalityAddress() {
+		return localityAddress;
+	}
+
+	public void setLocalityAddress(String localityAddress) {
+		this.localityAddress = localityAddress;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override

@@ -1,0 +1,171 @@
+@import url(https://fonts.googleapis.com/css?family=Tenor+Sans);
+html {
+  background-color: #5D92BA;
+  font-family: "Tenor Sans", sans-serif;
+}
+
+.container {
+  width: 500px;
+  height: 400px;
+  margin: 0 auto;
+}
+
+.login {
+  margin-top: 50px;
+  width: 450px;
+}
+
+.login-heading {
+  font: 1.8em/48px "Tenor Sans", sans-serif;
+  color: white;
+}
+
+.input-txt {
+  width: 100%;
+  padding: 20px 10px;
+  background: #5D92BA;
+  border: none;
+  font-size: 1em;
+  color: white;
+  border-bottom: 1px dotted rgba(250, 250, 250, 0.4);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-transition: background-color 0.5s ease-in-out;
+  -o-transition: background-color 0.5s ease-in-out;
+  -webkit-transition: background-color 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out;
+}
+.input-txt:-moz-placeholder {
+  color: #81aac9;
+}
+.input-txt:-ms-input-placeholder {
+  color: #81aac9;
+}
+.input-txt::-webkit-input-placeholder {
+  color: #81aac9;
+}
+.input-txt:focus {
+  background-color: #4478a0;
+}
+
+.login-footer {
+  margin: 10px 0;
+  overlow: hidden;
+  float: left;
+  width: 100%;
+}
+
+.btn {
+  padding: 15px 30px;
+  border: none;
+  background: white;
+  color: #5D92BA;
+}
+
+.btn--right {
+  float: right;
+}
+
+.icon {
+  display: inline-block;
+}
+
+.icon--min {
+  font-size: .9em;
+}
+
+.lnk {
+  font-size: .8em;
+  line-height: 3em;
+  color: white;
+  text-decoration: none;
+}
+body
+{
+	background-color : #252B34
+}
+
+html
+{
+	background-color : #252B34
+}
+
+nav ul, nav ol{margin:0; padding:0; list-style:none;}
+
+#mainav, #breadcrumb, .sidebar nav{line-height:normal;}
+#mainav .drop::after, #mainav li li .drop::after, #breadcrumb li a::after, .sidebar nav a::after{position:absolute; font-family:"FontAwesome"; font-size:10px; line-height:10px;}
+
+/* Top Navigation */
+#mainav{}
+#mainav ul{}
+#mainav ul ul{z-index:9999; position:absolute; width:160px; text-align:left;}
+#mainav ul ul ul{left:160px; top:0;}
+#mainav li{display:block; position:relative; float:left; margin:0; padding:0; text-transform:uppercase;}
+#mainav li:last-child{margin-right:0;}
+#mainav li li{width:100%; margin:0; text-transform:none;}
+#mainav ul.clear{border:solid; border-width:0 0 0 1px;}
+#mainav li a{display:block; padding:20px; border:solid; border-width:0 1px 1px 0; border-collapse:collapse;}
+#mainav li li a{border-width:0 0 1px 0;}
+#mainav li li:first-child a, #mainav li li:last-child a{border-width:0 0 1px 0;}
+#mainav .drop{padding-left:25px;}
+#mainav li li a, #mainav li li .drop{display:block; margin:0; padding:10px 15px;}
+#mainav .drop:after, #mainav li li .drop:after{content:"\f0d7";}
+#mainav .drop:after{top:25px; left:15px;}
+#mainav li li .drop:after{top:15px; left:5px;}
+#mainav ul ul{visibility:hidden; opacity:0;}
+#mainav ul li:hover > ul{visibility:visible; opacity:1;}
+
+#mainav form{display:none; margin:0; padding:20px 0;}
+#mainav form select, #mainav form select option{display:block; cursor:pointer; outline:none;}
+#mainav form select{width:100%; padding:5px; border:1px solid;}
+#mainav form select option{margin:5px; padding:0; border:none;}
+#mainav ul.clear{border-color:#252B34;}
+#mainav li a{color:inherit; background-color:inherit; border-color:#252B34;}
+#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#82B440; background-color:inherit;}
+#mainav li li a, #mainav .active li a{color:#FFFFFF; background-color:rgba(0,0,0,.6); border-color:rgba(0,0,0,.6);}
+#mainav li li:hover > a, #mainav .active .active > a{color:#FFFFFF; background-color:#82B440;}
+#mainav form select{color:#FFFFFF; background-color:#394251; border-color:#888888;}
+
+.dropdown.dropdown-lg .dropdown-menu {
+    margin-top: -1px;
+    padding: 6px 20px;
+}
+.input-group-btnSearch .btnSearch-group {
+    display: flex !important;
+}
+/* .btnSearch-group .btn {
+    border-radius: 0;
+    margin-left: -1px;
+}
+.btnSearch-group .btnSearch:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.btnSearch-group .form-horizontal .btnSearch[type="submit"] {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+} */
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form-group .form-control:last-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 500px;
+        margin: 0 auto;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 500px;
+    }
+
+
+

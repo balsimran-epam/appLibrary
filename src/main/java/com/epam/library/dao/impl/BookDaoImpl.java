@@ -16,18 +16,22 @@ import com.epam.library.dao.DBManager;
 import com.epam.library.dao.builder.AddBookParser;
 import com.epam.library.dao.builder.BookParser;
 import com.epam.library.dao.builder.EditBookParser;
+import com.epam.library.dao.builder.SearchBookParser;
 import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.builder.factory.AddBookParserBuilder;
 import com.epam.library.dao.builder.factory.BookParserBuilder;
 import com.epam.library.dao.builder.factory.EditBookParserBuilder;
+import com.epam.library.dao.builder.factory.SearchBookParserBuilder;
 import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.domain.AddBookDTO;
 import com.epam.library.domain.Book;
 import com.epam.library.domain.Request;
+import com.epam.library.domain.SearchBookDTO;
 
 public class BookDaoImpl implements BookDAO {
 	private static Logger logger = Logger.getLogger(BookDaoImpl.class);
+	private static final String DEFAULT_LANGUAGE = "en";
 
 	@Override
 	public List<List<Book>> findBookByCategory(Request request) throws DAOException {
@@ -74,7 +78,6 @@ public class BookDaoImpl implements BookDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		BookParserBuilder queryObject = BookParserBuilder.getInstance();
-		System.out.println("type" + request.getTypeOfBook());
 		BookParser query = queryObject.getQuery(request.getTypeOfBook());
 		try {
 			connection = DBManager.getConnectionFromPool();
@@ -83,11 +86,9 @@ public class BookDaoImpl implements BookDAO {
 			ResultSet rs = query.returningResultStatement(request.getLanguage(), preparedStatement,
 					request.getBookId());
 			allProduct = query.findBook(request, rs, request.getBookId());
-			System.out.println("now" + allProduct);
-			if (allProduct.getTitle()==null) {
-				System.out.println("yes");
+			if (allProduct.getTitle() == null) {
 
-				rs = query.returningResultStatement("en", preparedStatement, request.getBookId());
+				rs = query.returningResultStatement(DEFAULT_LANGUAGE, preparedStatement, request.getBookId());
 				allProduct = query.findBook(request, rs, request.getBookId());
 
 			}
@@ -124,7 +125,6 @@ public class BookDaoImpl implements BookDAO {
 
 			connection.setAutoCommit(false);
 			AddBookParserBuilder queryObject = AddBookParserBuilder.getInstance();
-			System.out.println("type" + addBookDTO.getTypeOfBook());
 			AddBookParser query = queryObject.getQuery(addBookDTO.getTypeOfBook());
 			String sqlQuery = query.returningBookQuery();
 			CallableStatement stmt = connection.prepareCall(sqlQuery);
@@ -171,12 +171,11 @@ public class BookDaoImpl implements BookDAO {
 
 			connection.setAutoCommit(false);
 			EditBookParserBuilder queryObject = EditBookParserBuilder.getInstance();
-			System.out.println("type" + addBookDTO.getTypeOfBook());
+
 			EditBookParser query = queryObject.getQuery(addBookDTO.getTypeOfBook());
 			String sqlQuery = query.returningBookQuery();
 			CallableStatement stmt = connection.prepareCall(sqlQuery);
 			isInserted = query.returningResultStatement(addBookDTO, stmt);
-			System.out.println(isInserted);
 
 			connection.commit();
 		} catch (SQLException | DBManagerException | BuilderException se) {
@@ -206,5 +205,41 @@ public class BookDaoImpl implements BookDAO {
 
 		}
 		return (isInserted != 0);
+	}
+
+	@Override
+	public List<Book> searchBook(String language, SearchBookDTO searchedBook) throws DAOException {
+		List<Book> allProduct = new ArrayList<>();
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		SearchBookParserBuilder queryObject = SearchBookParserBuilder.getInstance();
+		SearchBookParser query = queryObject.getQuery(searchedBook.getTypeOfBook());
+
+		try {
+			connection = DBManager.getConnectionFromPool();
+			String sqlquery = query.returningQuery();
+			preparedStatement = connection.prepareStatement(sqlquery);
+			ResultSet rs = query.returningResultStatement(language, preparedStatement, searchedBook);
+			allProduct = (List<Book>) query.searchBook(searchedBook, rs);
+		} catch (BuilderException | DBManagerException | SQLException be) {
+			throw new DAOException(be);
+		}
+
+		finally {
+			try {
+
+				DBManager.closeStatement(preparedStatement);
+			} catch (DBManagerException e) {
+
+			}
+			try {
+				DBManager.returnConnectionToPool(connection);
+
+			} catch (DBManagerException e) {
+
+			}
+		}
+		return allProduct;
 	}
 }

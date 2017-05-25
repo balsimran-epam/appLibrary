@@ -17,6 +17,7 @@ import com.epam.library.service.factory.ServiceFactory;
 public class UserSignUpCommandImpl implements Command {
 	private static Logger logger = Logger.getLogger(UserSignUpCommandImpl.class);
 	private static final String CHECK_HUMAN = "humancheck";
+	
 	private static final String NOT_MATCHED = "fail";
 	private static final String HUMAN = "human";
 	private static final String FIRST_NAME = "fName";
@@ -35,12 +36,11 @@ public class UserSignUpCommandImpl implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		RegisteredUser registeredUser = new RegisteredUser();
 		HttpSession session = request.getSession();
-		ParameterSetter.setLanguage(request, session);
+	
 		ParameterSetter.setTypeOfBook(request, session);
 		ParameterSetter.setIdOfSelectedBook(request, session);
 		ParameterSetter.setAction(request, session);
-		ParameterSetter.setAction(request, session);
-		System.out.println(request.getParameter(CHECK_HUMAN));
+	
 		boolean isUserInserted = false;
 		if (!(request.getParameter(PASSWORD)).equals(request.getParameter(RE_ENTERED_PASSWORD))) {
 			request.setAttribute(PASSWORD_MATCHED_MESSAGE, NOT_MATCHED);
@@ -61,20 +61,20 @@ public class UserSignUpCommandImpl implements Command {
 					try {
 						isUserInserted = service.saveUser(registeredUser);
 					} catch (ServiceException e) {
-						System.out.println("nooo");
+			
 						request.setAttribute(FormParamEnum.EXCEPTION_CAUGHT.getParam(), e.getMessage());
 						logger.log(Level.ERROR, "Exception", e);
 
 					}
+				}else {
+				
+					request.setAttribute(CHECK_HUMAN, NOT_MATCHED);
 				}
-			} else {
-
-				request.setAttribute(CHECK_HUMAN, NOT_MATCHED);
-			}
+			} 
 		}
 		request.setAttribute(INSERTED_RECORD_MESSAGE, isUserInserted);
 
-		return "home.jsp";
+		return TargetPage.HOME_PAGE.getParam();
 
 	}
 

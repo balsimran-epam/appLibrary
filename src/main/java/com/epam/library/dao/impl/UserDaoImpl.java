@@ -13,12 +13,22 @@ import com.epam.library.dao.DBManager;
 import com.epam.library.dao.UserDAO;
 import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.exception.DBManagerException;
+import com.epam.library.domain.EditUserDTO;
 import com.epam.library.domain.RegisteredUser;
+import com.epam.library.domain.User;
 
 public class UserDaoImpl implements UserDAO {
 	private static Logger logger = Logger.getLogger(UserDaoImpl.class);
 
 	private final static String IS_USERNAME_AVAILABLE = "select u_user_name from user where u_user_name=?";
+	private static final String SELECT_USER_SQL = "select * from user left join user_translator  on u_id = u_t_user where u_t_app_language=? and u_id=?";
+	private static final String USER_ID = "u_id";
+	private static final String FIRST_NAME = "u_t_first_name";
+	private static final String DEFAULT_LANGUAGE = "en";
+	private static final String LAST_NAME = "u_last_name";
+	private static final String STREET_ADD = "u_add1";
+	private static final String LOCALITY_ADD = "u_add2";
+	private static final String EMAIL = "u_email";
 
 	@Override
 	public boolean saveUserData(RegisteredUser registeredUser) throws DAOException {
@@ -32,16 +42,15 @@ public class UserDaoImpl implements UserDAO {
 			connection.setAutoCommit(false);
 			alreadyTaken = isUserNameAlreadyExists(connection, registeredUser);
 			if (alreadyTaken == true) {
-				System.out.println("not available");
 				throw new DAOException("UserName already Taken");
 			}
 			if (alreadyTaken == false) {
 				isInserted = insertUser(connection, registeredUser);
-			
+
 			}
 
 			connection.commit();
-		} catch (DBManagerException |SQLException se) {
+		} catch (DBManagerException | SQLException se) {
 
 			try {
 				connection.rollback();
@@ -72,7 +81,6 @@ public class UserDaoImpl implements UserDAO {
 	}
 
 	private boolean isUserNameAlreadyExists(Connection connection, RegisteredUser registeredUser) throws DAOException {
-		System.out.println("in fn");
 		PreparedStatement preparedStatement = null;
 		int isTaken = 0;
 		try {
@@ -104,7 +112,6 @@ public class UserDaoImpl implements UserDAO {
 		try {
 
 			CallableStatement stmt = connection.prepareCall("{call insertUser(?, ?,?,?,?, ?,?)}");
-			System.out.println("in insertion" + registeredUser.getEmail());
 			stmt.setString(1, registeredUser.getUserName());
 			stmt.setString(2, registeredUser.getPassword());
 			stmt.setString(3, registeredUser.getFirstName());
@@ -114,10 +121,112 @@ public class UserDaoImpl implements UserDAO {
 			stmt.setString(6, registeredUser.getStreetAddress());
 			stmt.setString(7, registeredUser.getLocalityAddress());
 			isInserted = stmt.executeUpdate();
-			System.out.println("is inserted" + isInserted);
 		} catch (SQLException ex) {
 			throw new DAOException("Database Connectivity Exception ", ex);
 
+		}
+		return (isInserted != 0);
+	}
+
+	@Override
+	public User getUserInfo(int id, String language) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		User retrievedUser = new User();
+		System.out.println("ooo" + id);
+		try {
+
+			connection = DBManager.getConnectionFromPool();
+			retrievedUser = getData(connection, id, language);
+
+		} catch (DBManagerException ex) {
+			throw new DAOException("Database Connectivity Exception ", ex);
+		}
+
+		finally {
+
+			try {
+
+				DBManager.closeStatement(preparedStatement);
+			} catch (DBManagerException e) {
+				logger.log(Level.ERROR, "Closing Statement Exception", e);
+			}
+			try {
+				DBManager.returnConnectionToPool(connection);
+
+			} catch (DBManagerException e) {
+				logger.log(Level.ERROR, "Closing Connection Exception", e);
+			}
+		}
+
+		return retrievedUser;
+	}
+
+	private User getData(Connection connection, int id, String language) throws DAOException {
+		PreparedStatement preparedStatement = null;
+		User retrievedUser = new User();
+		ResultSet rs = null;
+
+		try {
+			preparedStatement = connection.prepareStatement(SELECT_USER_SQL);
+
+			preparedStatement.setString(1, language);
+			preparedStatement.setInt(2, id);
+
+			rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+
+				retrievedUser.setUserId(rs.getInt(USER_ID));
+				retrievedUser.setFirstName(rs.getString(FIRST_NAME));
+				retrievedUser.setLastName(rs.getString(LAST_NAME));
+				retrievedUser.setEmail(rs.getString(EMAIL));
+				retrievedUser.setStreetAddress(rs.getString(STREET_ADD));
+				retrievedUser.setLocalityAddress(rs.getString(LOCALITY_ADD));
+
+			}
+			System.out.println(retrievedUser.getFirstName());
+		} catch (SQLException ex) {
+			throw new DAOException("Database Connectivity Exception ", ex);
+		}
+
+		if (retrievedUser.getUserId() == 0) {
+			language = DEFAULT_LANGUAGE;
+			retrievedUser = getData(connection, id, language);
+			return retrievedUser;
+		}
+		return retrievedUser;
+	}
+
+	@Override
+	public boolean editUser(EditUserDTO user, String language) throws DAOException {
+		Connection connection = null;
+
+		int isInserted = 0;
+		boolean alreadyTaken = false;
+		try {
+			connection = DBManager.getConnectionFromPool();
+			CallableStatement stmt = connection.prepareCall("{call updateUser(?, ?,?,?,?, ?,?)}");
+			stmt.setString(1, user.getFirstName());
+			stmt.setString(2, user.getLastName());
+			stmt.setString(3, user.getEmail());
+
+			stmt.setString(4, user.getStreetAddress());
+			stmt.setString(5, user.getLocalityAddress());
+			stmt.setInt(6, user.getUserId());
+			stmt.setString(7, language);
+			isInserted = stmt.executeUpdate();
+		} catch (SQLException | DBManagerException ex) {
+			throw new DAOException("Database Connectivity Exception ", ex);
+
+		} finally {
+
+			try {
+				DBManager.returnConnectionToPool(connection);
+
+			} catch (DBManagerException e) {
+				logger.log(Level.ERROR, "Closing Connection Exception", e);
+			}
 		}
 		return (isInserted != 0);
 	}

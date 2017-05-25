@@ -13,10 +13,12 @@ import com.epam.library.dao.builder.factory.BookParserBuilder;
 import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.domain.Book;
 import com.epam.library.domain.Request;
-import com.epam.library.domain.User;
 
 public class SelectedBookParser implements BookParser {
 	private final static String COUNT = "  SELECT  * from book b left join book_type on b_t_id=b_book_type  where b_id=?";
+	private static final String PAPER_BOOK="PB";
+	private static final String ELECTRONIC_BOOK="EB";
+	private static final String BOOK_TYPE="b_t_name";
 	@Override
 	public String returningQuery() {
 		
@@ -71,31 +73,28 @@ System.out.println("in fb");
 	
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		User retrievedUser = new User();
-		int count = 0;
+		
 		try {
 			try {
 				connection = DBManager.getConnectionFromPool();
 			} catch (DBManagerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new BuilderException("Database Connectivity Exception ", e);
 			}
 	
 	
 			preparedStatement = connection.prepareStatement(COUNT);
-			System.out.println("id"+bookId);
 			preparedStatement.setString(1, bookId);
 			ResultSet rsCount = preparedStatement.executeQuery();
 			while (rsCount.next()) {
 
-				if (rsCount.getString("b_t_name").equals("EB")) {
+				if (rsCount.getString(BOOK_TYPE).equals(ELECTRONIC_BOOK)) {
 				
-					query = queryObject.getQuery("EB");
+					query = queryObject.getQuery(ELECTRONIC_BOOK);
 
 				} else
 				{
 				
-					query = queryObject.getQuery("PB");
+					query = queryObject.getQuery(PAPER_BOOK);
 				}
 
 				listOfBooks = query.findBook(request, rs,bookId);

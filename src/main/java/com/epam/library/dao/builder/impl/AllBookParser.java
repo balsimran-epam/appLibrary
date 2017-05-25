@@ -14,7 +14,6 @@ import com.epam.library.dao.builder.factory.BookParserBuilder;
 import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.domain.Book;
 import com.epam.library.domain.Request;
-import com.epam.library.domain.User;
 
 public class AllBookParser implements BookParser {
 	private final static String COUNT = "  SELECT  * from book b left join book_type on b_t_id=b_book_type";
@@ -59,8 +58,7 @@ public class AllBookParser implements BookParser {
 		List<List<Book>> allBooks = new ArrayList<>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		User retrievedUser = new User();
-		int count = 0;
+
 		try {
 			connection = DBManager.getConnectionFromPool();
 

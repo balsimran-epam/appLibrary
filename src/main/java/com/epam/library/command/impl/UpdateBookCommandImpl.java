@@ -31,8 +31,7 @@ public class UpdateBookCommandImpl implements Command {
 		AddBookDTO addBookDTO = new AddBookDTO();
 
 		HttpSession session = request.getSession();
-		ParameterSetter.setLanguage(request, session);
-		ParameterSetter.setLanguage(request, session);
+	
 		ParameterSetter.storingTypeOFBookToBeEdited(request, session);
 		ParameterSetter.setIdOfSelectedBook(request, session);
 		ParameterSetter.setAction(request, session);

@@ -20,13 +20,15 @@ import com.epam.library.service.factory.ServiceFactory;
 
 public class UserBookByCategoryCommandImpl implements Command {
 	private static Logger logger = Logger.getLogger(UserBookByCategoryCommandImpl.class);
+	private static final String IS_ALL_SELECTED = "isAll";
+	private static final String ALL_SELECTED = "ALL";
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession session = request.getSession();
 		ParameterSetter.setAction(request, session);
-		ParameterSetter.setLanguage(request, session);
+	
 		ParameterSetter.setTypeOfBook(request, session);
 		ParameterSetter.setIRole(request, session);
 
@@ -35,9 +37,9 @@ public class UserBookByCategoryCommandImpl implements Command {
 
 		userRequested.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
 		userRequested.setTypeOfBook((String) session.getAttribute(FormParamEnum.TYPE_OF_BOOK.getParam()));
-		if (userRequested.getTypeOfBook().equals("ALL")) {
-			request.setAttribute("isAll", "true");
-			session.getAttribute("isAll");
+		if (userRequested.getTypeOfBook().equals(ALL_SELECTED)) {
+			request.setAttribute(IS_ALL_SELECTED, "true");
+			
 		}
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		BookService service = serviceFactory.getBookService();

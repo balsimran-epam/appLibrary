@@ -8,6 +8,7 @@ import com.epam.library.dao.factory.DAOFactory;
 import com.epam.library.domain.AddBookDTO;
 import com.epam.library.domain.Book;
 import com.epam.library.domain.Request;
+import com.epam.library.domain.SearchBookDTO;
 import com.epam.library.service.BookService;
 import com.epam.library.service.exception.ServiceException;
 import com.epam.library.service.exception.ValidatorException;
@@ -37,7 +38,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public Book getBook(Request request) throws ServiceException {
-		System.out.println("in service impl");
+		
 		try {
 			Validator.validatingSelectedBookType(request);
 		} catch (ValidatorException ve) {
@@ -79,6 +80,26 @@ public class BookServiceImpl implements BookService {
 			throw new ServiceException(e);
 		}
 		return (isBookAdded) ? true : false;
+	}
+
+	@Override
+	public List<Book> searchBook(String language,SearchBookDTO searchedBook) throws ServiceException {
+		try {
+			Validator.validatingSelectedBookType(searchedBook);
+		} catch (ValidatorException ve) {
+			throw new ServiceException(ve);
+		}
+	List<Book> electronicBookList=null;
+		
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		BookDAO bookDao = daoFactory.getBookDao();
+		try {
+			electronicBookList = bookDao.searchBook(language,searchedBook);
+		} catch (DAOException se) {
+			throw new ServiceException(se);
+		}
+		
+		return electronicBookList;
 	}
 	}
 

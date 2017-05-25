@@ -11,7 +11,7 @@ public class WelcomeToAddFormCommand implements Command {
 	private static final String BOOK_TO_BE_ADDED = "bookTypeToBeAdded";
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+	public String execute(HttpServletRequest request, HttpServletResponse response)  {
 
 		HttpSession session = request.getSession();
 		String typeOfBook = null;

@@ -13,25 +13,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.impl.WelcomeToAddFormCommand;
-import com.epam.library.command.impl.WelcomeToAdminPageCommand;
-import com.epam.library.command.impl.WelcomeToEditCommad;
 import com.epam.library.command.impl.AddBookCommandImpl;
 import com.epam.library.command.impl.BookTypeCommand;
 import com.epam.library.command.impl.EditBookCommandImpl;
+import com.epam.library.command.impl.LibraryLanguageCommand;
+import com.epam.library.command.impl.SearchBookCommandImpl;
 import com.epam.library.command.impl.UpdateBookCommandImpl;
+import com.epam.library.command.impl.UpdateUserCommandImpl;
 import com.epam.library.command.impl.UserBookByCategoryCommandImpl;
 import com.epam.library.command.impl.UserLoginCommandImpl;
 import com.epam.library.command.impl.UserLogoutCommandImpl;
 import com.epam.library.command.impl.UserSelectedBookCommandImpl;
 import com.epam.library.command.impl.UserSignUpCommandImpl;
+import com.epam.library.command.impl.WelcomeToAddFormCommand;
+import com.epam.library.command.impl.WelcomeToAdminPageCommand;
+import com.epam.library.command.impl.WelcomeToEditCommad;
+import com.epam.library.command.impl.WelcomeToEditProfileCommand;
 import com.epam.library.command.impl.WelcomeToUserCommand;
-import com.epam.library.service.exception.ServiceException;
 
 /**
  * Servlet implementation class LoginServlet
  */
 public class ControllerServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
 	private Map<String, Command> actionMap = new HashMap<String, Command>();
 	private static final String LOGIN = "Login";
@@ -49,7 +53,14 @@ public class ControllerServlet extends HttpServlet {
 	private static final String EDIT_BOOK = "editBook";
 	private static final String UPDATE_BOOK = "updateBook";
 	private static final String ADMIN_ADDED_BOOK = "WelcomeToAdd";
+	private static final String COMMAND_LANGUAGE_STORE = "languageChanged";
+	private static final String SEARCH_BOOK = "search";
+	private static final String GET_EDIT_PROFILE_VIEW = "editUserForm";
+	private static final String UPDATE_USER = "updateUserInfo";
 	
+	
+	
+
 	/**
 	 * Default constructor.
 	 */
@@ -74,6 +85,11 @@ public class ControllerServlet extends HttpServlet {
 		actionMap.put(SHOW_EDIT_FORM, new WelcomeToEditCommad());
 		actionMap.put(UPDATE_BOOK, new UpdateBookCommandImpl());
 		actionMap.put(ADMIN_ADDED_BOOK, new WelcomeToAdminPageCommand());
+		actionMap.put(COMMAND_LANGUAGE_STORE, new LibraryLanguageCommand());
+		actionMap.put(SEARCH_BOOK, new SearchBookCommandImpl());
+		actionMap.put(GET_EDIT_PROFILE_VIEW, new WelcomeToEditProfileCommand());
+		actionMap.put(UPDATE_USER, new UpdateUserCommandImpl());
+	
 	}
 
 	/**
@@ -97,21 +113,15 @@ public class ControllerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		
-		
+
+
 		String dispatcher = null;
 		String actionKey = request.getParameter(ACTION);
-		
-
-		try {
-			dispatcher = executingCommand(actionKey, request, response);
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println("sction"+actionKey);
+		dispatcher = executingCommand(actionKey, request, response);
 
 		if (dispatcher != null) {
-			System.out.println(dispatcher);
+			
 			RequestDispatcher rd = request.getRequestDispatcher(dispatcher);
 			rd.forward(request, response);
 		}
@@ -130,12 +140,7 @@ public class ControllerServlet extends HttpServlet {
 		String dispatcher = null;
 		String actionKey = request.getParameter(ACTION);
 
-		try {
-			dispatcher = executingCommand(actionKey, request, response);
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		dispatcher = executingCommand(actionKey, request, response);
 
 		if (dispatcher != null) {
 			if (request.getAttribute(ERROR_FLAG) == "true") {
@@ -148,7 +153,7 @@ public class ControllerServlet extends HttpServlet {
 		}
 	}
 
-	protected String executingCommand(String urlToExecute, HttpServletRequest request, HttpServletResponse response) throws ServiceException {
+	protected String executingCommand(String urlToExecute, HttpServletRequest request, HttpServletResponse response) {
 		String actionPage = null;
 		Command command;
 		command = actionMap.get(urlToExecute);

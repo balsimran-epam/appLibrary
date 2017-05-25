@@ -17,6 +17,7 @@ private final static BookParserBuilder objectFactory = new BookParserBuilder();
 	private static final String ELECTRONIC_BOOK = "EB";
 	private static final String SELECTED_BOOK = "selected";
 	private static final String ALL_BOOKS = "ALL";
+	private static final String SEARCH_BOOK = "SearchBook";
 	Map<String, BookParser> parser = new HashMap<>();
 
 	private BookParserBuilder() {
@@ -24,6 +25,7 @@ private final static BookParserBuilder objectFactory = new BookParserBuilder();
 		parser.put(ELECTRONIC_BOOK, new ElectronicBookParser());
 		parser.put(SELECTED_BOOK, new SelectedBookParser());
 		parser.put(ALL_BOOKS, new AllBookParser());
+
 		
 	}
 

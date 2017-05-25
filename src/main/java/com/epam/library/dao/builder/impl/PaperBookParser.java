@@ -25,7 +25,6 @@ public class PaperBookParser implements BookParser{
 		ResultSet rs=null;
 		try {
 
-	System.out.println("ppp rs"+language);
 
 			preparedStatement.setString(1, language);
 			preparedStatement.setString(2, language);
@@ -57,7 +56,6 @@ public class PaperBookParser implements BookParser{
 		while (rs.next()) {
 			
 			PaperBook retrievedBook=new PaperBook();
-			retrievedBook.setHoldType("PB");
 			retrievedBook.setBookId(rs.getInt(BookParamEnum.BOOK_ID.getParam()));
 			retrievedBook.setTitle(rs.getString(BookParamEnum.BOOK_TITLE.getParam()));
 			retrievedBook.setAuthor(rs.getString(BookParamEnum.BOOK_AUTHOR.getParam()));
@@ -78,7 +76,6 @@ public class PaperBookParser implements BookParser{
 	@Override
 	public Book findBook(Request request, ResultSet rs,String bookId) throws BuilderException {
 		PaperBook retrievedBook=new PaperBook();
-		System.out.println("in pb");
 		try
 		{
 		if (rs == null) {
@@ -88,7 +85,6 @@ public class PaperBookParser implements BookParser{
 		}
 
 		while (rs.next()) {
-			retrievedBook.setHoldType("PB");
 			retrievedBook.setBookId(rs.getInt(BookParamEnum.BOOK_ID.getParam()));
 			retrievedBook.setTitle(rs.getString(BookParamEnum.BOOK_TITLE.getParam()));
 			retrievedBook.setAuthor(rs.getString(BookParamEnum.BOOK_AUTHOR.getParam()));

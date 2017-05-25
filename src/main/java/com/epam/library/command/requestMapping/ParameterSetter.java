@@ -8,7 +8,7 @@ public class ParameterSetter {
 	private static final String PASSWORD = "password";
 	private static final String LANGUAGE = "language";
 	private static final String TYPE_OF_BOOK = "typeOfBook";
-
+	private static final String USER_ID = "userId";
 	public static void loginMappingRequest(HttpServletRequest request, HttpSession session) {
 		if ((request.getParameter(USER_NAME) != null) || (request.getAttribute(PASSWORD) != null)) {
 
@@ -17,15 +17,7 @@ public class ParameterSetter {
 		}
 	}
 
-	public static void setLanguage(HttpServletRequest request, HttpSession session) {
-
-		String typeBook = (String) request.getParameter(LANGUAGE);
-		if (typeBook != null && !typeBook.isEmpty()) {
-
-			session.setAttribute(LANGUAGE, request.getParameter(LANGUAGE));
-		}
-	}
-
+	
 	public static void setTypeOfBook(HttpServletRequest request, HttpSession session) {
 		
 
@@ -46,6 +38,20 @@ public class ParameterSetter {
 		}
 	}
 
+public static void setUserId(HttpServletRequest request, HttpSession session) {
+		
+
+		String userId = (String) request.getParameter(USER_ID);
+		if (userId != null && !userId.isEmpty()) {
+			
+			session.setAttribute(USER_ID, request.getParameter(USER_ID));
+			request.setAttribute(USER_ID, request.getParameter(USER_ID));
+		}
+	}
+	
+	
+	
+	
 public static void setAction(HttpServletRequest request, HttpSession session) {
 		
 

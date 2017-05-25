@@ -22,6 +22,7 @@ public class UserLoginCommandImpl implements Command {
 	private static final String PASSWORD = "password";
 	private static final String FLAG = "flag";
 	private static final String USER_WELCOME_REQUEST = "ControllerServlet?action=Welcome&userName=";
+	private static final String FLAG_TRUE = "true";
 
 	@Override
 
@@ -32,7 +33,7 @@ public class UserLoginCommandImpl implements Command {
 		Request userRequest = new Request();
 		User retrievedUserInfo = new User();
 		ParameterSetter.loginMappingRequest(request, session);
-		ParameterSetter.setLanguage(request, session);
+	
 
 		ParameterSetter.setAction(request, session);
 		String actionName = request.getParameter(FormParamEnum.ACTION.getParam());
@@ -54,14 +55,14 @@ public class UserLoginCommandImpl implements Command {
 			session.setAttribute(FormParamEnum.USER_INFO.getParam(), retrievedUserInfo);
 
 			if (retrievedUserInfo.getUserRole().equals(FormParamEnum.ADMIN.getParam())) {
-				System.out.println("user");
-				session.setAttribute(FormParamEnum.ADMIN_ROLE.getParam(), "true");
+			
+				session.setAttribute(FormParamEnum.ADMIN_ROLE.getParam(), FLAG_TRUE);
 
 				return USER_WELCOME_REQUEST + toPassUserName;
 
 			} else if (retrievedUserInfo.getUserRole().equals(FormParamEnum.USER.getParam())) {
 
-				session.setAttribute(FormParamEnum.USER_ROLE.getParam(), "true");
+				session.setAttribute(FormParamEnum.USER_ROLE.getParam(), FLAG_TRUE);
 				return USER_WELCOME_REQUEST + toPassUserName;
 			}
 		} else {
