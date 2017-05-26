@@ -10,7 +10,6 @@ import com.epam.library.dao.builder.SearchBookParser;
 import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.dao.impl.BookParamEnum;
-import com.epam.library.domain.ElectronicBook;
 import com.epam.library.domain.PaperBook;
 import com.epam.library.domain.SearchBookDTO;
 

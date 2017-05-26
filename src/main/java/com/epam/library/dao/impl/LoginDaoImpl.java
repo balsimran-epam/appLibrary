@@ -12,7 +12,7 @@ import com.epam.library.dao.DBManager;
 import com.epam.library.dao.LoginDAO;
 import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.exception.DBManagerException;
-import com.epam.library.domain.Request;
+import com.epam.library.domain.DisplayBookDTO;
 import com.epam.library.domain.User;
 
 public class LoginDaoImpl implements LoginDAO {
@@ -24,8 +24,9 @@ public class LoginDaoImpl implements LoginDAO {
 	private static final String USER_ROLE = "u_r_role_name";
 	private static final String NAME = "u_t_first_name";
 	private static final String DEFAULT_LANGUAGE = "en";
+	private int COUNT = 0;
 
-	public User getUserData(Request user) throws DAOException {
+	public User getUserData(DisplayBookDTO user) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		User retrievedUser = new User();
@@ -59,9 +60,9 @@ public class LoginDaoImpl implements LoginDAO {
 
 	}
 
-	public User authenticateUser(Connection connection, Request user) throws DAOException {
+	public User authenticateUser(Connection connection, DisplayBookDTO user) throws DAOException {
 		PreparedStatement preparedStatement = null;
-		User retrievedUser = new User();
+		User retrievedUser = null;
 		ResultSet rs = null;
 
 		try {
@@ -71,9 +72,8 @@ public class LoginDaoImpl implements LoginDAO {
 			preparedStatement.setString(2, user.getPassword());
 			preparedStatement.setString(3, user.getLanguage());
 			rs = preparedStatement.executeQuery();
-
 			while (rs.next()) {
-
+				retrievedUser = new User();
 				retrievedUser.setUserId(rs.getInt(USER_ID));
 				retrievedUser.setUserName(rs.getString(USER_NAME));
 				retrievedUser.setPassword(rs.getString(USER_PASSWORD));
@@ -84,11 +84,23 @@ public class LoginDaoImpl implements LoginDAO {
 		} catch (SQLException ex) {
 			throw new DAOException("Database Connectivity Exception ", ex);
 		}
+		if (retrievedUser == null && COUNT == 1) {
+			return null;
+		}
+		if (retrievedUser == null) {
+			COUNT++;
+			retrievedUser = checkUser(connection, user);
 
-		if (retrievedUser.getUserId() == 0) {
-			user.setLanguage(DEFAULT_LANGUAGE);
-			retrievedUser = authenticateUser(connection, user);
 		}
 		return retrievedUser;
+	}
+
+	public User checkUser(Connection connection, DisplayBookDTO user) throws DAOException {
+		User userReturned = new User();
+		user.setLanguage(DEFAULT_LANGUAGE);
+		userReturned = authenticateUser(connection, user);
+
+		return userReturned;
+
 	}
 }

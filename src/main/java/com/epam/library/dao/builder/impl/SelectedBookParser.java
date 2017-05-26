@@ -12,7 +12,7 @@ import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.builder.factory.BookParserBuilder;
 import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.domain.Book;
-import com.epam.library.domain.Request;
+import com.epam.library.domain.DisplayBookDTO;
 
 public class SelectedBookParser implements BookParser {
 	private final static String COUNT = "  SELECT  * from book b left join book_type on b_t_id=b_book_type  where b_id=?";
@@ -47,8 +47,9 @@ public class SelectedBookParser implements BookParser {
 		return rs;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<?> findBookByCategory(Request request, ResultSet rs) throws BuilderException {
+	public List<?> findBookByCategory(DisplayBookDTO request, ResultSet rs) throws BuilderException {
 		BookParserBuilder queryObject = BookParserBuilder.getInstance();
 		BookParser query = queryObject.getQuery(request.getType());
 		
@@ -64,7 +65,7 @@ public class SelectedBookParser implements BookParser {
 	}
 
 	@Override
-	public Book findBook(Request request, ResultSet rs,String bookId) throws BuilderException {
+	public Book findBook(DisplayBookDTO request, ResultSet rs,String bookId) throws BuilderException {
 		BookParserBuilder queryObject = BookParserBuilder.getInstance();
 System.out.println("in fb");
 
@@ -102,9 +103,8 @@ System.out.println("in fb");
 				
 			
 
-		}} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		}} catch (SQLException e) {
+			throw new BuilderException("Can't retrieve book.",e);
 		}
 
 		catch (BuilderException e) {

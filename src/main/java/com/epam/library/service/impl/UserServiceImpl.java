@@ -1,6 +1,5 @@
 package com.epam.library.service.impl;
 
-import com.epam.library.dao.BookDAO;
 import com.epam.library.dao.UserDAO;
 import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.factory.DAOFactory;
@@ -61,6 +60,19 @@ public class UserServiceImpl implements UserService{
 			throw new ServiceException(e);
 		}
 		return (isUserUpdated) ? true : false;
+	}
+
+	@Override
+	public boolean translateUser(EditUserDTO user, String language) throws ServiceException {
+		boolean isUserTranslated=false;
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		UserDAO bookDao = daoFactory.getUserDao();
+		try {
+			isUserTranslated = bookDao.translateUser(user,language);
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+		return (isUserTranslated) ? true : false;
 	}
 
 }

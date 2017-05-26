@@ -12,14 +12,12 @@ public class WelcomeToEditCommad implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-		String typeOfBook = null;
 		HttpSession session = request.getSession();
 
 		String viewToForward = null;
 
 		if (session.getAttribute(TYPE_TO_BE_EDITED) != null) {
 
-			typeOfBook = (String) session.getAttribute(TYPE_TO_BE_EDITED);
 			viewToForward = TargetPage.EDIT_BOOK_PAGE.getParam();
 
 		}

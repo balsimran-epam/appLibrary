@@ -14,7 +14,7 @@ import com.epam.library.dao.exception.DBManagerException;
 
 public class DBManager {
 
-	private static final int DB_MAX_CONNECTIONS = 4;
+	private static final int DB_MAX_CONNECTIONS = 2;
 
 	private static BlockingQueue<Connection> availableConnections = new ArrayBlockingQueue<Connection>(
 			DB_MAX_CONNECTIONS);

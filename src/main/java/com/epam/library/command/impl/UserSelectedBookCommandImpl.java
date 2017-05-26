@@ -8,9 +8,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.Book;
-import com.epam.library.domain.Request;
+import com.epam.library.domain.DisplayBookDTO;
 import com.epam.library.service.BookService;
 import com.epam.library.service.exception.ServiceException;
 import com.epam.library.service.factory.ServiceFactory;
@@ -25,26 +24,43 @@ public class UserSelectedBookCommandImpl implements Command {
 	private static final String IS_ALL_SELECTED = "isAll";
 	private static final String ALL_SELECTED = "ALL";
 	private static final String FLAG_TRUE = "true";
+	private static final String ACTION = "action";
+
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 
 		HttpSession session = request.getSession();
+		String actionName = (String) request.getParameter(ACTION);
+		if (actionName != null && !actionName.isEmpty()) {
 
-		ParameterSetter.setTypeOfBook(request, session);
-		ParameterSetter.setIdOfSelectedBook(request, session);
-		ParameterSetter.setAction(request, session);
+			session.setAttribute(ACTION, request.getParameter(ACTION));
+		}
+
+		String bookId = (String) request.getParameter(BOOK_ID);
+		if (bookId != null && !bookId.isEmpty()) {
+
+			session.setAttribute(BOOK_ID, request.getParameter(BOOK_ID));
+		
+		}
+		String typeBook = (String) request.getParameter(FormParamEnum.TYPE_OF_BOOK.getParam());
+		if (typeBook != null && !typeBook.isEmpty()) {
+
+			session.setAttribute(FormParamEnum.TYPE_OF_BOOK.getParam(),
+					request.getParameter(FormParamEnum.TYPE_OF_BOOK.getParam()));
+		}
+
 		Book electronicBookList = new Book();
-		Request userRequested = new Request();
+		DisplayBookDTO userRequested = new DisplayBookDTO();
 		userRequested.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
 		userRequested.setTypeOfBook(ALL_BOOK);
 		userRequested.setType((String) (String) session.getAttribute(FormParamEnum.TYPE_OF_BOOK.getParam()));
 		if (userRequested.getType().equals(ALL_SELECTED)) {
 
 			request.setAttribute(IS_ALL_SELECTED, FLAG_TRUE);
-			
+
 		}
 
-		userRequested.setBookId((String) request.getAttribute(BOOK_ID));
+		userRequested.setBookId((String) session.getAttribute(BOOK_ID));
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		BookService service = serviceFactory.getBookService();
 		try {

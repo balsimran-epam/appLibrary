@@ -7,7 +7,7 @@
 	scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="com.epam.i18n.text" />
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -21,7 +21,6 @@
 
 <title>ADMIN</title>
 <style>
-
 </style>
 </head>
 <body onkeydown="return (event.keyCode != 116)">
@@ -29,11 +28,11 @@
 	<form action="ControllerServlet" method="get">
 		<input type="hidden" name="userName" value="${sessionScope.userName }" />
 		<input type="hidden" name="password" value="${sessionScope.password }" />
-		<input type="hidden" name="previousCommand" value="${sessionScope.action }" />
-		<input type="hidden" name="action" value="languageChanged" />
-		<input type="hidden" name="typeOfBook"
-			value="${sessionScope.typeOfBook }" /> <select id="language"
-			name="language" onchange="submit()">
+		<input type="hidden" name="previousCommand"
+			value="${sessionScope.action }" /> <input type="hidden"
+			name="action" value="languageChanged" /> <input type="hidden"
+			name="typeOfBook" value="${sessionScope.typeOfBook }" /> <select
+			id="language" name="language" onchange="submit()">
 			<option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
 			<option value="hi" ${language == 'hi' ? 'selected' : ''}>Hindi</option>
 			<option value="be" ${language == 'be' ? 'selected' : ''}>Belarusian</option>
@@ -41,8 +40,7 @@
 	</form>
 
 
-	<input
-					type="hidden" name="user" value="admin">
+	<input type="hidden" name="user" value="admin">
 
 
 	<c:choose>
@@ -163,30 +161,28 @@
 
 			<form name="viewAllBooks" action="ControllerServlet" method="get">
 				<fmt:message key="add.button.PBook" var="addPBook" />
-				
-				<input type="hidden" name="action" value="gettingPage"> 
-				<input type="hidden" name="bookTypeToBeAdded" value="PB">
-				
-				<input
+				<input type="hidden" name="user" value="admin"> <input
+					type="hidden" name="action" value="gettingPage"> <input
+					type="hidden" name="bookTypeToBeAdded" value="PB"> <input
 					class="btn btn-lg btn-primary btn-block" type="submit"
 					value="${addPBook}"></input>
 
 			</form>
 
 			<form name="viewAllBooks" action="ControllerServlet" method="get">
-			
+				<input type="hidden" name="user" value="admin">
 				<fmt:message key="add.button.EBook" var="addEBook" />
-				<input type="hidden" name="action" value="gettingPage">
-						<input type="hidden" name="bookTypeToBeAdded" value="EB"> <input
+				<input type="hidden" name="action" value="gettingPage"> <input
+					type="hidden" name="bookTypeToBeAdded" value="EB"> <input
 					class="btn btn-lg btn-primary btn-block" type="submit"
 					value="${addEBook}"></input>
 			</form>
 
-			
-			
+
+
 			<form name="getBook" action="ControllerServlet" method="get">
-		
-				<input type="hidden" name="action" value="gettingBook">
+				<input type="hidden" name="user" value="admin"> <input
+					type="hidden" name="action" value="gettingBook">
 				<div style="background-color: #ECE5C6; text-align: center">
 
 
@@ -202,170 +198,186 @@
 					<input type="radio" name="typeOfBook" value="PB"><label
 						for="radio1">${paperBook}</label>
 
-					
+
 
 					<fmt:message key="user.radio.submit" var="radioValue" />
 					<input type="submit" value="${radioValue}">
 
 				</div>
-				
+
 				<c:if test="${not empty bookInfo }">
 					<c:if test="${ requestScope.bookInfo!= null && isAll!=null}">
-				
-					<div align="center">
-						<TABLE>
 
-							<caption>
-								<h2>
-									<fmt:message key="user.header.msg" var="msg" />
-									${msg}
-								</h2>
-							</caption>
-							<tr>
-								<fmt:message key="user.table.id" var="idBook" />
-								<th>${idBook}</th>
-								<fmt:message key="user.table.title" var="titleBook" />
-								<th>${titleBook}</th>
-								<fmt:message key="user.table.desc" var="desc" />
-								<th>${desc}</th>
-								<fmt:message key="user.table.author" var="author" />
-								<th>${author}</th>
-								<c:if test="${sessionScope.typeOfBook=='EB'}">
-								<fmt:message key="user.table.editEBook" var="editEBook" />
-							<th>${editEBook}</th></c:if>
-							<c:if test="${sessionScope.typeOfBook=='PB'}">
-							<fmt:message key="user.table.editPBook" var="editPBook" />
-							<th>${editPBook}</th></c:if>
-								
+						<div align="center">
+							<h2>
+								<fmt:message key="user.header.msg" var="msg" />
+								${msg}
+							</h2>
+							<TABLE>
+								<tr>
+									<fmt:message key="user.table.id" var="idBook" />
+									<th>${idBook}</th>
+									<fmt:message key="user.table.title" var="titleBook" />
+									<th>${titleBook}</th>
+									<fmt:message key="user.table.desc" var="desc" />
+									<th>${desc}</th>
+									<fmt:message key="user.table.author" var="author" />
+									<th>${author}</th>
+									<c:if test="${sessionScope.typeOfBook=='EB'}">
+										<fmt:message key="user.table.editEBook" var="editEBook" />
+										<th>${editEBook}</th>
+									</c:if>
+									<c:if test="${sessionScope.typeOfBook=='PB'}">
+										<fmt:message key="user.table.editPBook" var="editPBook" />
+										<th>${editPBook}</th>
+									</c:if>
 
-							</tr>
 
-							
-<c:forEach var="bookInfo" items="${bookInfo}">
-<c:forEach var="bookInfo" items="${bookInfo}">
+								</tr>
 
-		<c:choose>
-									<c:when test="${ not empty bookInfo.title}">
 
+								<c:forEach var="bookInfo" items="${bookInfo}">
+									<c:forEach var="bookInfo" items="${bookInfo}">
+										<%-- <a href="ControllerServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook"
+										class="ClickCell"> --%>
 										<tr>
 
-
-											<td><a
-												href="ControllerServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook"
-												class="ClickCell"><c:out value="${ bookInfo.bookId}" /></a></td>
+											<td><c:out value="${ bookInfo.bookId}" /></td>
 											<td><c:out value="${ bookInfo.title}" /></td>
 											<td><c:out value="${bookInfo.description}" /></td>
 											<td><c:out value="${bookInfo.author}" /></td>
-									</c:when>
 
-									<c:otherwise>
+										</tr>
+									</c:forEach>
+								</c:forEach>
+							</TABLE>
 
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-	</c:forEach>
-						</TABLE>
-
-					</div>
+						</div>
 					</c:if>
-					</c:if>
-					<c:if test="${not empty bookInfo }">
+				</c:if>
+				<c:if test="${not empty bookInfo }">
 					<c:if test="${ requestScope.bookInfo!= null && isAll==null}">
 
 
 
 
 
-					<div align="center">
-						<TABLE>
+						<div align="center">
+							<h2>
+								<fmt:message key="user.header.msg" var="msg" />
+								${msg}
+							</h2>
+							<TABLE>
+								<tr>
+									<fmt:message key="user.table.id" var="idBook" />
+									<th>${idBook}</th>
+									<fmt:message key="user.table.title" var="titleBook" />
+									<th>${titleBook}</th>
+									<fmt:message key="user.table.desc" var="desc" />
+									<th>${desc}</th>
+									<fmt:message key="user.table.author" var="author" />
+									<th>${author}</th>
 
-							<caption>
-								<h2>
-									<fmt:message key="user.header.msg" var="msg" />
-									${msg}
-								</h2>
-							</caption>
-							<tr>
-								<fmt:message key="user.table.id" var="idBook" />
-								<th>${idBook}</th>
-								<fmt:message key="user.table.title" var="titleBook" />
-								<th>${titleBook}</th>
-								<fmt:message key="user.table.desc" var="desc" />
-								<th>${desc}</th>
-								<fmt:message key="user.table.author" var="author" />
-								<th>${author}</th>
-								
-								<c:if test="${sessionScope.typeOfBook=='EB'}">
-								<fmt:message key="user.table.editEBook" var="editEBook" />
-							<th>${editEBook}</th></c:if>
-							<c:if test="${sessionScope.typeOfBook=='PB'}">
-							<fmt:message key="user.table.editPBook" var="editPBook" />
-							<th>${editPBook}</th></c:if>
+									<c:if test="${sessionScope.typeOfBook=='EB'}">
+										<fmt:message key="user.table.editEBook" var="editEBook" />
+										<th>${editEBook}</th>
+									</c:if>
+									<c:if test="${sessionScope.typeOfBook=='PB'}">
+										<fmt:message key="user.table.editPBook" var="editPBook" />
+										<th>${editPBook}</th>
+									</c:if>
 
-							</tr>
-
-							
-<c:forEach var="bookInfo" items="${bookInfo}">
-
-		<c:choose>
-									<c:when test="${ not empty bookInfo.title}">
-
-										<tr>
+								</tr>
 
 
-											<td><a
-												href="ControllerServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook"
-												class="ClickCell"><c:out value="${ bookInfo.bookId}" /></a></td>
-											<td><c:out value="${ bookInfo.title}" /></td>
-											<td><c:out value="${bookInfo.description}" /></td>
-											<td><c:out value="${bookInfo.author}" /></td>
-											
-											<c:if test="${sessionScope.typeOfBook=='PB'}">
-										
-										<td><a
-										href="ControllerServlet?bookId=${ bookInfo.bookId}&action=editBook&bookTypeToBeEdited=PB&bookId=${bookInfo.bookId }"
-										class="ClickCell"><fmt:message key="user.table.edit" var="edit" /><c:out value="${edit}" /></a></td>
-				
-										</c:if>
-										<c:if test="${sessionScope.typeOfBook=='EB'}">
-										<td><a
-										href="ControllerServlet?bookId=${ bookInfo.bookId}&action=editBook&bookTypeToBeEdited=EB"
-										class="ClickCell"><fmt:message key="user.table.edit" var="edit" /><c:out value="${edit}" /></a></td>
-					
-										</c:if>
-										</tr>
-									</c:when>
+								<c:forEach var="bookInfo" items="${bookInfo}">
 
-									<c:otherwise>
+									<c:choose>
+										<c:when test="${ not empty bookInfo.title}">
 
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
+											<tr>
 
-						</TABLE>
 
-					</div>
+												<td><a
+													href="ControllerServlet?bookId=${ bookInfo.bookId}&action=gettingSelectedBook"
+													class="ClickCell"><c:out value="${ bookInfo.bookId}" /></a></td>
+												<td><c:out value="${ bookInfo.title}" /></td>
+												<td><c:out value="${bookInfo.description}" /></td>
+												<td><c:out value="${bookInfo.author}" /></td>
 
+												<c:if test="${sessionScope.typeOfBook=='PB'}">
+
+													<td><a
+														href="ControllerServlet?bookId=${ bookInfo.bookId}&action=editBook&bookTypeToBeEdited=PB&bookId=${bookInfo.bookId }"
+														class="ClickCell"><fmt:message key="user.table.edit"
+																var="edit" />
+															<c:out value="${edit}" /></a></td>
+
+												</c:if>
+												<c:if test="${sessionScope.typeOfBook=='EB'}">
+													<td><a
+														href="ControllerServlet?bookId=${ bookInfo.bookId}&action=editBook&bookTypeToBeEdited=EB"
+														class="ClickCell"><fmt:message key="user.table.edit"
+																var="edit" />
+															<c:out value="${edit}" /></a></td>
+
+												</c:if>
+											</tr>
+										</c:when>
+
+										<c:otherwise>
+
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+
+							</TABLE>
+
+						</div>
+
+					</c:if>
 				</c:if>
-				</c:if>
-					 
+
 			</form>
 		</c:when>
 		<c:otherwise>
-			</c:otherwise>
+		</c:otherwise>
 	</c:choose>
-<c:if test="${ not empty  emptySearch}">
-	<div align="center">
-		<div class="alert alert-danger" style="
-    margin-top: 500px;
-    width: 474px" align="center">
-			<strong> <fmt:message key="login.error.searchEmpty"
-					var="searchEmpty" />
-				${searchEmpty}</strong></div>
+	<c:if test="${ not empty  emptySearch}">
+		<div align="center">
+			<div class="alert alert-danger"
+				style="margin-top: 500px; width: 474px" align="center">
+				<strong> <fmt:message key="login.error.searchEmpty"
+						var="searchEmpty" /> ${searchEmpty}
+				</strong>
+			</div>
 
 		</div>
 
 	</c:if>
+
+	<c:if test="${ not empty  inserted}">
+
+
+	</c:if>
+
+
+	<c:if test="${ inserted=='true'}">
+		<div align="center">
+			<div class="alert alert-success"
+				style="margin-top: 350px; width: 474px" align="center">
+				<strong><fmt:message key="login.error.success"
+						var="success" /> ${success}</strong>
+				<fmt:message key="login.error.insertedUser" var="insertedUser" />
+				${insertedUser}
+			</div>
+
+		</div>
+	</c:if>
+
+
+
+
 </body>
 
 </html>

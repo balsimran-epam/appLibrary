@@ -25,16 +25,25 @@ public class UpdateBookCommandImpl implements Command {
 	private static final String BOOK_ID = "bookId";
 	private static final String USER_WELCOME_REQUEST = "ControllerServlet?action=WelcomeToAdd";
 	private static final String UPDATED_RECORD_MESSAGE = "isUpdatedBook";
+	private static final String ACTION = "action";
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		AddBookDTO addBookDTO = new AddBookDTO();
 
 		HttpSession session = request.getSession();
-	
 		ParameterSetter.storingTypeOFBookToBeEdited(request, session);
-		ParameterSetter.setIdOfSelectedBook(request, session);
-		ParameterSetter.setAction(request, session);
+		String bookId = (String) request.getParameter(BOOK_ID);
+		if (bookId != null && !bookId.isEmpty()) {
+
+			request.setAttribute(BOOK_ID, request.getParameter(BOOK_ID));
+		}
+
+		String actionName = (String) request.getParameter(ACTION);
+		if (actionName != null && !actionName.isEmpty()) {
+
+			session.setAttribute(ACTION, request.getParameter(ACTION));
+		}
 		boolean isUpdated = false;
 		addBookDTO.setTitle(request.getParameter(TITLE));
 		addBookDTO.setDescription(request.getParameter(DESCRIPTION));
@@ -42,7 +51,7 @@ public class UpdateBookCommandImpl implements Command {
 		addBookDTO.setPrice(Float.parseFloat(request.getParameter(PRICE)));
 		addBookDTO.setBookProperty(request.getParameter(ITEM));
 		addBookDTO.setTypeOfBook((String) session.getAttribute(TYPE_TO_BE_EDITED));
-		addBookDTO.setBookId((String) session.getAttribute(BOOK_ID));
+		addBookDTO.setBookId((String) request.getAttribute(BOOK_ID));
 
 		addBookDTO.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
 

@@ -11,9 +11,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.Book;
-import com.epam.library.domain.Request;
 import com.epam.library.domain.SearchBookDTO;
 import com.epam.library.service.BookService;
 import com.epam.library.service.exception.ServiceException;
@@ -32,19 +30,28 @@ public class SearchBookCommandImpl implements Command {
 	private static final String DEFAULT_SEARCH_TYPE = "PB";
 	private static final String IS_EMPTY = "emptySearch";
 	private static final String TRUE_FLAG = "true";
+	private static final String ACTION = "action";
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response)  {
+	public String execute(HttpServletRequest request, HttpServletResponse response) {
 
 		HttpSession session = request.getSession();
-		ParameterSetter.setAction(request, session);
+		String actionName = (String) request.getParameter(ACTION);
+		if (actionName != null && !actionName.isEmpty()) {
 
-		ParameterSetter.setTypeOfBook(request, session);
-		ParameterSetter.setIRole(request, session);
+			session.setAttribute(ACTION, request.getParameter(ACTION));
+		}
+
+		String role = (String) request.getParameter("user");
+
+		if (role != null && !role.isEmpty()) {
+
+			session.setAttribute("user", request.getParameter("user"));
+		}
 
 		List<Book> bookList = new ArrayList<>();
 		SearchBookDTO searchedBook = new SearchBookDTO();
-		System.out.println(request.getParameter(MAX_PRICE));
+
 		String language = (String) session.getAttribute(FormParamEnum.LANGUAGE.getParam());
 		searchedBook.setTypeOfBook((String) request.getParameter(ITEM));
 		searchedBook.setTitle(request.getParameter(TITLE));
@@ -53,7 +60,7 @@ public class SearchBookCommandImpl implements Command {
 		searchedBook.setMaxPrice(request.getParameter(MAX_PRICE));
 		searchedBook.setAuthor(request.getParameter(AUTHOR));
 		if (searchedBook.getTypeOfBook() == null) {
-			System.out.println("null");
+
 			searchedBook.setTypeOfBook(DEFAULT_SEARCH_TYPE);
 		}
 

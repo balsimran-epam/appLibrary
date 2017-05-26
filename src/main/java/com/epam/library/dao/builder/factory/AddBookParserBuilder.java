@@ -26,12 +26,9 @@ public class AddBookParserBuilder {
 	}
 
 	public AddBookParser getQuery(String objectType) {
-		for (String key : parser.keySet()) {
 			AddBookParser parserObject = (AddBookParser) parser.get(objectType);
 			return parserObject;
 
-		}
-		return null;
 
 	}
 }

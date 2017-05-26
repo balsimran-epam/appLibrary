@@ -17,7 +17,6 @@ private final static BookParserBuilder objectFactory = new BookParserBuilder();
 	private static final String ELECTRONIC_BOOK = "EB";
 	private static final String SELECTED_BOOK = "selected";
 	private static final String ALL_BOOKS = "ALL";
-	private static final String SEARCH_BOOK = "SearchBook";
 	Map<String, BookParser> parser = new HashMap<>();
 
 	private BookParserBuilder() {
@@ -34,12 +33,9 @@ private final static BookParserBuilder objectFactory = new BookParserBuilder();
 	}
 
 	public BookParser getQuery(String objectType) {
-		for (String key : parser.keySet()) {
-			BookParser parserObject = (BookParser) parser.get(objectType);
+		BookParser parserObject = null;
+		parserObject = (BookParser) parser.get(objectType);
 			return parserObject;
-
-		}
-		return null;
 
 	}
 	

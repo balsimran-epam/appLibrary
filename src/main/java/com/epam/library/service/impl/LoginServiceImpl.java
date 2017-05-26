@@ -3,7 +3,7 @@ package com.epam.library.service.impl;
 import com.epam.library.dao.LoginDAO;
 import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.factory.DAOFactory;
-import com.epam.library.domain.Request;
+import com.epam.library.domain.DisplayBookDTO;
 import com.epam.library.domain.User;
 import com.epam.library.service.LoginService;
 import com.epam.library.service.encryption.PasswordEncryptionAlgo;
@@ -12,7 +12,7 @@ import com.epam.library.service.exception.ServiceException;
 public class LoginServiceImpl implements LoginService {
 
 	@Override
-	public User authenticateUser(Request user, String actionName) throws ServiceException {
+	public User authenticateUser(DisplayBookDTO user, String actionName) throws ServiceException {
 
 		User userDetails = null;
 		DAOFactory daoFactory = DAOFactory.getInstance();
@@ -31,6 +31,7 @@ public class LoginServiceImpl implements LoginService {
 			throw new ServiceException(se);
 		}
 
+	
 		return userDetails;
 	}
 

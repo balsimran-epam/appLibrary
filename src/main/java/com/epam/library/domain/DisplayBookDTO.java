@@ -1,6 +1,6 @@
 package com.epam.library.domain;
 
-public class Request {
+public class DisplayBookDTO {
 	private String userName;
 	private String password;
 	private String language;

@@ -11,7 +11,7 @@ import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.impl.BookParamEnum;
 import com.epam.library.domain.Book;
 import com.epam.library.domain.PaperBook;
-import com.epam.library.domain.Request;
+import com.epam.library.domain.DisplayBookDTO;
 
 public class PaperBookParser implements BookParser{
 
@@ -43,7 +43,7 @@ public class PaperBookParser implements BookParser{
 	}
 
 	@Override
-	public List<?> findBookByCategory(Request request, ResultSet rs) throws BuilderException {
+	public List<?> findBookByCategory(DisplayBookDTO request, ResultSet rs) throws BuilderException {
 		List<PaperBook> electronicBookList=new ArrayList<>();
 	
 		try
@@ -74,8 +74,8 @@ public class PaperBookParser implements BookParser{
 	}
 
 	@Override
-	public Book findBook(Request request, ResultSet rs,String bookId) throws BuilderException {
-		PaperBook retrievedBook=new PaperBook();
+	public Book findBook(DisplayBookDTO request, ResultSet rs,String bookId) throws BuilderException {
+		PaperBook retrievedBook = null;
 		try
 		{
 		if (rs == null) {
@@ -85,13 +85,13 @@ public class PaperBookParser implements BookParser{
 		}
 
 		while (rs.next()) {
+			retrievedBook = new PaperBook();
 			retrievedBook.setBookId(rs.getInt(BookParamEnum.BOOK_ID.getParam()));
 			retrievedBook.setTitle(rs.getString(BookParamEnum.BOOK_TITLE.getParam()));
 			retrievedBook.setAuthor(rs.getString(BookParamEnum.BOOK_AUTHOR.getParam()));
 			retrievedBook.setDescription(rs.getString(BookParamEnum.BOOK_DESCRIPTION.getParam()));
 			retrievedBook.setPrice(rs.getFloat(BookParamEnum.BOOK_PRICE.getParam()));
 			retrievedBook.setQuantity(rs.getInt(BookParamEnum.BOOK_QUANTITY.getParam()));
-		
 			retrievedBook.setTypeOfCover(rs.getString(BookParamEnum.TYPE_OF_COVER.getParam()));
 		
 

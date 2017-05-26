@@ -26,15 +26,16 @@ import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.domain.AddBookDTO;
 import com.epam.library.domain.Book;
-import com.epam.library.domain.Request;
+import com.epam.library.domain.DisplayBookDTO;
 import com.epam.library.domain.SearchBookDTO;
 
 public class BookDaoImpl implements BookDAO {
 	private static Logger logger = Logger.getLogger(BookDaoImpl.class);
 	private static final String DEFAULT_LANGUAGE = "en";
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<List<Book>> findBookByCategory(Request request) throws DAOException {
+	public List<List<Book>> findBookByCategory(DisplayBookDTO request) throws DAOException {
 
 		List<List<Book>> allProduct = new ArrayList<>();
 
@@ -72,9 +73,8 @@ public class BookDaoImpl implements BookDAO {
 	}
 
 	@Override
-	public Book findBook(Request request) throws DAOException {
-		Book allProduct = new Book();
-
+	public Book findBook(DisplayBookDTO request) throws DAOException {
+		Book allProduct = null;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		BookParserBuilder queryObject = BookParserBuilder.getInstance();
@@ -86,8 +86,8 @@ public class BookDaoImpl implements BookDAO {
 			ResultSet rs = query.returningResultStatement(request.getLanguage(), preparedStatement,
 					request.getBookId());
 			allProduct = query.findBook(request, rs, request.getBookId());
-			if (allProduct.getTitle() == null) {
-
+			if (allProduct == null) {
+				System.out.println("Default");
 				rs = query.returningResultStatement(DEFAULT_LANGUAGE, preparedStatement, request.getBookId());
 				allProduct = query.findBook(request, rs, request.getBookId());
 
@@ -117,8 +117,6 @@ public class BookDaoImpl implements BookDAO {
 	@Override
 	public boolean addBook(AddBookDTO addBookDTO) throws DAOException {
 		Connection connection = null;
-		boolean isDataSaved = false;
-		boolean isUserNameAvailable = false;
 		int isInserted = 0;
 		try {
 			connection = DBManager.getConnectionFromPool();
@@ -207,6 +205,7 @@ public class BookDaoImpl implements BookDAO {
 		return (isInserted != 0);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Book> searchBook(String language, SearchBookDTO searchedBook) throws DAOException {
 		List<Book> allProduct = new ArrayList<>();

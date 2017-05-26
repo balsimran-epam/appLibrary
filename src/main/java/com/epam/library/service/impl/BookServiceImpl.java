@@ -7,7 +7,7 @@ import com.epam.library.dao.exception.DAOException;
 import com.epam.library.dao.factory.DAOFactory;
 import com.epam.library.domain.AddBookDTO;
 import com.epam.library.domain.Book;
-import com.epam.library.domain.Request;
+import com.epam.library.domain.DisplayBookDTO;
 import com.epam.library.domain.SearchBookDTO;
 import com.epam.library.service.BookService;
 import com.epam.library.service.exception.ServiceException;
@@ -17,7 +17,7 @@ import com.epam.library.service.util.Validator;
 public class BookServiceImpl implements BookService {
 
 	@Override
-	public List<List<Book>> getBookList(Request request) throws ServiceException   {
+	public List<List<Book>> getBookList(DisplayBookDTO request) throws ServiceException   {
 		try {
 			Validator.validatingSelectedBookType(request);
 		} catch (ValidatorException ve) {
@@ -37,7 +37,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public Book getBook(Request request) throws ServiceException {
+	public Book getBook(DisplayBookDTO request) throws ServiceException {
 		
 		try {
 			Validator.validatingSelectedBookType(request);

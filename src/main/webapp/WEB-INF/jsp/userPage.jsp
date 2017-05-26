@@ -7,7 +7,7 @@
 	scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="com.epam.i18n.text" />
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html >
 <html>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -17,7 +17,7 @@
 <meta http-equiv="Content-Type" content="text/html; UTF-8">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link href="css/styles.css" rel="stylesheet" type="text/css" />
+<link href="./css/styles.css" rel="stylesheet" type="text/css" />
 <title>User</title>
 
 </head>
@@ -27,8 +27,9 @@
 		<input type="hidden" name="userName" value="${sessionScope.userName }" />
 		<input type="hidden" name="previousCommand"
 			value="${sessionScope.action }" /> <input type="hidden"
-			name="action" value="languageChanged" /> <input type="hidden"
-			name="password" value="${sessionScope.password }" /> <input
+			name="action" value="languageChanged" /><input type="hidden"
+			name="userName" value="${sessionScope.userName }" /> <input
+			type="hidden" name="password" value="${sessionScope.password }" /> <input
 			type="hidden" name="typeOfBook" value="${sessionScope.typeOfBook }" />
 		<select id="language" name="language" onchange="submit()">
 			<option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
@@ -60,17 +61,17 @@
 					<fmt:message key="user.label.message" var="message" />
 					<h1 style="font-style: oblique;">${message}<c:out
 							value="${userInfo.firstName}"></c:out>
-						
 
-							<a
-								href="ControllerServlet?userId=${userInfo.userId}&action=editUserForm"
-								><fmt:message key="user.label.editMessage" var="editMessage" />
-					${editMessage}</a> 
-						
+
+						<a
+							href="ControllerServlet?userId=${userInfo.userId}&action=editUserForm"><fmt:message
+								key="user.label.editMessage" var="editMessage" />
+							${editMessage}</a>
+
 					</h1>
-					
+
 				</div>
-			
+
 			</form>
 
 			<div class="input-group" id="boot-search-box">
@@ -151,7 +152,6 @@
 					</div>
 				</div>
 			</div>
-			</div>
 			<form name="getBook" action="ControllerServlet" method="get">
 				<input type="hidden" name="action" value="gettingBook">
 				<div style="background-color: #ECE5C6; text-align: center">
@@ -182,14 +182,13 @@
 					<c:if test="${ requestScope.bookInfo!= null && isAll!=null}">
 
 						<div align="center">
+							<h2>
+								<fmt:message key="user.header.msg" var="msg" />
+								${msg}
+							</h2>
+
 							<TABLE>
 
-								<caption>
-									<h2>
-										<fmt:message key="user.header.msg" var="msg" />
-										${msg}
-									</h2>
-								</caption>
 								<tr>
 									<fmt:message key="user.table.id" var="idBook" />
 									<th>${idBook}</th>
@@ -239,14 +238,13 @@
 
 
 						<div align="center">
+							<h2>
+								<fmt:message key="user.header.msg" var="msg" />
+								${msg}
+							</h2>
 							<TABLE>
 
-								<caption>
-									<h2>
-										<fmt:message key="user.header.msg" var="msg" />
-										${msg}
-									</h2>
-								</caption>
+
 								<tr>
 									<fmt:message key="user.table.id" var="idBook" />
 									<th>${idBook}</th>
@@ -290,7 +288,6 @@
 				</c:if>
 
 			</form>
-			</div>
 
 		</c:when>
 		<c:otherwise>
@@ -311,5 +308,40 @@
 		</div>
 
 	</c:if>
+
+
+
+
+	<c:if test="${ isUpdatedUser=='true'}">
+		<div align="center">
+			<div class="alert alert-success"
+				style="margin-top: 350px; width: 474px" align="center">
+				<strong><fmt:message key="login.error.success"
+						var="success" /> ${success}</strong>
+				<fmt:message key="login.error.updatedUser" var="updatedUser" />
+				${updatedUser}
+			</div>
+
+		</div>
+	</c:if>
+
+	<c:if test="${ isUpdatedUser=='false' }">
+		<div align="center">
+			<div class="alert alert-success"
+				style="margin-top: 350px; width: 474px" align="center">
+				<strong><fmt:message key="login.error.fail" var="fail" />
+					${fail}</strong>
+				<fmt:message key="login.error.addTranslation" var="addTranslation" />
+				${addTranslation}
+			</div>
+			<h1>
+				<a
+					href="ControllerServlet?userId=${userInfo.userId}&action=translateUser"><fmt:message
+						key="user.label.translate" var="translate" /> ${translate}</a>
+			</h1>
+		</div>
+
+	</c:if>
+
 </body>
 </html>

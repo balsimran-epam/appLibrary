@@ -1,6 +1,7 @@
 package com.epam.library.servlet;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import com.epam.library.command.impl.BookTypeCommand;
 import com.epam.library.command.impl.EditBookCommandImpl;
 import com.epam.library.command.impl.LibraryLanguageCommand;
 import com.epam.library.command.impl.SearchBookCommandImpl;
+import com.epam.library.command.impl.TranslateUserCommandImpl;
 import com.epam.library.command.impl.UpdateBookCommandImpl;
 import com.epam.library.command.impl.UpdateUserCommandImpl;
 import com.epam.library.command.impl.UserBookByCategoryCommandImpl;
@@ -38,6 +40,7 @@ public class ControllerServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private Map<String, Command> actionMap = new HashMap<String, Command>();
+	private static final String CHARACTER_ENCODING = "UTF-8";
 	private static final String LOGIN = "Login";
 	private static final String LOGOUT = "Logout";
 	private static final String SIGN_UP = "SignUp";
@@ -57,9 +60,7 @@ public class ControllerServlet extends HttpServlet {
 	private static final String SEARCH_BOOK = "search";
 	private static final String GET_EDIT_PROFILE_VIEW = "editUserForm";
 	private static final String UPDATE_USER = "updateUserInfo";
-	
-	
-	
+	private static final String TRANSLATE_USER = "translateUser";
 
 	/**
 	 * Default constructor.
@@ -89,7 +90,7 @@ public class ControllerServlet extends HttpServlet {
 		actionMap.put(SEARCH_BOOK, new SearchBookCommandImpl());
 		actionMap.put(GET_EDIT_PROFILE_VIEW, new WelcomeToEditProfileCommand());
 		actionMap.put(UPDATE_USER, new UpdateUserCommandImpl());
-	
+		actionMap.put(TRANSLATE_USER, new TranslateUserCommandImpl());
 	}
 
 	/**
@@ -113,15 +114,14 @@ public class ControllerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-
-
+		request.setCharacterEncoding(CHARACTER_ENCODING);
 		String dispatcher = null;
 		String actionKey = request.getParameter(ACTION);
-		System.out.println("sction"+actionKey);
+
 		dispatcher = executingCommand(actionKey, request, response);
 
 		if (dispatcher != null) {
-			
+
 			RequestDispatcher rd = request.getRequestDispatcher(dispatcher);
 			rd.forward(request, response);
 		}
@@ -136,14 +136,14 @@ public class ControllerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		request.setCharacterEncoding(CHARACTER_ENCODING);
 		String dispatcher = null;
 		String actionKey = request.getParameter(ACTION);
 
 		dispatcher = executingCommand(actionKey, request, response);
-
 		if (dispatcher != null) {
-			if (request.getAttribute(ERROR_FLAG) == "true") {
+			String error = (String) request.getAttribute(ERROR_FLAG);
+			if (error != null && !error.isEmpty()) {
 				RequestDispatcher rd = request.getRequestDispatcher(dispatcher);
 				rd.forward(request, response);
 			} else {
@@ -153,7 +153,9 @@ public class ControllerServlet extends HttpServlet {
 		}
 	}
 
-	protected String executingCommand(String urlToExecute, HttpServletRequest request, HttpServletResponse response) {
+	protected String executingCommand(String urlToExecute, HttpServletRequest request, HttpServletResponse response)
+			throws UnsupportedEncodingException {
+
 		String actionPage = null;
 		Command command;
 		command = actionMap.get(urlToExecute);

@@ -8,9 +8,8 @@ import com.epam.library.dao.builder.impl.EditEbookParser;
 import com.epam.library.dao.builder.impl.EditPbookParser;
 
 public class EditBookParserBuilder {
-private final static EditBookParserBuilder objectFactory = new EditBookParserBuilder();
-	
-	
+	private final static EditBookParserBuilder objectFactory = new EditBookParserBuilder();
+
 	private static final String PAPER_BOOK = "PB";
 	private static final String ELECTRONIC_BOOK = "EB";
 	Map<String, EditBookParser> parser = new HashMap<>();
@@ -18,8 +17,7 @@ private final static EditBookParserBuilder objectFactory = new EditBookParserBui
 	private EditBookParserBuilder() {
 		parser.put(PAPER_BOOK, new EditPbookParser());
 		parser.put(ELECTRONIC_BOOK, new EditEbookParser());
-		
-		
+
 	}
 
 	public static EditBookParserBuilder getInstance() {
@@ -27,12 +25,7 @@ private final static EditBookParserBuilder objectFactory = new EditBookParserBui
 	}
 
 	public EditBookParser getQuery(String objectType) {
-		for (String key : parser.keySet()) {
-			EditBookParser parserObject = (EditBookParser) parser.get(objectType);
-			return parserObject;
-
-		}
-		return null;
-
+		EditBookParser parserObject = (EditBookParser) parser.get(objectType);
+		return parserObject;
 	}
 }

@@ -11,7 +11,7 @@ import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.impl.BookParamEnum;
 import com.epam.library.domain.Book;
 import com.epam.library.domain.ElectronicBook;
-import com.epam.library.domain.Request;
+import com.epam.library.domain.DisplayBookDTO;
 
 public class ElectronicBookParser implements BookParser {
 	private static final String DEFAULT_LANGUAGE = "en";
@@ -44,7 +44,7 @@ public class ElectronicBookParser implements BookParser {
 	}
 
 	@Override
-	public List<?> findBookByCategory(Request request, ResultSet rs) throws BuilderException {
+	public List<?> findBookByCategory(DisplayBookDTO request, ResultSet rs) throws BuilderException {
 
 		List<ElectronicBook> electronicBookList = new ArrayList<>();
 		if (rs == null) {
@@ -75,9 +75,9 @@ public class ElectronicBookParser implements BookParser {
 	}
 
 	@Override
-	public Book findBook(Request request, ResultSet rs, String bookId) throws BuilderException {
+	public Book findBook(DisplayBookDTO request, ResultSet rs, String bookId) throws BuilderException {
 
-		ElectronicBook retrievedBook = new ElectronicBook();
+		ElectronicBook retrievedBook = null;
 		if (rs == null) {
 			throw new BuilderException("Book  not found");
 
@@ -85,7 +85,7 @@ public class ElectronicBookParser implements BookParser {
 
 		try {
 			while (rs.next()) {
-
+				retrievedBook = new ElectronicBook();
 				retrievedBook.setBookId(rs.getInt(BookParamEnum.BOOK_ID.getParam()));
 				retrievedBook.setTitle(rs.getString(BookParamEnum.BOOK_TITLE.getParam()));
 				retrievedBook.setAuthor(rs.getString(BookParamEnum.BOOK_AUTHOR.getParam()));

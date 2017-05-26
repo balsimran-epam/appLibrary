@@ -13,4 +13,5 @@ public interface UserDAO {
 
 	boolean editUser(EditUserDTO user, String language) throws DAOException;
 
+	boolean translateUser(EditUserDTO user, String language)throws DAOException;
 }

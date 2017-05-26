@@ -8,7 +8,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.AddBookDTO;
 import com.epam.library.service.BookService;
 import com.epam.library.service.exception.ServiceException;
@@ -24,19 +23,24 @@ public class AddBookCommandImpl implements Command {
 	private static final String TYPE_TO_BE_ADDED = "bookTypeToBeAdded";
 	private static final String USER_WELCOME_REQUEST = "ControllerServlet?action=WelcomeToAdd";
 	private static final String INSERTED_RECORD_MESSAGE = "inserted";
+	private static final String ACTION = "action";
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		AddBookDTO addBookDTO = new AddBookDTO();
 		HttpSession session = request.getSession();
 		boolean isAdded = false;
-		ParameterSetter.setAction(request, session);
+		String actionName = (String) request.getParameter(ACTION);
+		if (actionName != null && !actionName.isEmpty()) {
+
+			session.setAttribute(ACTION, request.getParameter(ACTION));
+		}
 		addBookDTO.setTitle(request.getParameter(TITLE));
 		addBookDTO.setDescription(request.getParameter(DESCRIPTION));
 		addBookDTO.setAuthor(request.getParameter(AUTHOR));
 		addBookDTO.setPrice(Float.parseFloat(request.getParameter(PRICE)));
 		addBookDTO.setBookProperty(request.getParameter(ITEM));
 		addBookDTO.setTypeOfBook((String) session.getAttribute(TYPE_TO_BE_ADDED));
-		System.out.println(request.getParameter(ITEM));
+
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		BookService service = serviceFactory.getBookService();
 		try {

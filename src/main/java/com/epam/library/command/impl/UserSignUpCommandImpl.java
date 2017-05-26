@@ -8,7 +8,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.RegisteredUser;
 import com.epam.library.service.UserService;
 import com.epam.library.service.exception.ServiceException;
@@ -31,15 +30,19 @@ public class UserSignUpCommandImpl implements Command {
 	private static final String PASSWORD_MATCHED_MESSAGE = "passwordMatch";
 	private static final String DEFAULT_LANGUAGE = "en";
 	private static final String INSERTED_RECORD_MESSAGE = "inserted";
+	private static final String ACTION = "action";
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		RegisteredUser registeredUser = new RegisteredUser();
 		HttpSession session = request.getSession();
 	
-		ParameterSetter.setTypeOfBook(request, session);
-		ParameterSetter.setIdOfSelectedBook(request, session);
-		ParameterSetter.setAction(request, session);
+		String actionName = (String) request.getParameter(ACTION);
+		if (actionName != null && !actionName.isEmpty()) {
+
+			session.setAttribute(ACTION, request.getParameter(ACTION));
+		}
+		
 	
 		boolean isUserInserted = false;
 		if (!(request.getParameter(PASSWORD)).equals(request.getParameter(RE_ENTERED_PASSWORD))) {

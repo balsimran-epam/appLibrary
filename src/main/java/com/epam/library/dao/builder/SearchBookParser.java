@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.epam.library.dao.builder.exception.BuilderException;
 import com.epam.library.dao.exception.DBManagerException;
-import com.epam.library.domain.Book;
-import com.epam.library.domain.Request;
 import com.epam.library.domain.SearchBookDTO;
 
 public interface SearchBookParser {

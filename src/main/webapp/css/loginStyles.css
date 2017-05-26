@@ -9,10 +9,18 @@ html {
   height: 400px;
   margin: 0 auto;
 }
-
+ .labelform{
+ 	color: white;
+ 	
+ }
 .login {
   margin-top: 50px;
   width: 450px;
+  color:white;
+}
+
+.login label{
+	color:white;
 }
 
 .login-heading {

@@ -13,4 +13,6 @@ public interface UserService {
 
 	boolean updateUser(EditUserDTO user, String language) throws ServiceException;
 
+	boolean translateUser(EditUserDTO user, String language) throws ServiceException;
+
 }

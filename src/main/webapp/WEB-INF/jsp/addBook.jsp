@@ -7,7 +7,7 @@
 	scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="com.epam.i18n.text" />
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -15,43 +15,31 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <title>Insert title here</title>
- <link href="css/layout.css" rel="stylesheet" type="text/css" />
-
-
-
-
-
-<meta charset="UTF-8">
-
-
-
-
+<link href="css/layout.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="css/style.css">
-
-
-
 </head>
 
 <body onkeydown="return (event.keyCode != 116)">
 
- <form action="ControllerServlet" method="get">
+	<form action="ControllerServlet" method="get">
 		<input type="hidden" name="previousCommand"
 			value="${sessionScope.action }" /> <input type="hidden"
 			name="action" value="languageChanged" /> <input type="hidden"
 			name="userName" value="${sessionScope.userName }" /> <input
 			type="hidden" name="password" value="${sessionScope.password }" /> <input
 			type="hidden" name="typeOfBook" value="${sessionScope.typeOfBook }" />
-		<select id="language" name="language" onchange="submit()">
+		<input type="hidden" name="bookId" value="${bookId }" /> <select
+			id="language" name="language" onchange="submit()">
 			<option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
 			<option value="hi" ${language == 'hi' ? 'selected' : ''}>Hindi</option>
 			<option value="be" ${language == 'be' ? 'selected' : ''}>Belarusian</option>
 		</select>
-	</form> 
+	</form>
 
 	<div class="container">
 		<section id="content">
@@ -60,18 +48,22 @@
 
 			<c:if
 				test="${ sessionScope.bookTypeToBeAdded!=null  and sessionScope.bookTypeToBeAdded=='PB'}">
-				<h1><fmt:message key="admin.add.appPBook"
-								var="appPBook" /> ${appPBook}</h1>
+				<h1>
+					<fmt:message key="admin.add.appPBook" var="appPBook" />
+					${appPBook}
+				</h1>
 				<input type="hidden" name="typeOfBookAdded" value="PB" />
 			</c:if>
 			<c:if
 				test="${ sessionScope.bookTypeToBeAdded!=null  and sessionScope.bookTypeToBeAdded=='EB'}">
 				<input type="hidden" name="typeOfBookAdded" value="EB" />
-					<h1><fmt:message key="admin.add.appEBook"
-								var="appEBook" /> ${appEBook}</h1>
+				<h1>
+					<fmt:message key="admin.add.appEBook" var="appEBook" />
+					${appEBook}
+				</h1>
 			</c:if>
 			<div>
-				<input type="text" placeholder="Title" required="" id="title"
+				<input type="text" placeholder="Title" required id="title"
 					name="title" />
 			</div>
 			<div>
@@ -82,22 +74,18 @@
 			<br>
 
 			<div>
-				<input type="text" placeholder="Author" required="" id="author"
+				<input type="text" placeholder="Author" required id="author"
 					name="author" />
 			</div>
 
 			<div>
-				<input type="text" placeholder="Quantity" required="" id="quantity"
+				<input type="text" placeholder="Quantity" required id="quantity"
 					name="quantity" />
 			</div>
-			<div class = "numberField">
-				<input class ="numberField" style="
-    transition: all 0.5s ease;
-    color: #777;
-    font: 13px Helvetica, Arial, sans-serif;
-    margin: 0 0 10px;
-    padding: 15px 10px 15px 40px;
-    width: 80%;" type="number" placeholder="Price" required="" id="price"
+			<div class="numberField">
+				<input class="numberField"
+					style="transition: all 0.5s ease; color: #777; font: 13px Helvetica, Arial, sans-serif; margin: 0 0 10px; padding: 15px 10px 15px 40px; width: 80%;"
+					type="number" placeholder="Price" required id="price"
 					name="price" />
 			</div>
 
@@ -159,12 +147,9 @@
 <a href="ControllerServlet?action=gettingBook&user=admin&typeOfBook=ALL">
 	<button class="button button1">
 		<fmt:message key="user.table.goBack" var="goBack" />
-		<h3 style=""color:blue;">${goBack}</h3>
+		<h3 style="color:blue;">${goBack}</h3>
 	</button>
 </a>
-
-</body>
-</html>
 
 </body>
 </html>

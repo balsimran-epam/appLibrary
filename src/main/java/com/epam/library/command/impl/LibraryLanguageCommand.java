@@ -19,7 +19,7 @@ public class LibraryLanguageCommand implements Command {
 		LanguageSetter.setLanguage(request, session);
 
 		String previousCommand = (String) request.getParameter(PREVIOUS_COMMAND);
-		System.out.println(previousCommand);
+	
 		return GO_TO_PREVIOUS_COMMAND + previousCommand;
 
 	}

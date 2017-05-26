@@ -23,17 +23,9 @@
 <link href="css/layout.css" rel="stylesheet" type="text/css" />
 
 
-
-
-
 <meta charset="UTF-8">
 
-
-
-
 <link rel="stylesheet" href="css/style.css">
-
-
 
 </head>
 
@@ -45,6 +37,8 @@
 			name="userName" value="${sessionScope.userName }" /> <input
 			type="hidden" name="password" value="${sessionScope.password }" /> <input
 			type="hidden" name="typeOfBook" value="${sessionScope.typeOfBook }" />
+			 <input
+			type="hidden" name="userId" value="${sessionScope.userId }" />
 		<select id="language" name="language" onchange="submit()">
 			<option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
 			<option value="hi" ${language == 'hi' ? 'selected' : ''}>Hindi</option>
@@ -57,6 +51,7 @@
 		
 		<form class="form-horizontal" action="ControllerServlet" method="post">
 		<input type="hidden" name="action" value="updateUserInfo" />
+		
 			<div class="form-group">
 				<label class="control-label col-sm-4" for="firstname"><fmt:message
 						key="home.label.firstName" /></label>
@@ -114,10 +109,10 @@
 
 
 
-<a href="ControllerServlet?action=gettingBook&user=admin&typeOfBook=ALL">
+<a href="ControllerServlet?action=gettingBook&typeOfBook=ALL">
 	<button class="button button1">
 		<fmt:message key="user.table.goBack" var="goBack" />
-		<h3 style=""color:blue;">${goBack}</h3>
+		<h3 style="color:blue;">${goBack}</h3>
 	</button>
 </a>
 
