@@ -14,10 +14,11 @@ import com.epam.library.domain.PaperBook;
 import com.epam.library.domain.DisplayBookDTO;
 
 public class PaperBookParser implements BookParser{
+	private static final String PAPER_BOOK_FIND = "SELECT  *  from book b inner join p_book_translator pb  ON b.b_p_book=pb.p_b_book inner join book_translator bt on bt.b_t_b_book=b.b_id  inner join app_language al  ON pb.p_b_app_language=al.a_l_code  where bt.b_t_app_language=? and p_b_app_language=? ";
 
 	@Override
 	public String returningQuery() {
-		return "SELECT  *  from book b inner join p_book_translator pb  ON b.b_p_book=pb.p_b_book inner join book_translator bt on bt.b_t_b_book=b.b_id  inner join app_language al  ON pb.p_b_app_language=al.a_l_code  where bt.b_t_app_language=? and p_b_app_language=? ";
+		return PAPER_BOOK_FIND;
 	}
 
 	@Override

@@ -8,17 +8,17 @@ import java.util.List;
 
 import com.epam.library.dao.builder.SearchBookParser;
 import com.epam.library.dao.builder.exception.BuilderException;
-import com.epam.library.dao.exception.DBManagerException;
 import com.epam.library.dao.impl.BookParamEnum;
 import com.epam.library.domain.ElectronicBook;
 import com.epam.library.domain.SearchBookDTO;
 
 public class EBookSearchparser implements SearchBookParser {
+	private static final String E_BOOK_SEARCH = "SELECT  * from book b left join book_type on b_book_type=b_t_id left join e_book_translator eb  ON b.b_e_book=eb.e_b_book  LEFT join book_translator bt on bt.b_t_b_book=b.b_id  LEFT join app_language al  ON (eb.e_b_app_language=al.a_l_code ) where  (e_b_app_language=? ) and (bt.b_t_app_language=?)  and b_t_title like ? and b_t_author like ? and b_t_description like ? and b_price between ? and ?";
 
 	@Override
 	public String returningQuery() {
-	
-		return "SELECT  * from book b left join book_type on b_book_type=b_t_id left join e_book_translator eb  ON b.b_e_book=eb.e_b_book  LEFT join book_translator bt on bt.b_t_b_book=b.b_id  LEFT join app_language al  ON (eb.e_b_app_language=al.a_l_code ) where  (e_b_app_language=? ) and (bt.b_t_app_language=?)  and b_t_title like ? and b_t_author like ? and b_t_description like ? and b_price between ? and ?";
+
+		return E_BOOK_SEARCH;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class EBookSearchparser implements SearchBookParser {
 			SearchBookDTO searchedBook) throws BuilderException {
 		ResultSet rs = null;
 		try {
-		
+
 			preparedStatement.setString(1, language);
 			preparedStatement.setString(2, language);
 			preparedStatement.setString(3, "%" + searchedBook.getTitle() + "%");
@@ -45,7 +45,7 @@ public class EBookSearchparser implements SearchBookParser {
 	}
 
 	@Override
-	public List<?> searchBook(SearchBookDTO request, ResultSet rs) throws BuilderException, DBManagerException {
+	public List<?> searchBook(SearchBookDTO request, ResultSet rs) throws BuilderException{
 		List<ElectronicBook> electronicBookList = new ArrayList<>();
 		if (rs == null) {
 			throw new BuilderException("Book  not found");

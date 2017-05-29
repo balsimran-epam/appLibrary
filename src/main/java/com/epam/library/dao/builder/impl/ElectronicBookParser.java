@@ -15,10 +15,12 @@ import com.epam.library.domain.DisplayBookDTO;
 
 public class ElectronicBookParser implements BookParser {
 	private static final String DEFAULT_LANGUAGE = "en";
+	private static final String E_BOOK_FIND = "SELECT  * from book b inner join e_book_translator eb   ON b.b_e_book=eb.e_b_book  inner join book_translator bt on bt.b_t_b_book=b.b_id  inner join app_language al  ON eb.e_b_app_language=al.a_l_code  where bt.b_t_app_language=? and e_b_app_language=? ";
+
 
 	public String returningQuery() {
 
-		return "SELECT  * from book b inner join e_book_translator eb   ON b.b_e_book=eb.e_b_book  inner join book_translator bt on bt.b_t_b_book=b.b_id  inner join app_language al  ON eb.e_b_app_language=al.a_l_code  where bt.b_t_app_language=? and e_b_app_language=? ";
+		return E_BOOK_FIND;
 
 	}
 

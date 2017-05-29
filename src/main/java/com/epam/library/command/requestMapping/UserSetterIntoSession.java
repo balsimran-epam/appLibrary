@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import com.epam.library.domain.EditUserDTO;
 
-public class ParameterSetter {
+public class UserSetterIntoSession {
 	private static final String FIRST_NAME = "firstName";
 	private static final String LAST_NAME = "lastName";
 	private static final String EMAIL = "email";

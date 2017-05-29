@@ -8,7 +8,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.ParameterSetter;
+import com.epam.library.command.requestMapping.UserSetterIntoSession;
 import com.epam.library.domain.EditUserDTO;
 import com.epam.library.service.UserService;
 import com.epam.library.service.exception.ServiceException;
@@ -75,7 +75,7 @@ public class UpdateUserCommandImpl implements Command {
 			session.setAttribute("userInfo", user);
 		} else {
 
-			ParameterSetter.storingUserInSession(request, session, user);
+			UserSetterIntoSession.storingUserInSession(request, session, user);
 		}
 		session.setAttribute(IS_UPDATED, isUpdated);
 

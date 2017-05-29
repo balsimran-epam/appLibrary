@@ -79,12 +79,7 @@ public class AllBookParser implements BookParser {
 
 				listOfBooks = (List<Book>) query.findBookByCategory(request, rs);
 				allBooks.add(listOfBooks);
-				for (Book tt : listOfBooks) {
-					System.out.println("in fn" + tt.getTitle());
-				}
-			}
-			for (Book tt : listOfBooks) {
-				System.out.println(tt.getTitle());
+
 			}
 
 		} catch (SQLException | BuilderException | DBManagerException ex) {

@@ -84,12 +84,19 @@ public class LoginDaoImpl implements LoginDAO {
 		} catch (SQLException ex) {
 			throw new DAOException("Database Connectivity Exception ", ex);
 		}
+
 		if (retrievedUser == null && COUNT == 1) {
+
 			return null;
 		}
 		if (retrievedUser == null) {
 			COUNT++;
 			retrievedUser = checkUser(connection, user);
+
+		}
+
+		else if (retrievedUser != null) {
+			COUNT = 0;
 
 		}
 		return retrievedUser;

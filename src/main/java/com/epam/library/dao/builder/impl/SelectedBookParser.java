@@ -16,20 +16,21 @@ import com.epam.library.domain.DisplayBookDTO;
 
 public class SelectedBookParser implements BookParser {
 	private final static String COUNT = "  SELECT  * from book b left join book_type on b_t_id=b_book_type  where b_id=?";
-	private static final String PAPER_BOOK="PB";
-	private static final String ELECTRONIC_BOOK="EB";
-	private static final String BOOK_TYPE="b_t_name";
+	private static final String PAPER_BOOK = "PB";
+	private static final String ELECTRONIC_BOOK = "EB";
+	private static final String BOOK_TYPE = "b_t_name";
+	private static final String SELECTED_BOOK_SEARCH = "SELECT  * from book b LEFT join e_book_translator eb  ON b.b_e_book=eb.e_b_book  LEFT join p_book_translator pb  ON b.b_p_book=pb.p_b_book LEFT join book_translator bt on bt.b_t_b_book=b.b_id  LEFT join app_language al  ON eb.e_b_app_language=al.a_l_code  where  (e_b_app_language=? or p_b_app_language=?) and (bt.b_t_app_language=?) and b_id=?";
+
 	@Override
 	public String returningQuery() {
-		
-	
-		return "SELECT  * from book b LEFT join e_book_translator eb  ON b.b_e_book=eb.e_b_book  LEFT join p_book_translator pb  ON b.b_p_book=pb.p_b_book LEFT join book_translator bt on bt.b_t_b_book=b.b_id  LEFT join app_language al  ON eb.e_b_app_language=al.a_l_code  where  (e_b_app_language=? or p_b_app_language=?) and (bt.b_t_app_language=?) and b_id=?";
+
+		return SELECTED_BOOK_SEARCH;
 	}
 
 	@Override
 	public ResultSet returningResultStatement(String language, PreparedStatement preparedStatement, String bookId)
 			throws BuilderException {
-	
+
 		ResultSet rs = null;
 		try {
 
@@ -39,7 +40,7 @@ public class SelectedBookParser implements BookParser {
 			preparedStatement.setString(4, bookId);
 
 			rs = preparedStatement.executeQuery();
-			
+
 		} catch (SQLException ex) {
 
 			throw new BuilderException("Database Connectivity Exception ", ex);
@@ -52,12 +53,11 @@ public class SelectedBookParser implements BookParser {
 	public List<?> findBookByCategory(DisplayBookDTO request, ResultSet rs) throws BuilderException {
 		BookParserBuilder queryObject = BookParserBuilder.getInstance();
 		BookParser query = queryObject.getQuery(request.getType());
-		
 
 		List<Book> listOfBooks = null;
 		try {
 			listOfBooks = (List<Book>) query.findBookByCategory(request, rs);
-		} catch (BuilderException | DBManagerException e) {
+		} catch (BuilderException e) {
 			throw new BuilderException("Database Connectivity Exception ", e);
 		}
 
@@ -65,51 +65,46 @@ public class SelectedBookParser implements BookParser {
 	}
 
 	@Override
-	public Book findBook(DisplayBookDTO request, ResultSet rs,String bookId) throws BuilderException {
+	public Book findBook(DisplayBookDTO request, ResultSet rs, String bookId) throws BuilderException {
 		BookParserBuilder queryObject = BookParserBuilder.getInstance();
-System.out.println("in fb");
 
 		BookParser query = null;
-	Book listOfBooks = null;
-	
+		Book listOfBooks = null;
+
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		
+
 		try {
 			try {
 				connection = DBManager.getConnectionFromPool();
 			} catch (DBManagerException e) {
 				throw new BuilderException("Database Connectivity Exception ", e);
 			}
-	
-	
+
 			preparedStatement = connection.prepareStatement(COUNT);
 			preparedStatement.setString(1, bookId);
 			ResultSet rsCount = preparedStatement.executeQuery();
 			while (rsCount.next()) {
 
 				if (rsCount.getString(BOOK_TYPE).equals(ELECTRONIC_BOOK)) {
-				
+
 					query = queryObject.getQuery(ELECTRONIC_BOOK);
 
-				} else
-				{
-				
+				} else {
+
 					query = queryObject.getQuery(PAPER_BOOK);
 				}
 
-				listOfBooks = query.findBook(request, rs,bookId);
-				
-				
-			
+				listOfBooks = query.findBook(request, rs, bookId);
 
-		}} catch (SQLException e) {
-			throw new BuilderException("Can't retrieve book.",e);
+			}
+		} catch (SQLException e) {
+			throw new BuilderException("Can't retrieve book.", e);
 		}
 
 		catch (BuilderException e) {
 			throw new BuilderException("Database Connectivity Exception ", e);
-		}finally {
+		} finally {
 			try {
 
 				DBManager.closeStatement(preparedStatement);
@@ -127,6 +122,4 @@ System.out.println("in fb");
 		return listOfBooks;
 	}
 
-	
-	}
-
+}
