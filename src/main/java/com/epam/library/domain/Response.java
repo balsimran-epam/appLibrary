@@ -1,4 +1,4 @@
-package com.epam.library.domain;
+/*package com.epam.library.domain;
 
 public class Response {
 
@@ -31,3 +31,4 @@ public class Response {
 	}
 
 }
+*/

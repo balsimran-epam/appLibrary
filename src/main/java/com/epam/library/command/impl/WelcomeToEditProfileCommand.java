@@ -8,7 +8,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.User;
 import com.epam.library.service.UserService;
 import com.epam.library.service.exception.ServiceException;
@@ -24,7 +23,12 @@ public class WelcomeToEditProfileCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 
 		HttpSession session = request.getSession();
-		ParameterSetter.setUserId(request, session);
+		String userId = (String) request.getParameter(USER_ID);
+		if (userId != null && !userId.isEmpty()) {
+
+			session.setAttribute(USER_ID, request.getParameter(USER_ID));
+			request.setAttribute(USER_ID, request.getParameter(USER_ID));
+		}
 		String actionName = (String) request.getParameter(ACTION);
 		if (actionName != null && !actionName.isEmpty()) {
 

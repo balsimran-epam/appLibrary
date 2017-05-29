@@ -31,6 +31,7 @@ public class SearchBookCommandImpl implements Command {
 	private static final String IS_EMPTY = "emptySearch";
 	private static final String TRUE_FLAG = "true";
 	private static final String ACTION = "action";
+	private static final String IS_USER = "user";
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -42,11 +43,11 @@ public class SearchBookCommandImpl implements Command {
 			session.setAttribute(ACTION, request.getParameter(ACTION));
 		}
 
-		String role = (String) request.getParameter("user");
+		String role = (String) request.getParameter(IS_USER);
 
 		if (role != null && !role.isEmpty()) {
 
-			session.setAttribute("user", request.getParameter("user"));
+			session.setAttribute(IS_USER, request.getParameter(IS_USER));
 		}
 
 		List<Book> bookList = new ArrayList<>();
@@ -82,7 +83,7 @@ public class SearchBookCommandImpl implements Command {
 		request.setAttribute(FormParamEnum.BOOK_INFO.getParam(), bookList);
 		request.setAttribute(IS_EMPTY, TRUE_FLAG);
 
-		if (session.getAttribute("user") != null) {
+		if (session.getAttribute(IS_USER) != null) {
 
 			return TargetPage.ADMIN_PAGE.getParam();
 		} else

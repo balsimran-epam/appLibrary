@@ -25,6 +25,8 @@ public class DBManager {
 	private static final String URL_DATABASE = "url";
 	private static final String USERNAME = "userName";
 	private static final String PASSWORD = "password";
+	private static final String USER = "user";
+
 	private static Properties info;
 
 	private DBManager() {
@@ -45,8 +47,8 @@ public class DBManager {
 	static {
 
 		info = new Properties();
-		info.put("user", rb.getString(USERNAME));
-		info.put("password", rb.getString(PASSWORD));
+		info.put(USER, rb.getString(USERNAME));
+		info.put(PASSWORD, rb.getString(PASSWORD));
 
 	}
 

@@ -45,6 +45,19 @@
 			<option value="be" ${language == 'be' ? 'selected' : ''}>Belarusian</option>
 		</select>
 	</form>
+	<form name="logout" action="ControllerServlet" method="get">
+
+
+
+				<div align="right" style="margin-top: -10px;">
+					<fmt:message key="user.button.submit" var="buttonValue" />
+					<input type="submit" value="${buttonValue}">
+
+				</div>
+				<input type="hidden" name="action" value="Logout" />
+
+
+			</form>
 
 	<div class="container" >
 		<section id="content" style="width:700px;">

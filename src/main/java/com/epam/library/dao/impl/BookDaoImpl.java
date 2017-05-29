@@ -87,7 +87,7 @@ public class BookDaoImpl implements BookDAO {
 					request.getBookId());
 			allProduct = query.findBook(request, rs, request.getBookId());
 			if (allProduct == null) {
-				System.out.println("Default");
+
 				rs = query.returningResultStatement(DEFAULT_LANGUAGE, preparedStatement, request.getBookId());
 				allProduct = query.findBook(request, rs, request.getBookId());
 
@@ -127,7 +127,6 @@ public class BookDaoImpl implements BookDAO {
 			String sqlQuery = query.returningBookQuery();
 			CallableStatement stmt = connection.prepareCall(sqlQuery);
 			isInserted = query.returningResultStatement(addBookDTO, stmt);
-			System.out.println(isInserted);
 
 			connection.commit();
 		} catch (SQLException | DBManagerException | BuilderException se) {

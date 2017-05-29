@@ -25,7 +25,7 @@
 
 </head>
 
-<body onkeydown="return (event.keyCode != 116)">
+<body onkeydown="return (event.keyCode != 116)" >
 <form action="ControllerServlet" method="get">
 <input type="hidden" name="previousCommand" value="${sessionScope.action }" />
 		<input type="hidden" name="action" value="languageChanged" />
@@ -41,6 +41,20 @@
 			<option value="be" ${language == 'be' ? 'selected' : ''}>Belarusian</option>
 		</select>
 	</form>
+	
+	<form name="logout" action="ControllerServlet" method="get">
+
+
+
+				<div align="right" style="margin-top: -10px;">
+					<fmt:message key="user.button.submit" var="buttonValue" />
+					<input type="submit" value="${buttonValue}">
+
+				</div>
+				<input type="hidden" name="action" value="Logout" />
+
+
+			</form>
 
 	<div class="container">
 		<section id="content">

@@ -22,7 +22,7 @@
 
 </head>
 <body onkeydown="return (event.keyCode != 116)">
-
+<c:if test="${sessionScope!=null }">
 	<form action="ControllerServlet" method="get">
 		<input type="hidden" name="userName" value="${sessionScope.userName }" />
 		<input type="hidden" name="previousCommand"
@@ -342,6 +342,10 @@
 		</div>
 
 	</c:if>
-
+	</c:if>
+	
+<c:if test="${sessionScope==null }">
+ <c:redirect url = "/loginPage.jsp"/>
+</c:if>
 </body>
 </html>

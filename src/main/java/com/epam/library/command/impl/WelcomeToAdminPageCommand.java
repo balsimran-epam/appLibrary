@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.ParameterSetter;
 
 public class WelcomeToAdminPageCommand implements Command {
 	private static final String INSERTED_RECORD_MESSAGE = "inserted";
@@ -18,8 +17,6 @@ public class WelcomeToAdminPageCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 
 		HttpSession session = request.getSession();
-		ParameterSetter.storingTypeOFBookToBeAdded(request, session);
-
 		String viewToForward = null;
 		if ((session.getAttribute(INSERTED_RECORD_MESSAGE) != null)
 				|| (session.getAttribute(UPDATED_RECORD_MESSAGE) != null)) {
@@ -29,7 +26,7 @@ public class WelcomeToAdminPageCommand implements Command {
 		}
 		if ((session.getAttribute(UPDATED_USER_RECORD_MESSAGE) != null)
 				|| (session.getAttribute(IS_TRANSLATED) != null)) {
-			System.out.println("in redirect");
+		
 			viewToForward = TargetPage.USER_PAGE.getParam();
 
 		}

@@ -30,22 +30,25 @@ public class UpdateUserCommandImpl implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
-		ParameterSetter.setUserId(request, session);
+		String id = (String) request.getParameter(USER_ID);
+		if (id != null && !id.isEmpty()) {
+
+			session.setAttribute(USER_ID, request.getParameter(USER_ID));
+			request.setAttribute(USER_ID, request.getParameter(USER_ID));
+		}
 		String actionName = (String) request.getParameter(ACTION);
 		if (actionName != null && !actionName.isEmpty()) {
 
 			session.setAttribute(ACTION, request.getParameter(ACTION));
 		}
-		
-		
+
 		String userId = (String) request.getParameter(USER_ID);
 		if (userId != null && !userId.isEmpty()) {
 
 			session.setAttribute(USER_ID, request.getParameter(USER_ID));
-		
+
 		}
-		
-		
+
 		boolean isUpdated = false;
 		EditUserDTO user = new EditUserDTO();
 		String language = (String) session.getAttribute(FormParamEnum.LANGUAGE.getParam());
@@ -66,12 +69,12 @@ public class UpdateUserCommandImpl implements Command {
 			logger.log(Level.ERROR, "Exception", e);
 
 		}
-		
+
 		if (isUpdated) {
 
 			session.setAttribute("userInfo", user);
 		} else {
-			
+
 			ParameterSetter.storingUserInSession(request, session, user);
 		}
 		session.setAttribute(IS_UPDATED, isUpdated);

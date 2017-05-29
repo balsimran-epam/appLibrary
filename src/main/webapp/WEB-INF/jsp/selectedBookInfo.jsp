@@ -24,7 +24,8 @@
 
 </head>
 <body onkeydown="return (event.keyCode != 116)"
-	style="background-color: white;">
+	style="background-color: white;"
+	>
 
 	<form name="ControllerServlet" method="get">
 

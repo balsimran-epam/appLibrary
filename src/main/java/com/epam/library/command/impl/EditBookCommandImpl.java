@@ -8,7 +8,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.epam.library.command.Command;
-import com.epam.library.command.requestMapping.ParameterSetter;
 import com.epam.library.domain.Book;
 import com.epam.library.domain.DisplayBookDTO;
 import com.epam.library.service.BookService;
@@ -32,7 +31,14 @@ public class EditBookCommandImpl implements Command {
 		Book electronicBookList = new Book();
 
 		HttpSession session = request.getSession();
-		ParameterSetter.storingTypeOFBookToBeEdited(request, session);
+
+		String typeOfBook = (String) request.getParameter(TYPE_TO_BE_EDITED);
+
+		if (typeOfBook != null && !typeOfBook.isEmpty()) {
+
+			session.setAttribute(TYPE_TO_BE_EDITED, request.getParameter(TYPE_TO_BE_EDITED));
+		}
+
 		String bookId = (String) request.getParameter(BOOK_ID);
 		if (bookId != null && !bookId.isEmpty()) {
 
@@ -46,7 +52,7 @@ public class EditBookCommandImpl implements Command {
 		}
 		DisplayBookDTO userRequested = new DisplayBookDTO();
 		userRequested.setLanguage((String) session.getAttribute(FormParamEnum.LANGUAGE.getParam()));
-		System.out.println(userRequested.getLanguage());
+
 		userRequested.setTypeOfBook(ALL_BOOK);
 		userRequested.setType((String) session.getAttribute(TYPE_TO_BE_EDITED));
 		if (userRequested.getType().equals(ALL_SELECTED)) {
