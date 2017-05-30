@@ -20,7 +20,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <title>Selected Book Info</title>
-<link href="/css/layout.css" rel="stylesheet" type="text/css" />
+
 
 </head>
 <body onkeydown="return (event.keyCode != 116)">
